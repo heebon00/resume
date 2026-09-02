@@ -47,7 +47,9 @@ const PLACEMENT = {
     },
     // 버튼 left — 요청으로 카드 3(같은 열, 같은 텍스트 left 832.98)과 동일하게
     // 맞췄다(원래는 833으로, 텍스트와 거의 어긋남 없이 붙어 있었음).
-    buttons: { left: 828, top: 342 },
+    // 버튼 top — 같은 줄(카드 1)과 높이가 안 맞아(342 vs 361.36) 버튼이 더 위에
+    // 떠 보이던 문제를 요청으로 고쳤다. 카드 1과 동일하게 맞춤.
+    buttons: { left: 828, top: 361.36 },
   },
   "youtube-music-redesign": {
     image: { left: 655, top: 429, width: 142, height: 284 },
@@ -58,7 +60,9 @@ const PLACEMENT = {
       // 요청으로 카드 1·2와 같은 설명 텍스트 스타일로 통일(원래는 13.3px 회색).
       className: "text-body font-medium text-muted",
     },
-    buttons: { left: 828, top: 654 },
+    // 버튼 top — 같은 줄(카드 4)과 높이가 안 맞아(654 vs 662.36) 버튼이 더 위에
+    // 떠 보이던 문제를 요청으로 고쳤다. 카드 4와 동일하게 맞춤.
+    buttons: { left: 828, top: 662.36 },
   },
   "ai-video-creator-2": {
     image: { left: 27.999, top: 452, width: 144, height: 256 },
