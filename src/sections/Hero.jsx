@@ -20,6 +20,8 @@ import { box, du } from "../lib/design";
  *                   "맡은 임무는" 과 "책임감을" 사이에 13px·leading 0.9 빈 줄 12개
  * 해안 배경과 creative 스크립트는 시안에서 삭제돼 함께 뺐다.
  * 좌우 라벨(98:117 / 98:118)에는 조각 글리치를 넣었다 — SlicedText 참조.
+ * 요청으로 greenLines · redLines 각 줄에도 같은 효과를 넣었다(줄마다 SlicedText로
+ * 감싸야 해서, 줄바꿈용 바깥 span 은 그대로 두고 텍스트만 감쌌다).
  * 76:199 "image 18" 은 피그마에서 hidden 이라 렌더링하지 않는다.
  */
 
@@ -56,9 +58,13 @@ export default function Hero() {
         </SlicedText>
 
         <h1 className="absolute top-172 left-100 h-339 w-697 text-center font-display text-display-sm leading-[1.11] font-extrabold text-accent-lime">
-          <span className="block">{HERO.greenLines[0]}</span>
+          <span className="block">
+            <SlicedText as="span">{HERO.greenLines[0]}</SlicedText>
+          </span>
           <span className="block">&#8203;</span>
-          <span className="block">{HERO.greenLines[1]}</span>
+          <span className="block">
+            <SlicedText as="span">{HERO.greenLines[1]}</SlicedText>
+          </span>
         </h1>
 
         {/* 98:135 200% 태그 */}
@@ -97,9 +103,13 @@ export default function Hero() {
           </div>
 
           <p className="w-1011 text-center font-display text-display font-extrabold whitespace-pre-wrap text-accent-red">
-            <span className="block leading-none">{HERO.redLines[0]}</span>
+            <span className="block leading-none">
+              <SlicedText as="span">{HERO.redLines[0]}</SlicedText>
+            </span>
             <span className="block" style={{ height: du(RED_GAP) }} />
-            <span className="block leading-[1.06]">{HERO.redLines[1]}</span>
+            <span className="block leading-[1.06]">
+              <SlicedText as="span">{HERO.redLines[1]}</SlicedText>
+            </span>
           </p>
         </div>
       </div>
