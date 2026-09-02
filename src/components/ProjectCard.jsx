@@ -6,7 +6,7 @@ import { box, du } from "../lib/design";
  * 시안(20:1252 / 20:1266 / 20:1274 / 20:1282)은 네 카드가 서로 다른 좌표·글자
  * 크기를 쓰므로, 위치를 props 로 받아 div.row 좌표계에 절대 배치한다.
  *   제목  31px Pretendard Regular, leading 31px, uppercase, 검정
- *   설명  카드 1·2 = 16px Medium #353535 / 카드 3·4 = 13.3px Regular #4b4b4b
+ *   설명  카드 1·2·3(요청으로 통일) = 16px Medium #353535 / 카드 4 = 13.3px Regular #4b4b4b
  *   버튼  164 x 40, radius 30px, gap 11px (20:1290 / 29:65 / 29:70 · 카드1은 20:1259)
  *         시안의 outline/solid 대신 두 버튼 모두 .btn-cyber(사이버펑크 글리치, index.css)
  *         — 요청으로 두 버튼을 같은 효과·정렬로 통일했다.

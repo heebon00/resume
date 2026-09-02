@@ -53,7 +53,8 @@ const PLACEMENT = {
     description: {
       left: 832.98,
       top: 548.36,
-      className: "text-[calc(13.3*var(--u))] text-ink-soft",
+      // 요청으로 카드 1·2와 같은 설명 텍스트 스타일로 통일(원래는 13.3px 회색).
+      className: "text-body font-medium text-muted",
     },
     buttons: { left: 828, top: 654 },
   },
