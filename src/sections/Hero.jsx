@@ -105,12 +105,13 @@ export default function Hero() {
           style={box({ left: 844, top: 484, width: 1624, height: 404 })}
         >
           {/* 98:120 300% 태그 — 래퍼 기준 좌표. left 595 → 575(왼쪽으로 20),
-              top 117 → 97(위로 20) 요청으로 당김(수동 보정, 시안 값 아님). */}
+              top 117 → 97 → 107(위로 20 갔다가 너무 많이 올라가서 10만 남기고
+              다시 내림) 요청으로 당김(수동 보정, 시안 값 아님). */}
           <div
             className="absolute flex items-center justify-center"
             style={box({
               left: 575,
-              top: 97,
+              top: 107,
               width: 264.145,
               height: 141.191,
             })}
