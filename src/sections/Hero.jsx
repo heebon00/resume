@@ -119,7 +119,15 @@ export default function Hero() {
           <p className="w-1011 text-center font-display text-display font-extrabold whitespace-pre-wrap text-accent-coral">
             <span className="block leading-none">{HERO.redLines[0]}</span>
             <span className="block" style={{ height: du(RED_GAP) }} />
-            <span className="block leading-[1.06]">{HERO.redLines[1]}</span>
+            {/* 요청으로 왼쪽으로 당김 — 300% 태그 중심(래퍼 기준 727)이 이 텍스트
+                박스 중심(래퍼 기준 812)보다 85 왼쪽이라, "책임감을"도 같은 만큼
+                옮겨 태그 아래 가운데로 보이게 한다. 시안 값이 아니라 수동 보정. */}
+            <span
+              className="block leading-[1.06]"
+              style={{ transform: `translateX(${du(-85)})` }}
+            >
+              {HERO.redLines[1]}
+            </span>
           </p>
         </div>
       </div>
