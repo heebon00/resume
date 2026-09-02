@@ -67,11 +67,14 @@ export default function Hero() {
           />
         </div>
 
-        <SlicedText className="absolute top-51 left-69 h-27 w-105 font-sans text-nav font-extrabold text-accent-lime uppercase">
+        {/* 폰트를 21→24로 키우면서 상자가 좁아 SlicedText 조각(clip-path 가 상자
+            폭 기준 %)이 글자 일부를 잘라먹었다 — 요청대로 안쪽으로 당기고
+            상자도 넉넉하게 키웠다. */}
+        <SlicedText className="absolute top-51 left-75 h-30 w-125 font-sans text-nav font-extrabold text-accent-lime uppercase">
           {HERO.labelLeft}
         </SlicedText>
 
-        <SlicedText className="absolute top-54 left-1728 h-27 w-128 font-sans text-nav leading-nav font-extrabold text-accent-red uppercase">
+        <SlicedText className="absolute top-54 left-1705 h-30 w-150 font-sans text-nav leading-nav font-extrabold text-accent-red uppercase">
           {HERO.labelRight}
         </SlicedText>
 
