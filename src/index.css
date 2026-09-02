@@ -69,7 +69,7 @@
   --text-body: calc(16 * var(--u));
   --text-table: calc(17.4 * var(--u)); /* ABOUT ME 표 행 */
   --text-lead: calc(19 * var(--u));
-  --text-nav: calc(21 * var(--u)); /* 히어로 상단 라벨 */
+  --text-nav: calc(24 * var(--u)); /* 히어로 상단 라벨 (요청으로 21→24, 시안 값 아님) */
   --text-title-sm: calc(22 * var(--u));
   --text-title: calc(31 * var(--u)); /* 프로젝트 카드 제목 */
   --text-exp: calc(14.7 * var(--u)); /* 경력 행 제목 */
