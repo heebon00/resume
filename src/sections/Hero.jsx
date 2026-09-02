@@ -26,12 +26,15 @@ import { box, du } from "../lib/design";
 // 98:132 의 빈 줄 12개(13px × leading 0.9)를 높이로 환산한 값
 const RED_GAP = 12 * 13 * 0.9;
 
-// 파티클 색 — 요청받은 Adobe Color 팔레트 두 벌을 이어 붙여 큰 헤더(히어로)
-// 파티클이 전체를 훑고 지나가게 했다. 이름 배너는 원래 색 그대로 둔다.
+// 파티클 색 — 요청받은 Adobe Color 팔레트 두 벌 + 히어로에 실제 쓰인 글자색
+// 두 개(초록·빨강)를 이어 붙여 큰 헤더(히어로) 파티클이 전체를 훑고 지나가게
+// 했다. 이름 배너는 원래 색 그대로 둔다.
 //   "Vaporwave"(하늘색·라벤더·민트·핑크·연노랑) + "레트로"(보라·남색·청록·빨강·노랑)
+//   + 히어로 글자색(--color-accent-lime #bbff00 · --color-accent-red #e61e1a)
 const PARTICLE_COLORS = [
   0xffcfea, 0xfeffbe, 0xcbffe6, 0xafe9ff, 0xbfb9ff, // Vaporwave
   0x7c05f2, 0x15038c, 0x20ba96, 0xe51618, 0xffef61, // 레트로
+  0xbbff00, 0xe61e1a, // 히어로 글자색(Creative·초록카피 / PORTFOLIO·빨강카피)
 ];
 const PARTICLE_HOT = 0xffcfea;
 
