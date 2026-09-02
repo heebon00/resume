@@ -629,3 +629,128 @@ body {
     mix-blend-mode: normal;
   }
 }
+
+/* ===========================================================================
+   MY PROJECTS 카드 — "기획서보기" 버튼 글리치 효과 (src/components/ProjectCard.jsx)
+
+   요청 참고: codepen.io/alexandredts2005/pen/xbEVmWy 의 "4. CYBERPUNK / GLITCH"
+   데모. CodePen이 Cloudflare 봇 차단(Just a moment...)에 막혀 원본 코드를
+   직접 확인하지는 못했다. 그래서 색만 요청대로 맞추고(--color-footer #efff58,
+   --color-tag-crimson #d4183d — 둘 다 기존 토큰), 텍스트를 두 겹 복제해
+   clip-path 로 자른 조각을 어긋나게 움직이는 흔한 RGB 분리형 글리치를
+   직접 구현했다. 원본 데모와 100% 같다는 보장은 없다.
+
+   버튼 박스(h-40 · w-164)는 그대로 두고 안쪽 글자에만 걸어서, 옆 버튼과의
+   정렬(같은 높이·좌우 gap)이 호버 여부와 상관없이 흐트러지지 않게 했다.
+   =========================================================================== */
+.glitch-btn {
+  position: relative;
+  display: inline-block;
+}
+
+.glitch-btn::before,
+.glitch-btn::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.glitch-btn:hover,
+.glitch-btn:focus-visible {
+  animation: glitch-jitter 0.4s steps(2, jump-none) infinite;
+}
+
+.glitch-btn:hover::before,
+.glitch-btn:hover::after,
+.glitch-btn:focus-visible::before,
+.glitch-btn:focus-visible::after {
+  opacity: 1;
+}
+
+.glitch-btn:hover::before,
+.glitch-btn:focus-visible::before {
+  color: var(--color-footer);
+  animation: glitch-slice-1 0.4s steps(2, jump-none) infinite;
+}
+
+.glitch-btn:hover::after,
+.glitch-btn:focus-visible::after {
+  color: var(--color-tag-crimson);
+  animation: glitch-slice-2 0.4s steps(2, jump-none) infinite;
+}
+
+@keyframes glitch-jitter {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(-1px, 1px);
+  }
+  50% {
+    transform: translate(1px, 0);
+  }
+  75% {
+    transform: translate(-1px, -1px);
+  }
+}
+
+@keyframes glitch-slice-1 {
+  0% {
+    clip-path: inset(0 0 70% 0);
+    transform: translate(-2px, 0);
+  }
+  25% {
+    clip-path: inset(30% 0 40% 0);
+    transform: translate(2px, 1px);
+  }
+  50% {
+    clip-path: inset(60% 0 10% 0);
+    transform: translate(-2px, -1px);
+  }
+  75% {
+    clip-path: inset(10% 0 60% 0);
+    transform: translate(2px, 0);
+  }
+  100% {
+    clip-path: inset(0 0 70% 0);
+    transform: translate(-2px, 0);
+  }
+}
+
+@keyframes glitch-slice-2 {
+  0% {
+    clip-path: inset(70% 0 0 0);
+    transform: translate(2px, 0);
+  }
+  25% {
+    clip-path: inset(40% 0 30% 0);
+    transform: translate(-2px, -1px);
+  }
+  50% {
+    clip-path: inset(10% 0 60% 0);
+    transform: translate(2px, 1px);
+  }
+  75% {
+    clip-path: inset(60% 0 10% 0);
+    transform: translate(-2px, 0);
+  }
+  100% {
+    clip-path: inset(70% 0 0 0);
+    transform: translate(2px, 0);
+  }
+}
+
+/* 움직임 줄이기 — 애니메이션만 끄고 텍스트는 그대로 보여준다. */
+@media (prefers-reduced-motion: reduce) {
+  .glitch-btn:hover,
+  .glitch-btn:focus-visible,
+  .glitch-btn:hover::before,
+  .glitch-btn:hover::after,
+  .glitch-btn:focus-visible::before,
+  .glitch-btn:focus-visible::after {
+    animation: none;
+  }
+}

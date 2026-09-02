@@ -70,7 +70,9 @@ export default function ProjectCard({
 
       <div className="absolute flex gap-11" style={box(buttons)}>
         <span className="flex h-40 w-164 items-center justify-center rounded-button border border-base-black bg-white font-sans text-body leading-body text-base-black">
-          {buttonLabels[0]}
+          <span className="glitch-btn" data-text={buttonLabels[0]}>
+            {buttonLabels[0]}
+          </span>
         </span>
         <span className="flex h-40 w-164 items-center justify-center rounded-button bg-accent-lime font-sans text-body leading-body text-black">
           {buttonLabels[1]}
