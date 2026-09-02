@@ -26,6 +26,12 @@ import { box, du } from "../lib/design";
 // 98:132 의 빈 줄 12개(13px × leading 0.9)를 높이로 환산한 값
 const RED_GAP = 12 * 13 * 0.9;
 
+// 파티클 색 — 요청받은 Adobe Color "Vaporwave" 팔레트(하늘색↔라벤더 드리프트,
+// 막 태어난 입자는 핑크로 반짝인다). 큰 헤더(히어로)에만 쓰고 이름 배너는
+// 원래 색(초록/파랑/빨강) 그대로 둔다.
+const PARTICLE_COLORS = [0xafe9ff, 0xbfb9ff];
+const PARTICLE_HOT = 0xffcfea;
+
 export default function Hero() {
   return (
     <section
@@ -34,7 +40,11 @@ export default function Hero() {
     >
       <div className="absolute top-0 left-0 h-888 w-1920 bg-white">
         {/* 파티클 — 인물 사진·글자 뒤에 깔려 흰 배경 위에서만 보인다 */}
-        <HeaderParticles blend="source-over" />
+        <HeaderParticles
+          blend="source-over"
+          colors={PARTICLE_COLORS}
+          hotColor={PARTICLE_HOT}
+        />
 
         {/* 66:174 인물 이미지 */}
         <div className="absolute top-144 left-410 h-744 w-1099 overflow-hidden">

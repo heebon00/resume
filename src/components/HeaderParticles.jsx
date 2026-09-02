@@ -12,6 +12,11 @@ import { useEffect, useRef } from "react";
  *   클릭하면 색 · coordScale · noiseIntensity · pointSize 를 무작위로 바꾼다
  *
  * 화면 밖이거나 탭이 가려지면 멈추고, prefers-reduced-motion 이면 아예 켜지 않는다.
+ *
+ * 색은 colors(기본색 2개) · hotColor(막 태어난 입자에 섞는 강조색) props 로 바꿀 수
+ * 있다. 기본값은 원본 그대로(초록/파랑 + 빨강 강조)이고, 히어로(큰 헤더)만 요청받은
+ * Adobe Color "Vaporwave" 팔레트(color.adobe.com, FFCFEA·FEFFBE·CBFFE6·AFE9FF·BFB9FF)
+ * 값을 넘긴다 — 이름 배너(작은 헤더)는 그대로 둔다.
  */
 
 const COUNT = 3000; // 입자 수 (원본 262144 → CPU 로 감당 가능한 수준)
@@ -28,6 +33,8 @@ export default function HeaderParticles({
   className = "",
   // 어두운 배경은 "lighter"(빛이 더해지는 느낌), 밝은 배경은 "source-over".
   blend = "lighter",
+  colors = BASE_COLORS,
+  hotColor = 0xff0000,
 }) {
   const canvasRef = useRef(null);
 
@@ -50,9 +57,9 @@ export default function HeaderParticles({
     const tint = new Float32Array(COUNT); // 0~1, 두 기본색 사이 위치
     let head = 0;
 
-    const c0 = rgb(BASE_COLORS[0]);
-    const c1 = rgb(BASE_COLORS[1]);
-    let hot = rgb(0xff0000);
+    const c0 = rgb(colors[0]);
+    const c1 = rgb(colors[1]);
+    let hot = rgb(hotColor);
     let coordScale = 0.5;
     let noiseIntensity = 0.001;
     let pointSize = 5;
@@ -203,7 +210,7 @@ export default function HeaderParticles({
       document.removeEventListener("visibilitychange", onVisibility);
       canvas.parentElement?.removeEventListener("click", onClick);
     };
-  }, [blend]);
+  }, [blend, colors, hotColor]);
 
   return (
     <canvas
