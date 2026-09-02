@@ -1,0 +1,108 @@
+import HeaderParticles from "../components/HeaderParticles";
+import SlicedText from "../components/SlicedText";
+import SafeImage from "../components/SafeImage";
+import { HERO, IMAGES } from "../content/portfolio";
+import { box, du } from "../lib/design";
+
+/**
+ * 히어로 — 피그마 76:195 "co" (1920 x 888), 캔버스 top 154
+ *   76:197 blue-hero-block (bg #fff)
+ *     66:174 인물 이미지     left 410 top 144  1099 x 744
+ *            (박스 안에서 left -4.19% / w 100.05% 로 살짝 왼쪽으로 물린다)
+ *     98:117 Creative 라벨   left 69   top 51  21px Pretendard ExtraBold #BF0
+ *     98:118 PORTFOLIO 라벨  left 1728 top 54  21px Pretendard ExtraBold #E61E1A
+ *     98:119 좋아하는 일은 / 애정을,  left 100 top 172  697 x 339
+ *            100px Paperlogy 8 ExtraBold #BF0 / leading 1.11
+ *     98:135 200% 태그       left 301 top 276  회전 -2.69deg · 테두리·글자·그림자 #BF0
+ *     98:131 빨간 카피 래퍼   left 844 top 484  1624 x 404
+ *            98:120 300% 태그  래퍼 기준 (595, 117) 264.145 x 141.191, 회전 -9.66deg
+ *            98:132 텍스트     래퍼 안 가운데, 폭 1011
+ *                   "맡은 임무는" 과 "책임감을" 사이에 13px·leading 0.9 빈 줄 12개
+ * 해안 배경과 creative 스크립트는 시안에서 삭제돼 함께 뺐다.
+ * 좌우 라벨(98:117 / 98:118)에는 조각 글리치를 넣었다 — SlicedText 참조.
+ * 76:199 "image 18" 은 피그마에서 hidden 이라 렌더링하지 않는다.
+ */
+
+// 98:132 의 빈 줄 12개(13px × leading 0.9)를 높이로 환산한 값
+const RED_GAP = 12 * 13 * 0.9;
+
+export default function Hero() {
+  return (
+    <section
+      id="hero"
+      className="absolute top-154 left-0 h-888 w-1920 overflow-hidden"
+    >
+      <div className="absolute top-0 left-0 h-888 w-1920 bg-white">
+        {/* 파티클 — 인물 사진·글자 뒤에 깔려 흰 배경 위에서만 보인다 */}
+        <HeaderParticles blend="source-over" />
+
+        {/* 66:174 인물 이미지 */}
+        <div className="absolute top-144 left-410 h-744 w-1099 overflow-hidden">
+          <SafeImage
+            src={IMAGES.portrait}
+            alt={HERO.portraitAlt}
+            eager
+            className="absolute inset-0 size-full"
+            imgClassName="absolute top-[0.05%] left-[-4.19%] h-full w-[100.05%] max-w-none object-cover"
+          />
+        </div>
+
+        <SlicedText className="absolute top-51 left-69 h-27 w-105 font-sans text-nav font-extrabold text-accent-lime uppercase">
+          {HERO.labelLeft}
+        </SlicedText>
+
+        <SlicedText className="absolute top-54 left-1728 h-27 w-128 font-sans text-nav leading-nav font-extrabold text-accent-red uppercase">
+          {HERO.labelRight}
+        </SlicedText>
+
+        <h1 className="absolute top-172 left-100 h-339 w-697 text-center font-display text-display-sm leading-[1.11] font-extrabold text-accent-lime">
+          <span className="block">{HERO.greenLines[0]}</span>
+          <span className="block">&#8203;</span>
+          <span className="block">{HERO.greenLines[1]}</span>
+        </h1>
+
+        {/* 98:135 200% 태그 */}
+        <div className="absolute top-276 left-301 flex h-[calc(107.851*var(--u))] w-[calc(218.213*var(--u))] items-center justify-center">
+          <div className="rotate-[-2.69deg]">
+            <div className="flex h-[calc(97.91*var(--u))] w-[calc(213.849*var(--u))] items-start border-[length:calc(3*var(--u))] border-accent-lime bg-white px-31 py-26 drop-shadow-[calc(4*var(--u))_calc(8*var(--u))_calc(8*var(--u))_var(--color-accent-lime)]">
+              <span className="font-stencil text-tag-sm leading-tag font-extrabold whitespace-nowrap text-accent-lime uppercase">
+                {HERO.greenTag}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* 98:131 빨간 카피 래퍼 */}
+        <div
+          className="absolute flex flex-col items-center"
+          style={box({ left: 844, top: 484, width: 1624, height: 404 })}
+        >
+          {/* 98:120 300% 태그 — 래퍼 기준 좌표 */}
+          <div
+            className="absolute flex items-center justify-center"
+            style={box({
+              left: 595,
+              top: 117,
+              width: 264.145,
+              height: 141.191,
+            })}
+          >
+            <div className="rotate-[-9.66deg]">
+              <div className="flex h-[calc(100.529*var(--u))] w-[calc(250.833*var(--u))] items-start border-[length:calc(3*var(--u))] border-accent-red bg-white px-34 py-29 drop-shadow-[calc(4*var(--u))_calc(8*var(--u))_calc(8*var(--u))_rgba(230,30,26,0.2)]">
+                <span className="font-stencil text-tag leading-tag font-extrabold whitespace-nowrap text-accent-red uppercase">
+                  {HERO.redTag}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <p className="w-1011 text-center font-display text-display font-extrabold whitespace-pre-wrap text-accent-red">
+            <span className="block leading-none">{HERO.redLines[0]}</span>
+            <span className="block" style={{ height: du(RED_GAP) }} />
+            <span className="block leading-[1.06]">{HERO.redLines[1]}</span>
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}

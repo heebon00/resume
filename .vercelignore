@@ -1,0 +1,5 @@
+# 배포에 올릴 필요가 없는 문서·작업 파일
+prd.md
+PRD_app.md
+_draft
+docs
