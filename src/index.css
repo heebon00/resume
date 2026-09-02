@@ -473,7 +473,7 @@ body {
    모바일은 이미지가 아래로 내려가 겹칠 일이 없어 아래 미디어쿼리에서 되돌린다. */
 .pfr-item:nth-of-type(2) .pfr-svg,
 .pfr-item:nth-of-type(3) .pfr-svg {
-  margin-left: calc(60 * var(--u));
+  margin-left: calc(90 * var(--u));
 }
 
 /* 이미지를 못 받아왔을 때 자리와 대체 텍스트 */
