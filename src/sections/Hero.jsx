@@ -104,13 +104,13 @@ export default function Hero() {
           className="absolute flex flex-col items-center"
           style={box({ left: 844, top: 484, width: 1624, height: 404 })}
         >
-          {/* 98:120 300% 태그 — 래퍼 기준 좌표. left 595 → 575, 요청으로 20 왼쪽
-              으로 당김(수동 보정, 시안 값 아님). */}
+          {/* 98:120 300% 태그 — 래퍼 기준 좌표. left 595 → 575(왼쪽으로 20),
+              top 117 → 97(위로 20) 요청으로 당김(수동 보정, 시안 값 아님). */}
           <div
             className="absolute flex items-center justify-center"
             style={box({
               left: 575,
-              top: 117,
+              top: 97,
               width: 264.145,
               height: 141.191,
             })}
