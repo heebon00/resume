@@ -636,8 +636,9 @@ body {
    출처: ~/Downloads/80button (CodePen "80 Awesome Buttons UI/UX Collection"
    로컬 소스, 직접 확인) → src/style.css "4. Cyberpunk Glitch"(.btn-cyberpunk)
    그대로 옮겼다. 요청대로 두 색만 바꿨다 — 기본 배경 #fcee0a → --color-footer
-   (#efff58), 호버 배경 #ff003c → --color-tag-crimson(#d4183d). 나머지(검정
-   글자·테두리, 호버 시 시안 #00e6f6 테두리, 오버레이 시안)는 원본 그대로다.
+   (#efff58), 호버 배경 #ff003c → --color-tag-crimson(#d4183d). 테두리는
+   기본·호버 둘 다 요청으로 없앴다(원본은 검정 3px → 호버 시 시안). 나머지
+   (검정 글자, 오버레이 시안)는 원본 그대로다.
    폰트도 원본 그대로 VT323(index.html 에 전용으로 추가, 시안 서체 아님).
 
    버튼 크기(h-40 · w-164 · rounded-button)는 옆 "사이트보기/영상보기" 버튼과
@@ -655,7 +656,7 @@ body {
   letter-spacing: 0.05em;
   background: var(--color-footer);
   color: #000;
-  border: 3px solid #000;
+  border: none;
   box-shadow: 4px 4px 0 #000;
   transition: all 0.1s ease;
 }
@@ -666,7 +667,6 @@ body {
   transform: translate(3px, 3px);
   background: var(--color-tag-crimson);
   color: #fff;
-  border-color: #00e6f6;
 }
 
 .btn-cyber::after {
