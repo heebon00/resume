@@ -528,13 +528,23 @@ body {
   right: var(--pfr-gutter);
 }
 
-/* 설명 — 왼쪽 제목(윗줄) 바로 아래. 제목 크기가 바뀌어도 따라 내려오도록
-   위치를 --pfr-title-* 값에서 계산한다. 폭을 제한해 가운데 이미지와 겹치지 않는다. */
-.pfr-desc {
+/* 설명 + 버튼 묶음 — 왼쪽 제목(윗줄) 바로 아래. 제목 크기가 바뀌어도 따라
+   내려오도록 위치를 --pfr-title-* 값에서 계산한다. 폭을 제한해 가운데
+   이미지와 겹치지 않는다. 위치·크기는 이 래퍼가 갖고, 설명 글은 안에서
+   그냥 흐른다 — 그래야 버튼이 줄 수와 상관없이 설명 바로 아래 붙는다.
+   left 는 요청으로 50 오른쪽으로 당겼다(데스크톱만, 시안 값 아님). */
+.pfr-copy {
   position: absolute;
   top: calc(var(--pfr-title-top) + var(--pfr-title-box) + var(--pfr-desc-gap));
-  left: var(--pfr-gutter);
+  left: calc(var(--pfr-gutter) + 50 * var(--u));
   width: calc(520 * var(--u));
+  display: flex;
+  flex-direction: column;
+  gap: calc(24 * var(--u));
+  will-change: transform;
+}
+
+.pfr-desc {
   margin: 0;
   white-space: pre;
   font-family: var(--font-sans);
@@ -542,7 +552,57 @@ body {
   font-weight: 500;
   line-height: var(--leading-desc);
   color: var(--color-muted);
-  will-change: transform;
+}
+
+.pfr-buttons {
+  display: flex;
+  gap: calc(11 * var(--u));
+}
+
+/* "10. Swipe Fill Transitions" 의 Wipe Left(~/Downloads/80button 로컬 소스,
+   직접 확인) — 왼쪽에서 채워지는 스와이프 버튼. 원본은 어두운 배경 기준(흰
+   테두리·글자)이라, 이 섹션 배경(--color-paper, 밝음)에 맞춰 반전했다:
+   기본은 검정 테두리·글자, 호버하면 검정이 왼쪽에서 채워지며 글자가
+   흰색이 된다. 카드(ProjectCard)의 사이버펑크 버튼과는 다른 톤으로 골랐다
+   — 도입부는 실사진 배경이라 튀는 색보다 차분한 흑백이 낫다고 판단했다. */
+.pfr-swipe {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(40 * var(--u));
+  padding-inline: calc(24 * var(--u));
+  border: calc(2 * var(--u)) solid var(--color-ink);
+  border-radius: var(--radius-button);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  transition: color 0.2s ease-out;
+}
+
+.pfr-swipe::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  left: -100%;
+  z-index: -1;
+  background: var(--color-ink);
+  transition: left 0.4s ease-out;
+}
+
+.pfr-swipe:hover,
+.pfr-swipe:focus-visible {
+  color: var(--color-paper);
+}
+
+.pfr-swipe:hover::after,
+.pfr-swipe:focus-visible::after {
+  left: 0;
 }
 
 /* 모바일 캔버스(1280 미만) — 390 폭 · 좌우 거터 20 에 맞춘다.
@@ -592,10 +652,15 @@ body {
     bottom: 6vh;
   }
 
-  /* 좁은 폭이라 설명 줄을 접고 좌우 거터까지 폭을 쓴다(데스크톱은 시안 줄바꿈 그대로 pre). */
-  .pfr-desc {
+  /* 좁은 폭이라 설명 줄을 접고 좌우 거터까지 폭을 쓴다(데스크톱은 시안 줄바꿈 그대로 pre).
+     오른쪽으로 50 당기는 건 데스크톱 전용 보정이라 모바일은 원래 left로 되돌린다. */
+  .pfr-copy {
+    left: var(--pfr-gutter);
     right: var(--pfr-gutter);
     width: auto;
+  }
+
+  .pfr-desc {
     white-space: pre-wrap;
     font-size: calc(13.5 * var(--u));
   }
@@ -617,7 +682,7 @@ body {
   .pfr-index,
   .pfr-line--up,
   .pfr-line--down,
-  .pfr-desc {
+  .pfr-copy {
     position: static;
   }
 

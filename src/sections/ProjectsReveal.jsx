@@ -220,9 +220,21 @@ export default function ProjectsReveal({ variant = "desktop" }) {
                 </span>
               </h3>
 
-              <p className="pfr-desc" data-pfr-desc>
-                {card.descriptionLines.join("\n")}
-              </p>
+              <div className="pfr-copy">
+                <p className="pfr-desc" data-pfr-desc>
+                  {card.descriptionLines.join("\n")}
+                </p>
+
+                {/* 카드(ProjectCard)와 같은 버튼 2개 — "10. Swipe Fill
+                    Transitions"의 Wipe Left(~/Downloads/80button) 스타일. */}
+                <div className="pfr-buttons">
+                  {(card.buttons ?? PROJECTS.buttons).map((label) => (
+                    <span key={label} className="pfr-swipe">
+                      {label}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
           </article>
         );
