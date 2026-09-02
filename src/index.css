@@ -528,15 +528,23 @@ body {
   right: var(--pfr-gutter);
 }
 
+/* 2번째·3번째 프로젝트(iKEA·YouTube Music, .pfr-item 은 article 이라 nth-of-type
+   으로 순서를 그대로 집는다) — 요청으로 오른쪽(아랫줄) 제목이 이미지에 살짝
+   걸치게, 첫 글자 정도만(50) 더 당긴다. */
+.pfr-item:nth-of-type(2) .pfr-line--down,
+.pfr-item:nth-of-type(3) .pfr-line--down {
+  right: calc(var(--pfr-gutter) + 50 * var(--u));
+}
+
 /* 설명 + 버튼 묶음 — 왼쪽 제목(윗줄) 바로 아래. 제목 크기가 바뀌어도 따라
    내려오도록 위치를 --pfr-title-* 값에서 계산한다. 폭을 제한해 가운데
    이미지와 겹치지 않는다. 위치·크기는 이 래퍼가 갖고, 설명 글은 안에서
    그냥 흐른다 — 그래야 버튼이 줄 수와 상관없이 설명 바로 아래 붙는다.
-   left 는 요청으로 50 오른쪽으로 당겼다(데스크톱만, 시안 값 아님). */
+   left 는 요청으로 50 + 20 = 70 오른쪽으로 당겼다(데스크톱만, 시안 값 아님). */
 .pfr-copy {
   position: absolute;
   top: calc(var(--pfr-title-top) + var(--pfr-title-box) + var(--pfr-desc-gap));
-  left: calc(var(--pfr-gutter) + 50 * var(--u));
+  left: calc(var(--pfr-gutter) + 70 * var(--u));
   width: calc(520 * var(--u));
   display: flex;
   flex-direction: column;
@@ -548,7 +556,9 @@ body {
   margin: 0;
   white-space: pre;
   font-family: var(--font-sans);
-  font-size: var(--text-body);
+  /* 요청으로 --text-body(16)보다 4 키움. 다른 곳에서 쓰는 --text-body는
+     그대로 두고 여기만 올린다. */
+  font-size: calc(20 * var(--u));
   font-weight: 500;
   line-height: var(--leading-desc);
   color: var(--color-muted);
