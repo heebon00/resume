@@ -78,7 +78,14 @@ export default function Hero() {
         <h1 className="absolute top-172 left-100 h-339 w-697 text-center font-display text-display-sm leading-[1.11] font-extrabold text-accent-lime">
           <span className="block">{HERO.greenLines[0]}</span>
           <span className="block">&#8203;</span>
-          <span className="block">{HERO.greenLines[1]}</span>
+          {/* 요청으로 왼쪽으로 당김 — 200% 태그 중심(448.5 was 텍스트 중심, 태그
+              중심 410.1)만큼 옮겨 태그 아래 가운데로 보이게 한다. 수동 보정. */}
+          <span
+            className="block"
+            style={{ transform: `translateX(${du(-38)})` }}
+          >
+            {HERO.greenLines[1]}
+          </span>
         </h1>
 
         {/* 98:135 200% 태그 */}
@@ -97,11 +104,12 @@ export default function Hero() {
           className="absolute flex flex-col items-center"
           style={box({ left: 844, top: 484, width: 1624, height: 404 })}
         >
-          {/* 98:120 300% 태그 — 래퍼 기준 좌표 */}
+          {/* 98:120 300% 태그 — 래퍼 기준 좌표. left 595 → 575, 요청으로 20 왼쪽
+              으로 당김(수동 보정, 시안 값 아님). */}
           <div
             className="absolute flex items-center justify-center"
             style={box({
-              left: 595,
+              left: 575,
               top: 117,
               width: 264.145,
               height: 141.191,
@@ -119,12 +127,13 @@ export default function Hero() {
           <p className="w-1011 text-center font-display text-display font-extrabold whitespace-pre-wrap text-accent-coral">
             <span className="block leading-none">{HERO.redLines[0]}</span>
             <span className="block" style={{ height: du(RED_GAP) }} />
-            {/* 요청으로 왼쪽으로 당김 — 300% 태그 중심(래퍼 기준 727)이 이 텍스트
-                박스 중심(래퍼 기준 812)보다 85 왼쪽이라, "책임감을"도 같은 만큼
-                옮겨 태그 아래 가운데로 보이게 한다. 시안 값이 아니라 수동 보정. */}
+            {/* 요청으로 왼쪽으로 당김 — 300% 태그 중심(래퍼 기준 707.07, left 575
+                로 당긴 뒤 값)이 이 텍스트 박스 중심(래퍼 기준 812)보다 105 왼쪽이라,
+                "책임감을"도 같은 만큼 옮겨 태그 아래 가운데로 보이게 한다.
+                시안 값이 아니라 수동 보정 — 태그를 옮기면 이 값도 같이 바꿔야 한다. */}
             <span
               className="block leading-[1.06]"
-              style={{ transform: `translateX(${du(-85)})` }}
+              style={{ transform: `translateX(${du(-105)})` }}
             >
               {HERO.redLines[1]}
             </span>
