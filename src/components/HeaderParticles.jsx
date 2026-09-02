@@ -54,11 +54,30 @@ export default function HeaderParticles({
     const vx = new Float32Array(COUNT);
     const vy = new Float32Array(COUNT);
     const life = new Float32Array(COUNT);
-    const tint = new Float32Array(COUNT); // 0~1, 두 기본색 사이 위치
+    const tint = new Float32Array(COUNT); // 0~1, 팔레트 전체를 훑는 위치
     let head = 0;
 
-    const c0 = rgb(colors[0]);
-    const c1 = rgb(colors[1]);
+    // colors 는 2개 이상 몇 개든 된다 — tint(0~1)로 팔레트를 구간별 보간한다.
+    // (원래는 c0/c1 두 색만 mix 했는데, 팔레트를 추가할 수 있게 일반화한 것)
+    const palette = colors.map(rgb);
+    const sampleBase = (t, out) => {
+      const n = palette.length;
+      if (n === 1) {
+        out[0] = palette[0][0];
+        out[1] = palette[0][1];
+        out[2] = palette[0][2];
+        return;
+      }
+      const scaled = Math.min(Math.max(t, 0), 0.999999) * (n - 1);
+      const idx = Math.floor(scaled);
+      const frac = scaled - idx;
+      const a = palette[idx];
+      const b = palette[idx + 1];
+      out[0] = mix(a[0], b[0], frac);
+      out[1] = mix(a[1], b[1], frac);
+      out[2] = mix(a[2], b[2], frac);
+    };
+    const base = [0, 0, 0];
     let hot = rgb(hotColor);
     let coordScale = 0.5;
     let noiseIntensity = 0.001;
@@ -137,11 +156,12 @@ export default function HeaderParticles({
 
         const l = life[i];
         if (l <= 0 || !draw) continue;
-        // 기본색(초록↔파랑) 위에, 갓 태어난 입자일수록 강조색을 섞는다.
+        // 팔레트를 훑은 기본색 위에, 갓 태어난 입자일수록 강조색을 섞는다.
+        sampleBase(tint[i], base);
         const heat = l * l * 0.7;
-        const r = mix(mix(c0[0], c1[0], tint[i]), hot[0], heat);
-        const g = mix(mix(c0[1], c1[1], tint[i]), hot[1], heat);
-        const b = mix(mix(c0[2], c1[2], tint[i]), hot[2], heat);
+        const r = mix(base[0], hot[0], heat);
+        const g = mix(base[1], hot[1], heat);
+        const b = mix(base[2], hot[2], heat);
         ctx.fillStyle = `rgba(${r | 0}, ${g | 0}, ${b | 0}, ${l * 0.85})`;
         const size = pointSize * l;
         ctx.fillRect(px[i] - size / 2, py[i] - size / 2, size, size);
