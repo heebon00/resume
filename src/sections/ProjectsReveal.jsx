@@ -67,6 +67,7 @@ export default function ProjectsReveal({ variant = "desktop" }) {
           const up = item.querySelector("[data-pfr-up]");
           const down = item.querySelector("[data-pfr-down]");
           const desc = item.querySelector("[data-pfr-desc]");
+          const buttons = item.querySelector("[data-pfr-buttons]");
 
           const tl = gsap.timeline({
             defaults: { ease: "none" },
@@ -114,6 +115,13 @@ export default function ProjectsReveal({ variant = "desktop" }) {
               { y: 24, opacity: 0 },
               { y: 0, opacity: 1, duration: 0.25 },
               0.7,
+            )
+            // 버튼은 요청으로 미리 나와 있지 않게, 설명 다음에 올라온다.
+            .fromTo(
+              buttons,
+              { y: 24, opacity: 0 },
+              { y: 0, opacity: 1, duration: 0.25 },
+              0.85,
             );
         }
       },
@@ -227,7 +235,7 @@ export default function ProjectsReveal({ variant = "desktop" }) {
 
                 {/* 카드(ProjectCard)와 같은 버튼 2개 — "10. Swipe Fill
                     Transitions"의 Wipe Left(~/Downloads/80button) 스타일. */}
-                <div className="pfr-buttons">
+                <div className="pfr-buttons" data-pfr-buttons>
                   {(card.buttons ?? PROJECTS.buttons).map((label) => (
                     <span key={label} className="pfr-swipe">
                       {label}
