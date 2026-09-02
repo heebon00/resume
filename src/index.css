@@ -466,6 +466,16 @@ body {
   height: min(46vh, calc(500 * var(--u)));
 }
 
+/* 2·3번(iKEA·YouTube Music) 이미지가 가로형이라 가운데 정렬하면 왼쪽 설명
+   글과 겹친다 — 요청으로 오른쪽으로 살짝 밀었다. margin 을 쓰는 이유:
+   GSAP 이 이 요소의 scale 을 transform 으로 직접 조작하므로, 여기서
+   transform 을 쓰면 그 값을 덮어써 애니메이션이 깨진다.
+   모바일은 이미지가 아래로 내려가 겹칠 일이 없어 아래 미디어쿼리에서 되돌린다. */
+.pfr-item:nth-of-type(2) .pfr-svg,
+.pfr-item:nth-of-type(3) .pfr-svg {
+  margin-left: calc(60 * var(--u));
+}
+
 /* 이미지를 못 받아왔을 때 자리와 대체 텍스트 */
 .pfr-fallback {
   display: grid;
@@ -649,6 +659,12 @@ body {
 
   .pfr-svg--wide {
     height: min(26vh, calc(220 * var(--u)));
+  }
+
+  /* 모바일은 이미지가 아래쪽에 붙어 텍스트와 안 겹치니 데스크톱 보정을 되돌린다. */
+  .pfr-item:nth-of-type(2) .pfr-svg,
+  .pfr-item:nth-of-type(3) .pfr-svg {
+    margin-left: 0;
   }
 
   .pfr-fallback {
