@@ -45,7 +45,9 @@ const PLACEMENT = {
       top: 221,
       className: "text-body font-medium text-muted",
     },
-    buttons: { left: 833, top: 342 },
+    // 버튼 left — 요청으로 카드 3(같은 열, 같은 텍스트 left 832.98)과 동일하게
+    // 맞췄다(원래는 833으로, 텍스트와 거의 어긋남 없이 붙어 있었음).
+    buttons: { left: 828, top: 342 },
   },
   "youtube-music-redesign": {
     image: { left: 655, top: 429, width: 142, height: 284 },
@@ -64,7 +66,8 @@ const PLACEMENT = {
     description: {
       left: 210,
       top: 564.36,
-      className: "text-[calc(13.3*var(--u))] text-ink-soft",
+      // 요청으로 나머지 카드와 같은 설명 텍스트 스타일로 통일(원래는 13.3px 회색).
+      className: "text-body font-medium text-muted",
     },
     buttons: { left: 205.98, top: 662.36 },
   },
