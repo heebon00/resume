@@ -16,8 +16,12 @@ import { box, du } from "../lib/design";
  *     98:135 200% 태그       left 301 top 276  회전 -2.69deg · 테두리·글자·그림자 #BF0
  *     98:131 빨간 카피 래퍼   left 844 top 484  1624 x 404
  *            98:120 300% 태그  래퍼 기준 (595, 117) 264.145 x 141.191, 회전 -9.66deg
+ *                   테두리·그림자는 #E61E1A(--color-accent-red) 그대로, 글자만 다르다.
  *            98:132 텍스트     래퍼 안 가운데, 폭 1011
  *                   "맡은 임무는" 과 "책임감을" 사이에 13px·leading 0.9 빈 줄 12개
+ *   재확인(2026-09-03): 98:120/98:132 글자색은 #E61E1A 가 아니라 #F46E6E(더 옅은
+ *   코랄) — --color-accent-coral 로 등록해 따로 쓴다. 라벨(98:118)과 테두리·
+ *   그림자는 원래대로 #E61E1A 유지.
  * 해안 배경과 creative 스크립트는 시안에서 삭제돼 함께 뺐다.
  * 좌우 라벨(98:117 / 98:118)에는 조각 글리치를 넣었다 — SlicedText 참조.
  * 76:199 "image 18" 은 피그마에서 hidden 이라 렌더링하지 않는다.
@@ -105,14 +109,14 @@ export default function Hero() {
           >
             <div className="rotate-[-9.66deg]">
               <div className="flex h-[calc(100.529*var(--u))] w-[calc(250.833*var(--u))] items-start border-[length:calc(3*var(--u))] border-accent-red bg-white px-34 py-29 drop-shadow-[calc(4*var(--u))_calc(8*var(--u))_calc(8*var(--u))_rgba(230,30,26,0.2)]">
-                <span className="font-stencil text-tag leading-tag font-extrabold whitespace-nowrap text-accent-red uppercase">
+                <span className="font-stencil text-tag leading-tag font-extrabold whitespace-nowrap text-accent-coral uppercase">
                   {HERO.redTag}
                 </span>
               </div>
             </div>
           </div>
 
-          <p className="w-1011 text-center font-display text-display font-extrabold whitespace-pre-wrap text-accent-red">
+          <p className="w-1011 text-center font-display text-display font-extrabold whitespace-pre-wrap text-accent-coral">
             <span className="block leading-none">{HERO.redLines[0]}</span>
             <span className="block" style={{ height: du(RED_GAP) }} />
             <span className="block leading-[1.06]">{HERO.redLines[1]}</span>
