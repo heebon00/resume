@@ -1,0 +1,4 @@
+# 맥/윈도우 오갈 때 줄바꿈 차이로 전체 파일이 수정된 것처럼 보이는 걸 막는다
+* text=auto
+*.webp binary
+*.png binary
