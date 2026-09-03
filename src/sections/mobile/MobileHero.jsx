@@ -66,7 +66,7 @@ export default function MobileHero() {
         alt={HERO.portraitAlt}
         width={390}
         height={264}
-        eager
+        priority
         className="mt-24 w-full"
         imgClassName="block size-full object-cover object-top"
       />

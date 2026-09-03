@@ -61,7 +61,7 @@ export default function Hero() {
           <SafeImage
             src={IMAGES.portrait}
             alt={HERO.portraitAlt}
-            eager
+            priority
             className="absolute inset-0 size-full"
             imgClassName="absolute top-[0.05%] left-[-4.19%] h-full w-[100.05%] max-w-none object-cover"
           />

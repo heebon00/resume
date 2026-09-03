@@ -8,6 +8,13 @@ import { useState } from "react";
  *         누끼 등) 뒤로 회색 사각형이 비쳐 시안과 달라진다.
  *   오류  이미지를 감추고 자리표시 배경 위에 alt 텍스트를 노출
  *
+ * priority 는 첫 화면 LCP 이미지 전용이다. eager 를 켜고 fetchpriority="high" 를
+ * 붙여 브라우저가 다른 요청보다 먼저 받게 한다. 서로 다른 이미지 여럿에 붙이면
+ * 우선순위를 나눠 갖게 되어 효과가 사라지므로, 첫 화면에 하나만 쓴다.
+ *
+ * 지금은 Hero(데스크톱)와 MobileHero 두 곳에 붙어 있지만 둘은 같은 파일을 쓰므로
+ * 요청은 하나뿐이다(확인함). index.html 의 preload 와도 같은 요청을 공유한다.
+ *
  * width/height 는 시안의 디자인 px 숫자를 그대로 넘긴다(예: 144). 실제 크기는
  * 유동 단위 --u 를 곱해 화면 폭에 비례한다. 크기를 클래스로 이미 정한 경우에는
  * 생략하고 className 으로 지정하면 된다.
@@ -21,6 +28,7 @@ export default function SafeImage({
   imgClassName = "block size-full object-cover",
   style,
   eager = false,
+  priority = false,
   ...rest
 }) {
   const [status, setStatus] = useState("loading");
@@ -53,7 +61,8 @@ export default function SafeImage({
           alt={alt}
           width={width}
           height={height}
-          loading={eager ? "eager" : "lazy"}
+          loading={eager || priority ? "eager" : "lazy"}
+          fetchPriority={priority ? "high" : undefined}
           onLoad={() => setStatus("loaded")}
           onError={() => setStatus("failed")}
           className={imgClassName}

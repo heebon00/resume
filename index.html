@@ -15,6 +15,13 @@
          그 4개가 전부 렌더링을 막아 첫 화면이 5.1초 걸렸다.
          (근거: docs/web-check-2026-09-03.md 4장) -->
 
+    <!-- 첫 화면 인물 사진 = LCP 요소. 이 사이트는 React SPA 라서 그 <img> 가
+         여기 없고, 브라우저는 JS 를 받아 실행한 뒤에야 사진의 존재를 알게 된다.
+         그래서 최초 문서에서 바로 발견되도록 여기서 미리 받는다.
+         (근거: docs/03_11_38.md 5장 — lcp-discovery-insight 의 "최초 HTML 에서 발견 불가")
+         경로는 소스 경로로 적어두면 빌드할 때 Vite 가 해시 붙은 경로로 바꿔준다. -->
+    <link rel="preload" as="image" fetchpriority="high" href="/src/assets/images/hero-portrait.webp" />
+
     <!-- 첫 화면 히어로 한글 카피(Paperlogy ExtraBold)만 미리 받는다.
          나머지 서체는 필요한 시점에 CSS 가 알아서 가져온다. -->
     <link
