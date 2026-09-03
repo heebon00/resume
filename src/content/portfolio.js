@@ -27,7 +27,6 @@ import designMock02 from "../assets/images/design-mock-02.svg";
 import designMock03 from "../assets/images/design-mock-03.svg";
 import designMock04 from "../assets/images/design-mock-04.svg";
 import afterEffects from "../assets/images/skill-after-effects.webp";
-import blender from "../assets/images/skill-blender.webp";
 import figmaLogo from "../assets/images/skill-figma.webp";
 import gitLogo from "../assets/images/skill-git.webp";
 import photoshop from "../assets/images/skill-photoshop.webp";
@@ -302,8 +301,10 @@ export const SKILLS = {
       id: "ai-cli",
       name: "AI CLI",
       description: "Prompt engineering • Automation • Agents",
-      logo: blender,
       percent: 94,
+      // 전용 로고가 없어 illustrator 와 같은 방식으로 글자만 넣는다.
+      // (전에는 Blender 로고가 붙어 있었는데 AI CLI 와 무관한 3D 툴 로고였다)
+      markLabel: "_",
     },
   ],
 };
@@ -323,4 +324,9 @@ export const FOOTER = {
   phone: "",
   email: "",
   socials: ["Facebook", "Linkedin", "Instagram"],
+  // 제3자 저작물 고지 — Codrops(MIT) · CodePen 버튼(MIT) · threejs-toys(ISC) ·
+  // 폰트 8종(OFL) 모두 상업적 사용이 허용되지만, 셋 다 저작권 고지 유지가 조건이라
+  // 화면에도 한 줄 남긴다. 자세한 내역은 저장소의 LICENSE-THIRD-PARTY.md 에 있다.
+  credits:
+    "연출 일부는 Codrops·CodePen(MIT), threejs-toys(ISC) 를 참고해 재구현. 폰트는 Pretendard · Paperlogy · Google Fonts(OFL).",
 };

@@ -40,6 +40,12 @@ export default function MobileFooter() {
           )}
         </div>
 
+        {FOOTER.credits && (
+          <p className="mt-24 font-sans text-[calc(11*var(--u))] leading-[calc(16*var(--u))] text-black opacity-60">
+            {FOOTER.credits}
+          </p>
+        )}
+
         <ul
           className="mt-24 flex flex-col gap-8"
           hidden={FOOTER.socials.length === 0}

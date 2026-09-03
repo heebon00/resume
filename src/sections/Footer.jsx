@@ -63,6 +63,19 @@ export default function Footer() {
         />
       </div>
 
+      {/* 제3자 저작물 크레딧 — 시안에 없는 요소다. 형광 블록(0~640 x 0~586) 안에서
+          세로 텍스트가 끝나는 y=407 아래의 빈자리에 놓았다. 오른쪽은 장식 이미지가
+          x=748 부터 시작하므로 폭을 560 으로 끊어 겹치지 않게 했다.
+          z-10 은 뒤에 오는 형광 블록(같은 absolute 형제)에 가려지지 않게 하려는 것이다. */}
+      {FOOTER.credits && (
+        <p
+          className="absolute z-10 text-[calc(11*var(--u))] leading-[calc(16*var(--u))] text-black opacity-60"
+          style={box({ left: 50, top: 430, width: 560 })}
+        >
+          {FOOTER.credits}
+        </p>
+      )}
+
       {/* 20:1609 형광 블록 */}
       <div
         className="absolute bg-footer"
