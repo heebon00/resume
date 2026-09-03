@@ -69,7 +69,7 @@ MY PROJECTS 의 **iKEA Website Redesign** 과 **YouTube Music Redesign** 은
 - IKEA · YouTube Music 의 상표, 제품 사진, 앨범 아트를 포함한 모든 브랜드 자산의
   권리는 각 권리자에게 있다
 - MY SKILLS 의 도구 아이콘(Adobe After Effects · Photoshop · Premiere Pro,
-  Blender, Figma, Git)은 사용 도구를 표시할 목적으로만 쓰였으며,
+  Figma, Git)은 사용 도구를 표시할 목적으로만 쓰였으며,
   각 상표의 권리는 해당 기업에 있다
 
 ---

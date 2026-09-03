@@ -68,12 +68,15 @@ export default function Footer() {
           x=748 부터 시작하므로 폭을 560 으로 끊어 겹치지 않게 했다.
           z-10 은 뒤에 오는 형광 블록(같은 absolute 형제)에 가려지지 않게 하려는 것이다. */}
       {FOOTER.credits && (
-        <p
-          className="absolute z-10 text-[calc(11*var(--u))] leading-[calc(16*var(--u))] text-black opacity-60"
+        <a
+          href={FOOTER.credits.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="absolute z-10 text-[calc(12*var(--u))] leading-[calc(18*var(--u))] text-black underline decoration-from-font underline-offset-2 opacity-60 transition-opacity hover:opacity-100"
           style={box({ left: 50, top: 430, width: 560 })}
         >
-          {FOOTER.credits}
-        </p>
+          {FOOTER.credits.label}
+        </a>
       )}
 
       {/* 20:1609 형광 블록 */}
@@ -90,21 +93,25 @@ export default function Footer() {
               <VerticalLine width={72.109} size={19} right={-1} top={43.41}>
                 {FOOTER.verticalTitle}
               </VerticalLine>
-              <VerticalLine width={164.197} size={14} right={3} top={157.6}>
-                {FOOTER.verticalLines[1]}
-              </VerticalLine>
-              <div className="absolute top-0 left-0 flex w-24 flex-col items-end pr-3">
-                <div
-                  className="flex w-24 items-center justify-center"
-                  style={{ height: du(233) }}
-                >
-                  <div className="rotate-90">
-                    <p className="text-right text-body-sm leading-body whitespace-nowrap text-black">
-                      {FOOTER.verticalLines[0]}
-                    </p>
+              {FOOTER.verticalLines[1] && (
+                <VerticalLine width={164.197} size={14} right={3} top={157.6}>
+                  {FOOTER.verticalLines[1]}
+                </VerticalLine>
+              )}
+              {FOOTER.verticalLines[0] && (
+                <div className="absolute top-0 left-0 flex w-24 flex-col items-end pr-3">
+                  <div
+                    className="flex w-24 items-center justify-center"
+                    style={{ height: du(233) }}
+                  >
+                    <div className="rotate-90">
+                      <p className="text-right text-body-sm leading-body whitespace-nowrap text-black">
+                        {FOOTER.verticalLines[0]}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>

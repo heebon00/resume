@@ -312,10 +312,11 @@ export const SKILLS = {
 /* --- 푸터 (20:1594) ------------------------------------------------------ */
 export const FOOTER = {
   verticalTitle: "Contact",
-  verticalLines: [
-    "and collaborations, and I’m excited to",
-    " I’m available for enquires",
-  ],
+  // 세로 텍스트 두 줄은 테마 데모에서 딸려온 영문이라 지웠다.
+  // (문장이 중간에서 잘린 채 순서가 뒤집혀 있었고 "enquires" 오타도 있었다)
+  // 비어 있으면 렌더링하지 않는다. 본인 문구를 넣으면 그대로 다시 보인다.
+  //   [0] 아래쪽 줄, [1] 위쪽 줄 (데스크톱은 세로로 세워 그린다)
+  verticalLines: [],
   lead: "Please contact me",
   name: "이희본 (heebon LEE)",
   // 공개 배포에서 검색엔진에 노출되지 않도록 실제 연락처를 빼둔 상태다.
@@ -324,9 +325,11 @@ export const FOOTER = {
   phone: "",
   email: "",
   socials: ["Facebook", "Linkedin", "Instagram"],
-  // 제3자 저작물 고지 — Codrops(MIT) · CodePen 버튼(MIT) · threejs-toys(ISC) ·
-  // 폰트 8종(OFL) 모두 상업적 사용이 허용되지만, 셋 다 저작권 고지 유지가 조건이라
-  // 화면에도 한 줄 남긴다. 자세한 내역은 저장소의 LICENSE-THIRD-PARTY.md 에 있다.
-  credits:
-    "연출 일부는 Codrops·CodePen(MIT), threejs-toys(ISC) 를 참고해 재구현. 폰트는 Pretendard · Paperlogy · Google Fonts(OFL).",
+  // 제3자 저작물 고지 — 내역을 화면에 늘어놓는 대신 링크 한 줄만 둔다.
+  // 실제 목록(코드·폰트·상표)은 저장소의 LICENSE-THIRD-PARTY.md 에 있고,
+  // 저장소가 공개라 깃허브에서 그대로 읽힌다.
+  credits: {
+    label: "Third-party notices",
+    href: "https://github.com/heebon00/resume/blob/main/LICENSE-THIRD-PARTY.md",
+  },
 };

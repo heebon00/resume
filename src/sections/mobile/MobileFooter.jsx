@@ -14,9 +14,11 @@ export default function MobileFooter() {
         <p className="font-sans text-[calc(19*var(--u))] leading-[calc(26*var(--u))] text-black">
           {FOOTER.verticalTitle}
         </p>
-        <p className="mt-8 font-sans text-[calc(14*var(--u))] leading-desc text-black">
-          {[...FOOTER.verticalLines].reverse().join("")}
-        </p>
+        {FOOTER.verticalLines.length > 0 && (
+          <p className="mt-8 font-sans text-[calc(14*var(--u))] leading-desc text-black">
+            {[...FOOTER.verticalLines].reverse().join("")}
+          </p>
+        )}
       </div>
 
       <div className="px-20 pt-32">
@@ -41,9 +43,14 @@ export default function MobileFooter() {
         </div>
 
         {FOOTER.credits && (
-          <p className="mt-24 font-sans text-[calc(11*var(--u))] leading-[calc(16*var(--u))] text-black opacity-60">
-            {FOOTER.credits}
-          </p>
+          <a
+            href={FOOTER.credits.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-24 inline-block font-sans text-[calc(13*var(--u))] leading-body text-black underline decoration-from-font underline-offset-2 opacity-60"
+          >
+            {FOOTER.credits.label}
+          </a>
         )}
 
         <ul
