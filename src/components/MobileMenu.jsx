@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { mobileHref } from "../lib/sectionIds";
 
 /**
  * 모바일 전체화면 오버레이 메뉴 — 이 페이지의 유일한 JS 동작.
@@ -10,13 +11,15 @@ import { useEffect, useRef } from "react";
  * 헤더 바(#F6F6F6)와 본문 서체를 따른다.
  */
 
+// 이 메뉴는 xl:hidden 이라 모바일 화면에서만 뜬다. 그래서 링크도 모바일
+// 트리의 id 를 가리킨다 (데스크톱 트리는 같은 이름의 id 를 접두사 없이 쓴다).
 const ITEMS = [
-  { href: "#about", label: "ABOUT ME" },
-  { href: "#experience", label: "MY WORK EXPERIENCE" },
-  { href: "#projects", label: "MY PROJECTS" },
-  { href: "#design", label: "MY DESIGN" },
-  { href: "#skills", label: "MY SKILLS" },
-  { href: "#contact", label: "CONTACT" },
+  { href: mobileHref("about"), label: "ABOUT ME" },
+  { href: mobileHref("experience"), label: "MY WORK EXPERIENCE" },
+  { href: mobileHref("projects"), label: "MY PROJECTS" },
+  { href: mobileHref("design"), label: "MY DESIGN" },
+  { href: mobileHref("skills"), label: "MY SKILLS" },
+  { href: mobileHref("contact"), label: "CONTACT" },
 ];
 
 export default function MobileMenu({ open, onClose, menuId }) {

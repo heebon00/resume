@@ -1,3 +1,4 @@
+import { mobileId } from "../../lib/sectionIds";
 import SafeImage from "../../components/SafeImage";
 import { SKILLS } from "../../content/portfolio";
 import SkillDonut from "../../components/SkillDonut";
@@ -12,7 +13,7 @@ export default function MobileSkills() {
 
   return (
     <section
-      data-reveal id="skills" className="bg-skills-bg px-20 pt-60 pb-60">
+      data-reveal id={mobileId("skills")} className="bg-skills-bg px-20 pt-60 pb-60">
       <div className="text-center">
         <h2 className="font-sans text-[calc(24*var(--u))] leading-[calc(33.92*var(--u))] font-bold text-white">
           {SKILLS.heading}

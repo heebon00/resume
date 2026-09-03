@@ -1,3 +1,4 @@
+import { mobileId } from "../../lib/sectionIds";
 import HeaderParticles from "../../components/HeaderParticles";
 import SafeImage from "../../components/SafeImage";
 import SlicedText from "../../components/SlicedText";
@@ -13,7 +14,7 @@ export default function MobileHero() {
   return (
     <section
       data-reveal
-      id="hero"
+      id={mobileId("hero")}
       className="relative overflow-hidden bg-white pt-86 pb-40"
     >
       {/* 파티클 — 글자·사진 뒤에 깔린다 */}

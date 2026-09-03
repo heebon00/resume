@@ -1,3 +1,4 @@
+import { mobileId } from "../../lib/sectionIds";
 import { FOOTER } from "../../content/portfolio";
 
 /**
@@ -8,7 +9,7 @@ import { FOOTER } from "../../content/portfolio";
 export default function MobileFooter() {
   return (
     <footer
-      data-reveal id="contact" className="pb-60">
+      data-reveal id={mobileId("contact")} className="pb-60">
       <div className="bg-footer px-20 pt-40 pb-40">
         <p className="font-sans text-[calc(19*var(--u))] leading-[calc(26*var(--u))] text-black">
           {FOOTER.verticalTitle}

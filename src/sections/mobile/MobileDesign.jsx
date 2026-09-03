@@ -1,3 +1,4 @@
+import { mobileId } from "../../lib/sectionIds";
 import SafeImage from "../../components/SafeImage";
 import { DESIGN } from "../../content/portfolio";
 import arrowRightSm from "../../assets/icons/icon-arrow-right-sm.svg";
@@ -13,7 +14,7 @@ export default function MobileDesign() {
 
   return (
     <section
-      data-reveal id="design" className="px-20 pb-60">
+      data-reveal id={mobileId("design")} className="px-20 pb-60">
       <h2 className="font-sans text-[calc(24*var(--u))] leading-[calc(40.32*var(--u))] font-semibold text-black">
         {DESIGN.heading}
       </h2>

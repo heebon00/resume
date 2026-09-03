@@ -1,4 +1,5 @@
 import brandLogo from "../assets/icons/logo-brand.svg";
+import { mobileHref } from "../lib/sectionIds";
 
 /**
  * 모바일 헤더 바 — 피그마 20:2492 (390 x 66.23, 모바일 시안 전용)
@@ -13,7 +14,7 @@ export default function MobileHeader({ open, onToggle, menuId }) {
     <header className="fixed top-0 right-0 left-0 z-50 bg-header xl:hidden">
       <div className="mx-auto flex w-390 items-start justify-between px-20">
         <a
-          href="#hero"
+          href={mobileHref("hero")}
           className="flex items-center py-22"
           aria-label="맨 위로"
         >

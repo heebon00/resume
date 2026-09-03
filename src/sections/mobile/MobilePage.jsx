@@ -25,10 +25,14 @@ import ProjectsReveal from "../ProjectsReveal";
  * (데스크톱 캔버스: Experience → 연출 → MY projects 제목 → 갤러리 → 카드).
  * 그 안의 스테이지가 position:sticky 라 바깥 overflow 는 hidden 이 아니라
  * x축 clip 이어야 한다(overflow:hidden 은 스크롤 컨테이너를 만들어 sticky 를 죽인다).
+ *
+ * 바깥 요소는 div 다. <main> 은 문서에 하나만 있어야 하는데 데스크톱 트리도
+ * 동시에 DOM 에 있으므로, landmark 는 두 트리를 함께 감싸는 App 쪽에 하나만
+ * 둔다. (src/lib/sectionIds.js 설명 참조)
  */
 export default function MobilePage() {
   return (
-    <main className="mx-auto w-390 overflow-x-clip bg-paper">
+    <div className="mx-auto w-390 overflow-x-clip bg-paper">
       <MobileHero />
       <MobileNameBanner />
       <MobileAbout />
@@ -40,6 +44,6 @@ export default function MobilePage() {
       <MobileDesign />
       <MobileSkills />
       <MobileFooter />
-    </main>
+    </div>
   );
 }

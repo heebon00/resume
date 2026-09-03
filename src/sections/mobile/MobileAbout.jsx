@@ -1,3 +1,4 @@
+import { mobileId } from "../../lib/sectionIds";
 import SafeImage from "../../components/SafeImage";
 import MobileSectionHeading from "./MobileSectionHeading";
 import { ABOUT, IMAGES } from "../../content/portfolio";
@@ -10,7 +11,7 @@ import { ABOUT, IMAGES } from "../../content/portfolio";
 export default function MobileAbout() {
   return (
     <section
-      data-reveal id="about" className="px-20 pt-60 pb-60">
+      data-reveal id={mobileId("about")} className="px-20 pt-60 pb-60">
       <div className="flex items-center justify-between border-b border-black pt-7 pb-5">
         <span className="font-sans text-label leading-label tracking-wide font-medium text-black uppercase">
           {ABOUT.barLeft}

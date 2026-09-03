@@ -1,3 +1,4 @@
+import { mobileId } from "../../lib/sectionIds";
 import MobileSectionHeading from "./MobileSectionHeading";
 import { EXPERIENCE } from "../../content/portfolio";
 
@@ -11,7 +12,7 @@ export default function MobileExperience() {
 
   return (
     <section
-      data-reveal id="experience" className="px-20 pb-60">
+      data-reveal id={mobileId("experience")} className="px-20 pb-60">
       <MobileSectionHeading>{EXPERIENCE.heading}</MobileSectionHeading>
 
       <div className="mt-20 border-b border-black pt-7 pb-5">

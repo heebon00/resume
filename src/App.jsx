@@ -61,47 +61,52 @@ export default function App() {
       <MobileHeader open={menuOpen} onToggle={toggleMenu} menuId={MENU_ID} />
       <MobileMenu open={menuOpen} onClose={closeMenu} menuId={MENU_ID} />
 
-      {/* 1280 미만 — 모바일 캔버스(390, 640px 상한 · 가운데 정렬). index.css 참조. */}
-      <div className="xl:hidden" {...behindMenu}>
-        <MobilePage />
-      </div>
-
-      {/* 1280 이상 — 데스크톱 캔버스(1920 비율 축소) */}
-      <main {...behindMenu} className="relative hidden w-full xl:block">
-        {/* 창 1 — 캔버스 0 ~ SPLIT_Y */}
-        <div
-          className="relative w-full overflow-hidden"
-          style={{ height: du(SPLIT_Y) }}
-        >
-          <div
-            className="absolute inset-x-0 top-0"
-            style={{ height: du(CANVAS_H) }}
-          >
-            <NameBanner />
-            <Hero />
-            <AboutMe />
-            <Experience />
-          </div>
+      {/* 두 레이아웃 트리가 항상 DOM 에 함께 있고 CSS 로만 한쪽이 숨는다.
+          <main> 은 문서에 하나여야 하므로 landmark 는 여기 한 번만 둔다 —
+          안쪽 두 래퍼는 div 다. 중복 id 를 피하는 방법은 lib/sectionIds.js 참조. */}
+      <main {...behindMenu}>
+        {/* 1280 미만 — 모바일 캔버스(390, 640px 상한 · 가운데 정렬). index.css 참조. */}
+        <div className="xl:hidden">
+          <MobilePage />
         </div>
 
-        {/* MY PROJECTS 도입부 — 화면마다 마스크가 열리는 스크롤 연출 */}
-        <ProjectsReveal variant="desktop" />
-
-        {/* 창 2 — 캔버스 SPLIT_Y ~ 끝. 안쪽 래퍼를 끌어올려 좌표계를 유지한다. */}
-        <div
-          className="relative w-full overflow-hidden"
-          style={{ height: du(CANVAS_H - SPLIT_Y) }}
-        >
+        {/* 1280 이상 — 데스크톱 캔버스(1920 비율 축소) */}
+        <div className="relative hidden w-full xl:block">
+          {/* 창 1 — 캔버스 0 ~ SPLIT_Y */}
           <div
-            className="absolute inset-x-0"
-            style={{ top: du(-SPLIT_Y), height: du(CANVAS_H) }}
+            className="relative w-full overflow-hidden"
+            style={{ height: du(SPLIT_Y) }}
           >
-            <Gallery />
-            <Projects />
-            <Marquee />
-            <MyDesign />
-            <Skills />
-            <Footer />
+            <div
+              className="absolute inset-x-0 top-0"
+              style={{ height: du(CANVAS_H) }}
+            >
+              <NameBanner />
+              <Hero />
+              <AboutMe />
+              <Experience />
+            </div>
+          </div>
+
+          {/* MY PROJECTS 도입부 — 화면마다 마스크가 열리는 스크롤 연출 */}
+          <ProjectsReveal variant="desktop" />
+
+          {/* 창 2 — 캔버스 SPLIT_Y ~ 끝. 안쪽 래퍼를 끌어올려 좌표계를 유지한다. */}
+          <div
+            className="relative w-full overflow-hidden"
+            style={{ height: du(CANVAS_H - SPLIT_Y) }}
+          >
+            <div
+              className="absolute inset-x-0"
+              style={{ top: du(-SPLIT_Y), height: du(CANVAS_H) }}
+            >
+              <Gallery />
+              <Projects />
+              <Marquee />
+              <MyDesign />
+              <Skills />
+              <Footer />
+            </div>
           </div>
         </div>
       </main>

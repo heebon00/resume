@@ -1,3 +1,4 @@
+import { mobileId } from "../../lib/sectionIds";
 import SafeImage from "../../components/SafeImage";
 import MobileSectionHeading from "./MobileSectionHeading";
 import { PROJECTS } from "../../content/portfolio";
@@ -13,7 +14,7 @@ export default function MobileProjects() {
 
   return (
     <section
-      data-reveal id="projects" className="px-20 pb-60">
+      data-reveal id={mobileId("projects")} className="px-20 pb-60">
       <MobileSectionHeading>{PROJECTS.heading}</MobileSectionHeading>
 
       <ul className="mt-24 flex flex-col gap-40">

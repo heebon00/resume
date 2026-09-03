@@ -1,3 +1,4 @@
+import { mobileId } from "../../lib/sectionIds";
 import SafeImage from "../../components/SafeImage";
 import { GALLERY } from "../../content/portfolio";
 import { du } from "../../lib/design";
@@ -32,7 +33,7 @@ export default function MobileGallery() {
   return (
     <section
       data-reveal
-      id="gallery"
+      id={mobileId("gallery")}
       aria-label="작업 이미지 갤러리"
       className="overflow-hidden pb-60"
     >

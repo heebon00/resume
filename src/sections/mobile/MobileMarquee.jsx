@@ -1,3 +1,4 @@
+import { mobileId } from "../../lib/sectionIds";
 import { KEYWORD_ROWS } from "../../content/portfolio";
 
 /**
@@ -24,7 +25,7 @@ export default function MobileMarquee() {
   return (
     <section
       data-reveal
-      id="keywords"
+      id={mobileId("keywords")}
       aria-label="작업 키워드"
       className="flex flex-col gap-8 pb-60"
     >
