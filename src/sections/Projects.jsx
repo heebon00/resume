@@ -96,6 +96,7 @@ const CARDS = PROJECTS.cards.map((card) => {
       : undefined,
     buttons: place.buttons,
     buttonLabels: card.buttons ?? PROJECTS.buttons,
+    buttonLinks: card.links ?? [],
   };
 });
 
@@ -129,6 +130,7 @@ export default function Projects() {
             descriptionImage={card.descriptionImage}
             buttons={card.buttons}
             buttonLabels={card.buttonLabels}
+            buttonLinks={card.buttonLinks}
           />
         ))}
       </div>

@@ -21,6 +21,7 @@ export default function ProjectCard({
   descriptionImage,
   buttons,
   buttonLabels,
+  buttonLinks = [],
 }) {
   return (
     <>
@@ -70,12 +71,30 @@ export default function ProjectCard({
       )}
 
       <div className="absolute flex gap-11" style={box(buttons)}>
-        <span className="btn-cyber flex h-40 w-164 items-center justify-center rounded-button">
-          {buttonLabels[0]}
-        </span>
-        <span className="btn-cyber flex h-40 w-164 items-center justify-center rounded-button">
-          {buttonLabels[1]}
-        </span>
+        {buttonLabels.map((label, idx) => {
+          const href = buttonLinks[idx];
+          if (href) {
+            return (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-cyber flex h-40 w-164 items-center justify-center rounded-button no-underline cursor-pointer"
+              >
+                {label}
+              </a>
+            );
+          }
+          return (
+            <span
+              key={label}
+              className="btn-cyber flex h-40 w-164 items-center justify-center rounded-button"
+            >
+              {label}
+            </span>
+          );
+        })}
       </div>
     </>
   );

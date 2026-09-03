@@ -41,12 +41,34 @@ export default function MobileProjects() {
             </p>
 
             <div className="mt-14 flex gap-11">
-              <span className="flex h-38 flex-1 items-center justify-center rounded-button border border-base-black bg-white font-sans text-[calc(14*var(--u))] leading-body text-base-black">
-                {(card.buttons ?? PROJECTS.buttons)[0]}
-              </span>
-              <span className="flex h-38 flex-1 items-center justify-center rounded-button bg-accent-lime font-sans text-[calc(14*var(--u))] leading-body text-black">
-                {(card.buttons ?? PROJECTS.buttons)[1]}
-              </span>
+              {card.links?.[0] ? (
+                <a
+                  href={card.links[0]}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex h-38 flex-1 items-center justify-center rounded-button border border-base-black bg-white font-sans text-[calc(14*var(--u))] leading-body text-base-black no-underline"
+                >
+                  {(card.buttons ?? PROJECTS.buttons)[0]}
+                </a>
+              ) : (
+                <span className="flex h-38 flex-1 items-center justify-center rounded-button border border-base-black bg-white font-sans text-[calc(14*var(--u))] leading-body text-base-black">
+                  {(card.buttons ?? PROJECTS.buttons)[0]}
+                </span>
+              )}
+              {card.links?.[1] ? (
+                <a
+                  href={card.links[1]}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex h-38 flex-1 items-center justify-center rounded-button bg-accent-lime font-sans text-[calc(14*var(--u))] leading-body text-black no-underline"
+                >
+                  {(card.buttons ?? PROJECTS.buttons)[1]}
+                </a>
+              ) : (
+                <span className="flex h-38 flex-1 items-center justify-center rounded-button bg-accent-lime font-sans text-[calc(14*var(--u))] leading-body text-black">
+                  {(card.buttons ?? PROJECTS.buttons)[1]}
+                </span>
+              )}
             </div>
           </li>
         ))}

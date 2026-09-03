@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="525" viewBox="0 0 700 525" role="img" aria-label="Mock 01">
+  <defs>
+    <pattern id="s01" width="28" height="28" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="28" height="28" fill="#eaeaea"/>
+      <rect width="14" height="28" fill="#cfcfcf" fill-opacity="0.45"/>
+    </pattern>
+  </defs>
+  <rect width="700" height="525" fill="url(#s01)"/>
+  <rect x="24" y="24" width="652" height="477" fill="none" stroke="#cfcfcf" stroke-width="2"/>
+  <rect x="210" y="216" width="280" height="93" fill="#eaeaea"/>
+  <text x="350" y="262" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="34" font-weight="700" letter-spacing="6" fill="#8a8a8a">MOCK 01</text>
+  <text x="350" y="291" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="16" letter-spacing="3" fill="#8a8a8a">700 &#215; 525</text>
+</svg>

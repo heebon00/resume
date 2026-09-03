@@ -20,6 +20,12 @@ import darkBuilding from "../assets/images/design-dark-building.webp";
 import dubaiSkyline from "../assets/images/design-dubai-skyline.webp";
 import resort from "../assets/images/design-resort.webp";
 import whiteCurve from "../assets/images/design-white-curve.webp";
+// 임시 목업 — MY DESIGN 카드에 들어갈 실제 이미지가 정해지기 전까지 쓰는 자리표시 이미지다.
+// 확정되면 아래 4개 import 와 DESIGN.cards 의 src·alt 를 실제 이미지로 되돌린다.
+import designMock01 from "../assets/images/design-mock-01.svg";
+import designMock02 from "../assets/images/design-mock-02.svg";
+import designMock03 from "../assets/images/design-mock-03.svg";
+import designMock04 from "../assets/images/design-mock-04.svg";
 import afterEffects from "../assets/images/skill-after-effects.webp";
 import blender from "../assets/images/skill-blender.webp";
 import figmaLogo from "../assets/images/skill-figma.webp";
@@ -117,6 +123,10 @@ export const PROJECTS = {
     {
       id: "ai-video-creator-1",
       buttons: ["기획서보기", "영상보기"],
+      links: [
+        "https://drive.google.com/file/d/1lOaXJQSm5BFnryZTViqTN7kZ4bjPCQTH/view?usp=sharing",
+        "https://drive.google.com/file/d/1FREewdt85zi60U4JFw8Cmyz6jBn3MmJF/view?usp=sharing",
+      ],
       src: greenhouse,
       alt: "AI로 제작한 영상 속 유리 온실 장면",
       titleLines: ["AI Video Creator", "Editor & Director"],
@@ -140,11 +150,19 @@ export const PROJECTS = {
         frame: { w: 1200, h: 800 },
       },
       titleLines: ["iKEA Website", "Redesign"],
+      // 실제 기업 상표·제품 사진이 들어간 학습용 리디자인이라, 해당 기업이 승인한
+      // 작업으로 오해되지 않도록 카드에 고지를 함께 띄운다.
+      notice:
+        "비공식 컨셉 리디자인입니다. IKEA 와 무관하며 상표·이미지의 권리는 IKEA 에 있습니다.",
       descriptionLines: [
         "2026 _ TEAM PROJECT",
         "작업 기간: 4주 (26.07.15~26.08.15)",
         "주요기술:  Figma, HTML,  AI CLI, Tailwind CSS,등",
         "주역할: 팀장, 기획, 디자인, 기술 구현, 기획서 발표",
+      ],
+      links: [
+        "https://drive.google.com/file/d/15sw527-_DG9N2a7QjPQ7kDxKGT97i8DN/view?usp=sharing",
+        "https://heebon00.github.io/Team_Synergos_esg/",
       ],
     },
     {
@@ -158,16 +176,25 @@ export const PROJECTS = {
         frame: { w: 1200, h: 800 },
       },
       titleLines: ["YOU TUBE MUSIC", "Redesign"],
+      // 위 iKEA 카드와 같은 이유. 목업 안에 앨범 아트도 함께 들어 있어 권리자를
+      // 한 곳으로 뭉뚱그리지 않고 "각 권리자" 로 적었다.
+      notice:
+        "비공식 컨셉 리디자인입니다. YouTube Music 과 무관하며 상표·이미지·앨범 아트의 권리는 각 권리자에게 있습니다.",
       descriptionLines: [
         "2026 _ SOLO PROJECT  (26.08.18~26.08.27)",
         "작업 기간: 2주",
         "주요기술:  Figma, REACT,  AI CLI, Tailwind CSS,등",
         "기획의도: 이용자 편리성을 극대화한 UX · UI 디자인 ",
       ],
+      links: [
+        "https://www.figma.com/proto/u6TqUveQz3qthryUClDCPY/youtube-music?node-id=48-512&p=f&viewport=271%2C348%2C0.03&t=QYlt75s80T8WN0PJ-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=48%3A512&page-id=0%3A1",
+        "https://heebon00.github.io/yt_music/",
+      ],
     },
     {
       id: "ai-video-creator-2",
       buttons: ["기획서보기", "영상보기"],
+      links: [],
       src: greenhouse,
       alt: "AI로 제작한 영상 속 유리 온실 장면",
       titleLines: ["AI Video Creator", "Editor & Director"],
@@ -204,21 +231,20 @@ export const DESIGN = {
   heading: "— MY Design",
   filters: ["222222", "22222", "22", "222", "22"],
   moreLabel: "See more",
-  cardTitle: "Modern Architecture",
-  cardLines: [
-    "What you wear is how you present yourself to the world, especially",
-    "today when human contacts go so fast. Fashion is instant",
-    "language.",
-  ],
+  // 카드 1 위에 얹히는 제목·설명. 원래 들어 있던 문구는 테마 데모에서 딸려온
+  // 것이라 지웠다(제목 "Modern Architecture", 설명은 미우치아 프라다 인용문).
+  // 둘 다 비어 있으면 검정 오버레이째로 렌더링하지 않는다 — 빈 글상자가 남지
+  // 않게 하려는 것이다. 본인 문구를 넣으면 그대로 다시 보인다.
+  //   cardTitle  한 줄 제목
+  //   cardLines  설명 3줄. 데스크톱은 세로로 세워 [2], [1], [0] 순으로 읽힌다.
+  cardTitle: "",
+  cardLines: [],
+  // id 는 MyDesign.jsx 의 PLACEMENT(카드 위치·크롭) 키라서 그대로 둔다.
   cards: [
-    { id: "dubai-skyline", src: dubaiSkyline, alt: "두바이 스카이라인 전경" },
-    {
-      id: "dark-building",
-      src: darkBuilding,
-      alt: "어두운 색 외벽의 고층 건물",
-    },
-    { id: "white-curve", src: whiteCurve, alt: "흰색 곡면 구조의 건축물" },
-    { id: "resort", src: resort, alt: "야자수가 있는 리조트 전경" },
+    { id: "dubai-skyline", src: designMock01, alt: "임시 목업 이미지 1" },
+    { id: "dark-building", src: designMock02, alt: "임시 목업 이미지 2" },
+    { id: "white-curve", src: designMock03, alt: "임시 목업 이미지 3" },
+    { id: "resort", src: designMock04, alt: "임시 목업 이미지 4" },
   ],
 };
 
