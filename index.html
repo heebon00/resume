@@ -5,25 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" sizes="512x512" href="/favicon.png" />
     <title>이희본 포트폴리오</title>
+    <meta
+      name="description"
+      content="좋아하는 일에는 애정을, 맡은 임무에는 책임감을. 웹 퍼블리싱·인터랙티브 웹을 만드는 이희본의 포트폴리오입니다."
+    />
 
-    <!-- 디자인에서 확인된 서체 (확인일 2026-09-01) -->
-    <!-- Pretendard Variable — 본문·표·스킬 카드 (cdn.jsdelivr.net/gh/orioncactus/pretendard) -->
+    <!-- 서체는 전부 자체 호스팅한다. 정의는 src/styles/fonts.css, 파일은 public/fonts/.
+         2026-09-03 이전에는 여기에서 jsdelivr·Google Fonts 의 외부 CSS 4개를 불러왔고,
+         그 4개가 전부 렌더링을 막아 첫 화면이 5.1초 걸렸다.
+         (근거: docs/web-check-2026-09-03.md 4장) -->
+
+    <!-- 첫 화면 히어로 한글 카피(Paperlogy ExtraBold)만 미리 받는다.
+         나머지 서체는 필요한 시점에 CSS 가 알아서 가져온다. -->
     <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css"
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/fonts/paperlogy/Paperlogy-8ExtraBold.woff2"
+      crossorigin
     />
-    <!-- Paperlogy — 히어로 한글 카피 (cdn.jsdelivr.net/gh/fonts-archive/Paperlogy) -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fonts-archive/Paperlogy/Paperlogy.css" />
-    <!-- Pinyon Script / Big Shoulders Display / Big Shoulders Stencil Display / Geist / Inter (fonts.google.com) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@100..900&family=Big+Shoulders+Stencil+Display:wght@100..900&family=Geist:wght@100..900&family=Inter:wght@100..900&family=Pinyon+Script&display=swap"
-    />
-    <!-- VT323 — 시안에는 없음. MY PROJECTS "기획서보기" 사이버펑크 글리치 버튼 전용
-         (출처: ~/Downloads/80button "4. Cyberpunk Glitch" 데모, 원본이 이 폰트를 쓴다) -->
-    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
   </head>
   <body>
     <div id="root"></div>
