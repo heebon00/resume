@@ -555,7 +555,11 @@ body {
   position: absolute;
   top: calc(var(--pfr-title-top) + var(--pfr-title-box) + var(--pfr-desc-gap));
   left: calc(var(--pfr-gutter) + 70 * var(--u));
-  width: calc(520 * var(--u));
+  /* 가운데 이미지의 왼쪽 끝(1920 기준 x=625)보다 앞에서 끝나야 한다.
+     520 이면 상자 오른쪽이 734 라 이미지를 109 파고든다 — 384 로 줄여
+     오른쪽 끝을 약 599 에 두고 26 정도를 띄운다. 세로형 이미지를 쓰는
+     1·4번(왼쪽 끝 약 698)도 같은 값으로 함께 해결된다. */
+  width: calc(384 * var(--u));
   display: flex;
   flex-direction: column;
   gap: calc(24 * var(--u));
@@ -564,7 +568,13 @@ body {
 
 .pfr-desc {
   margin: 0;
-  white-space: pre;
+  /* pre 는 줄바꿈을 막아 위 width 제한을 무력화한다(글이 상자 밖으로 넘쳐
+     이미지에 겹쳤다). pre-wrap 이면 시안의 줄바꿈과 들여쓰기 공백은 그대로
+     두면서 긴 줄만 상자 안에서 접힌다. */
+  white-space: pre-wrap;
+  /* 한글은 글자 단위로 끊겨서 "UX · UI 디 / 자인" 처럼 단어가 갈라진다.
+     keep-all 이면 어절 단위로만 접힌다. */
+  word-break: keep-all;
   font-family: var(--font-sans);
   /* 요청으로 --text-body(16)보다 4 키움. 다른 곳에서 쓰는 --text-body는
      그대로 두고 여기만 올린다. */
@@ -681,7 +691,7 @@ body {
     bottom: 6vh;
   }
 
-  /* 좁은 폭이라 설명 줄을 접고 좌우 거터까지 폭을 쓴다(데스크톱은 시안 줄바꿈 그대로 pre).
+  /* 좁은 폭이라 좌우 거터까지 폭을 쓴다(데스크톱은 이미지 앞에서 끊기게 384 로 제한).
      오른쪽으로 50 당기는 건 데스크톱 전용 보정이라 모바일은 원래 left로 되돌린다. */
   .pfr-copy {
     left: var(--pfr-gutter);
