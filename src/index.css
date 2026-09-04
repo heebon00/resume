@@ -827,3 +827,21 @@ body {
     transition: none;
   }
 }
+
+/* GNB 링크 — 밑줄은 올려놨을 때만 나온다(기본 상태는 시안의 담백한 라벨 그대로). */
+.gnb-link {
+  text-decoration: none;
+}
+
+.gnb-link:hover,
+.gnb-link:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: calc(4 * var(--u));
+}
+
+/* 앵커로 이동할 때 고정 GNB(높이 약 66) 아래로 섹션이 숨지 않게 여유를 둔다. */
+@media (min-width: 1280px) {
+  html {
+    scroll-padding-top: calc(86 * var(--u));
+  }
+}

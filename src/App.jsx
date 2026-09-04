@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import CustomCursor from "./components/CustomCursor";
+import DesktopNav from "./components/DesktopNav";
 import MobileHeader from "./components/MobileHeader";
 import MobileMenu from "./components/MobileMenu";
 import AboutMe from "./sections/AboutMe";
@@ -41,6 +42,8 @@ const SPLIT_Y = 2560;
  * 스크롤 연출 화면(ProjectsReveal)이 일반 흐름으로 들어간다. 각 창 안쪽 래퍼가
  * 원래 캔버스 좌표계를 그대로 유지하므로 섹션들의 좌표는 손대지 않는다.
  *
+ * 화면 맨 위에는 GNB 를 둔다 — 1280 이상은 DesktopNav, 미만은 MobileHeader.
+ *
  * JS 동작 — 모바일 오버레이 메뉴, 키워드 마퀴 흐름(CSS), 스크롤 등장,
  * 커스텀 커서, MY PROJECTS 도입부 마스크 연출(gsap + ScrollTrigger).
  */
@@ -58,6 +61,8 @@ export default function App() {
   return (
     <>
       <CustomCursor />
+      {/* 데스크톱 GNB — 모바일(1280 미만)에서는 아래 MobileHeader 가 대신 뜬다. */}
+      <DesktopNav />
       <MobileHeader open={menuOpen} onToggle={toggleMenu} menuId={MENU_ID} />
       <MobileMenu open={menuOpen} onClose={closeMenu} menuId={MENU_ID} />
 
