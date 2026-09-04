@@ -1,5 +1,4 @@
 import { useCallback } from "react";
-import brandLogo from "../assets/icons/logo-brand.svg";
 
 /**
  * 데스크톱 GNB — 화면 맨 위에 항상 붙어 있는 전역 내비게이션.
@@ -7,8 +6,9 @@ import brandLogo from "../assets/icons/logo-brand.svg";
  * [디자인 근거에 대한 메모]
  * 시안에는 데스크톱 GNB 가 없다(모바일 시안 20:2492 의 헤더 바만 있다).
  * 요청으로 새로 만들되 없던 스타일을 지어내지 않고, 모바일 헤더 바의 규격을
- * 그대로 가져왔다 — 배경 #F6F6F6, 로고 49.324 x 22.254, 상하 여백 22.
+ * 그대로 가져왔다 — 배경 #F6F6F6, 상하 여백 22.
  * 좌우 여백 75 는 히어로 상단 라벨(CREATIVE, 캔버스 left 75)에 맞춘 값이다.
+ * 왼쪽 로고는 본인 것이 아니라는 요청으로 뺐고, 항목만 오른쪽에 둔다.
  *
  * 캔버스 0 ~ 154 구간은 비어 있어서(히어로가 154 에서 시작한다) 바가 히어로의
  * CREATIVE / PORTFOLIO 라벨을 가리지 않는다.
@@ -55,24 +55,7 @@ export default function DesktopNav() {
 
   return (
     <header className="fixed top-0 right-0 left-0 z-50 hidden bg-header xl:block">
-      <div className="flex w-full items-center justify-between px-75">
-        <a
-          href="#hero"
-          aria-label="맨 위로"
-          className="flex items-center py-22"
-        >
-          <img
-            src={brandLogo}
-            alt="이희본 포트폴리오"
-            loading="eager"
-            className="block"
-            style={{
-              width: "calc(49.324 * var(--u))",
-              height: "calc(22.254 * var(--u))",
-            }}
-          />
-        </a>
-
+      <div className="flex w-full items-center justify-end px-75">
         <nav aria-label="주요 메뉴">
           <ul className="flex items-center gap-40">
             {ITEMS.map((item) => (
