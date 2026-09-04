@@ -40,12 +40,6 @@ export default function MobileProjects() {
               ))}
             </p>
 
-            {card.notice && (
-              <p className="mt-8 font-sans text-[calc(11*var(--u))] leading-[calc(15*var(--u))] font-medium text-muted">
-                {card.notice}
-              </p>
-            )}
-
             <div className="mt-14 flex gap-11">
               {card.links?.[0] ? (
                 <a

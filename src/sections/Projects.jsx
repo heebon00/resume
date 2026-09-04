@@ -50,9 +50,6 @@ const PLACEMENT = {
     // 버튼 top — 같은 줄(카드 1)과 높이가 안 맞아(342 vs 361.36) 버튼이 더 위에
     // 떠 보이던 문제를 요청으로 고쳤다. 카드 1과 동일하게 맞춤.
     buttons: { left: 828, top: 361.36 },
-    // 고지 문구 자리 — 버튼(top 361.36 + 높이 40 = 401.36) 아래, 아래 카드의
-    // 제목(top 452.36) 위. 두 줄까지 들어가도 겹치지 않는다.
-    notice: { left: 828, top: 408, width: 410 },
   },
   "youtube-music-redesign": {
     image: { left: 655, top: 429, width: 142, height: 284 },
@@ -66,8 +63,6 @@ const PLACEMENT = {
     // 버튼 top — 같은 줄(카드 4)과 높이가 안 맞아(654 vs 662.36) 버튼이 더 위에
     // 떠 보이던 문제를 요청으로 고쳤다. 카드 4와 동일하게 맞춤.
     buttons: { left: 828, top: 662.36 },
-    // 같은 규칙 — 버튼(662.36 + 40 = 702.36) 아래. 컨테이너 높이 780 안에 들어간다.
-    notice: { left: 828, top: 709, width: 410 },
   },
   "ai-video-creator-2": {
     image: { left: 27.999, top: 452, width: 144, height: 256 },
@@ -102,11 +97,6 @@ const CARDS = PROJECTS.cards.map((card) => {
     buttons: place.buttons,
     buttonLabels: card.buttons ?? PROJECTS.buttons,
     buttonLinks: card.links ?? [],
-    // 고지는 문구(content)와 자리(PLACEMENT)가 둘 다 있을 때만 그린다.
-    notice:
-      card.notice && place.notice
-        ? { ...place.notice, text: card.notice }
-        : undefined,
   };
 });
 
@@ -141,7 +131,6 @@ export default function Projects() {
             buttons={card.buttons}
             buttonLabels={card.buttonLabels}
             buttonLinks={card.buttonLinks}
-            notice={card.notice}
           />
         ))}
       </div>

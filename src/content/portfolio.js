@@ -149,10 +149,6 @@ export const PROJECTS = {
         frame: { w: 1200, h: 800 },
       },
       titleLines: ["iKEA Website", "Redesign"],
-      // 실제 기업 상표·제품 사진이 들어간 학습용 리디자인이라, 해당 기업이 승인한
-      // 작업으로 오해되지 않도록 카드에 고지를 함께 띄운다.
-      notice:
-        "비공식 컨셉 리디자인입니다. IKEA 와 무관하며 상표·이미지의 권리는 IKEA 에 있습니다.",
       descriptionLines: [
         "2026 _ TEAM PROJECT",
         "작업 기간: 4주 (26.07.15~26.08.15)",
@@ -175,10 +171,6 @@ export const PROJECTS = {
         frame: { w: 1200, h: 800 },
       },
       titleLines: ["YOU TUBE MUSIC", "Redesign"],
-      // 위 iKEA 카드와 같은 이유. 목업 안에 앨범 아트도 함께 들어 있어 권리자를
-      // 한 곳으로 뭉뚱그리지 않고 "각 권리자" 로 적었다.
-      notice:
-        "비공식 컨셉 리디자인입니다. YouTube Music 과 무관하며 상표·이미지·앨범 아트의 권리는 각 권리자에게 있습니다.",
       descriptionLines: [
         "2026 _ SOLO PROJECT  (26.08.18~26.08.27)",
         "작업 기간: 2주",

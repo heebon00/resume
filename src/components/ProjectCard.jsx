@@ -13,8 +13,6 @@ import { box, du } from "../lib/design";
  *         두 번째 버튼 문구는 카드마다 다르다(영상보기 / 사이트보기).
  * 설명·제목 묶음에만 opacity 0.776 이 걸려 있고 썸네일은 원본 그대로다(시안 20:1253).
  * 디자인에 이동 대상(href)이 없으므로 버튼은 링크 없이 시각적으로만 구현한다.
- *   고지  실제 기업 상표가 들어간 컨셉 리디자인 카드에만 붙는다(11px, 버튼 아래).
- *         시안에 없는 요소지만, 해당 기업이 승인한 작업으로 오해되지 않게 하려고 넣었다.
  */
 export default function ProjectCard({
   image,
@@ -24,7 +22,6 @@ export default function ProjectCard({
   buttons,
   buttonLabels,
   buttonLinks = [],
-  notice,
 }) {
   return (
     <>
@@ -71,15 +68,6 @@ export default function ProjectCard({
           style={{ left: du(descriptionImage.left), top: du(descriptionImage.top) }}
           imgClassName="block size-full rounded-sm object-cover"
         />
-      )}
-
-      {notice && (
-        <p
-          className="absolute font-sans text-[calc(11*var(--u))] leading-[calc(15*var(--u))] text-muted opacity-[0.776]"
-          style={box(notice)}
-        >
-          {notice.text}
-        </p>
       )}
 
       <div className="absolute flex gap-11" style={box(buttons)}>
