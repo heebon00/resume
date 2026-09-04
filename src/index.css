@@ -815,3 +815,15 @@ body {
     animation: none;
   }
 }
+
+/* MY DESIGN 캐로셀 — 화살표로 카드 묶음을 한 장씩 민다. */
+.design-track {
+  transition: transform 0.5s ease-out;
+}
+
+/* 움직임 줄이기 — 미끄러지는 연출 없이 바로 다음 카드로 바꾼다. */
+@media (prefers-reduced-motion: reduce) {
+  .design-track {
+    transition: none;
+  }
+}
