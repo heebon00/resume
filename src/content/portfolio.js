@@ -70,7 +70,7 @@ export const ABOUT = {
   barLeft: "About",
   barRight: "01",
   heading: "ABOUT ME",
-  portraitAlt: "아이패드를 들고 있는 이희본",
+  portraitAlt: "img_heebon",
   introLines: [
     "비전공자의 무기는 '편견 없는 흡수력'",
     "코드의 흐름을 읽는 남다른 감각 ",
@@ -79,10 +79,10 @@ export const ABOUT = {
   ],
   rows: [
     { label: "name", value: "이희본" },
-    { label: "Birth", value: "이희본" },
-    { label: "Contact", value: "이희본" },
-    { label: "Certificate", value: "이희본" },
-    { label: "Education", value: "이희본" },
+    { label: "Birth", value: "--" },
+    { label: "Contact", value: "--" },
+    { label: "Certificate", value: "컴퓨터활용능력2급,정보처리기사,1종보통운전면허" },
+    { label: "Education", value: "선린대학교 경찰행정학과" },
   ],
 };
 
@@ -91,10 +91,10 @@ export const EXPERIENCE = {
   heading: "MY Work Experience",
   subheading: "Work Experience",
   rows: [
-    { id: "exp-1", index: "2x", title: "FTA Best Interactivity", year: "2021" },
-    { id: "exp-2", index: "2x", title: "FTA Best Interactivity", year: "2021" },
-    { id: "exp-3", index: "2x", title: "FTA Best Interactivity", year: "2021" },
-    { id: "exp-4", index: "2x", title: "FTA Best Interactivity", year: "2021" },
+    { id: "exp-1", index: "", title: "경주시청 기획예산과(청년인턴)", year: "09" },
+    { id: "exp-2", index: "", title: "국민연금(청년인턴)", year: "11~12" },
+    { id: "exp-3", index: "", title: "재능교육 경주지국 (CS)", year: "~16" },
+    { id: "exp-4", index: "", title: "경주시청 (기간제)", year: "17~22" },
   ],
 };
 
@@ -134,7 +134,7 @@ export const PROJECTS = {
         "작업 기간: 2주 (26.06.22~26.07.01)",
         "주요기술: Google Flow, PREMIERE PRO,",
         "                 AFTER EFFECTS",
-        "기획의도: 26MSI in 대전 홍보영상 ",
+        "기획 의도: League of Legends 2026 MSI in 대전 홍보영상 ",
       ],
     },
     {
@@ -152,7 +152,7 @@ export const PROJECTS = {
       descriptionLines: [
         "2026 _ TEAM PROJECT",
         "작업 기간: 4주 (26.07.15~26.08.15)",
-        "주요기술:  Figma, HTML,  AI CLI, Tailwind CSS,등",
+        "주요 기술:  Figma, HTML,  AI CLI, Tailwind CSS,등",
         "주역할: 팀장, 기획, 디자인, 기술 구현, 기획서 발표",
       ],
       links: [
@@ -174,8 +174,8 @@ export const PROJECTS = {
       descriptionLines: [
         "2026 _ SOLO PROJECT  (26.08.18~26.08.27)",
         "작업 기간: 2주",
-        "주요기술:  Figma, REACT,  AI CLI, Tailwind CSS,등",
-        "기획의도: 이용자 편리성을 극대화한 UX · UI 디자인 ",
+        "주요 기술:  Figma, REACT,  AI CLI, Tailwind CSS,등",
+        "기획 의도: 이용자 편리성을 극대화한 UX · UI 디자인 ",
       ],
       links: [
         "https://www.figma.com/proto/u6TqUveQz3qthryUClDCPY/youtube-music?node-id=48-512&p=f&viewport=271%2C348%2C0.03&t=QYlt75s80T8WN0PJ-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=48%3A512&page-id=0%3A1",
