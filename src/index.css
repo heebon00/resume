@@ -737,7 +737,11 @@ body {
 
 .pfr-buttons {
   display: flex;
-  gap: calc(11 * var(--u));
+  /* 깃허브보기가 붙어 버튼이 셋이 되면 상자(.pfr-copy 384)를 넘는다. 간격을
+     11 → 8 로 줄여 한 줄에 넣는다. 그래도 모자라면 글자를 깨뜨리는 대신
+     버튼째로 다음 줄에 내린다(아래 .pfr-swipe 의 nowrap 과 한 쌍). */
+  flex-wrap: wrap;
+  gap: calc(8 * var(--u));
   will-change: transform;
 }
 
@@ -755,7 +759,10 @@ body {
   align-items: center;
   justify-content: center;
   height: calc(40 * var(--u));
-  padding-inline: calc(24 * var(--u));
+  /* 버튼 셋이 한 줄에 들어가도록 24 → 16. 글자는 어떤 경우에도 깨지지 않는다. */
+  padding-inline: calc(16 * var(--u));
+  flex-shrink: 0;
+  white-space: nowrap;
   border: calc(2 * var(--u)) solid var(--color-ink);
   border-radius: var(--radius-button);
   font-family: var(--font-sans);
