@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import CustomCursor from "./components/CustomCursor";
+import IntroLoader from "./components/IntroLoader";
 import DesktopNav from "./components/DesktopNav";
 import MobileHeader from "./components/MobileHeader";
 import MobileMenu from "./components/MobileMenu";
@@ -61,6 +62,8 @@ export default function App() {
 
   return (
     <>
+      {/* 인트로 로딩 화면 — 다 받으면 걷히며 히어로 등장 신호를 보낸다. */}
+      <IntroLoader />
       <CustomCursor />
       {/* 데스크톱 GNB — 모바일(1280 미만)에서는 아래 MobileHeader 가 대신 뜬다. */}
       <DesktopNav />

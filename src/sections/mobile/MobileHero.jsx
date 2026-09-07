@@ -1,5 +1,4 @@
 import { mobileId } from "../../lib/sectionIds";
-import HeaderParticles from "../../components/HeaderParticles";
 import SafeImage from "../../components/SafeImage";
 import SlicedText from "../../components/SlicedText";
 import { HERO, IMAGES } from "../../content/portfolio";
@@ -18,7 +17,6 @@ export default function MobileHero() {
       className="relative overflow-hidden bg-white pt-86 pb-40"
     >
       {/* 파티클 — 글자·사진 뒤에 깔린다 */}
-      <HeaderParticles blend="source-over" />
 
       <div className="px-20">
         <div className="flex items-center justify-between">

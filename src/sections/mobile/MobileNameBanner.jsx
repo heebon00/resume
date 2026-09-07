@@ -1,4 +1,3 @@
-import HeaderParticles from "../../components/HeaderParticles";
 import { BANNER } from "../../content/portfolio";
 
 /**
@@ -12,7 +11,6 @@ export default function MobileNameBanner() {
       aria-label={BANNER.text}
       className="relative h-90 overflow-hidden bg-banner"
     >
-      <HeaderParticles />
       <p className="absolute inset-0 flex items-center justify-center px-20 text-center font-sans text-[calc(22*var(--u))] leading-normal font-light whitespace-nowrap">
         {/* 그라디언트는 글자 폭 기준(데스크톱 배너와 같은 이유) */}
         <span
