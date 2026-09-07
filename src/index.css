@@ -225,6 +225,12 @@ body {
   grid-column: 1 / -1;
 }
 
+.contact-form-captcha {
+  grid-column: 1 / -1;
+  /* 위젯이 로드되기 전에도 자리를 잡아 둔다(로드되며 레이아웃이 밀리지 않도록). */
+  min-height: 78px;
+}
+
 .contact-form button {
   background: var(--color-accent-lime);
   border: 0;
