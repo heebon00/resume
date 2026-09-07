@@ -80,7 +80,7 @@ export default function ProjectCard({
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-cyber flex h-40 w-164 items-center justify-center rounded-button no-underline cursor-pointer"
+                className="btn-cyber flex h-40 w-130 items-center justify-center rounded-button no-underline cursor-pointer"
               >
                 {label}
               </a>
@@ -89,7 +89,7 @@ export default function ProjectCard({
           return (
             <span
               key={label}
-              className="btn-cyber flex h-40 w-164 items-center justify-center rounded-button"
+              className="btn-cyber flex h-40 w-130 items-center justify-center rounded-button"
             >
               {label}
             </span>

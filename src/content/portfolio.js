@@ -117,7 +117,8 @@ export const GALLERY = [
 /* --- MY PROJECTS (20:1247) ---------------------------------------------- */
 export const PROJECTS = {
   heading: "MY projects",
-  // buttons[1] 은 기본값이고, 카드에 buttons 가 있으면 그 값을 쓴다.
+  // 카드에 buttons 가 있으면 그 값을 쓰고, 없으면 이 기본값을 쓴다.
+  // links 는 buttons 와 같은 순서로 짝지어진다.
   buttons: ["기획서보기", "사이트보기"],
   cards: [
     {
@@ -156,8 +157,10 @@ export const PROJECTS = {
         "주요 기술:  Figma, HTML,  AI CLI, Tailwind CSS,등",
         "주역할: 팀장, 기획, 디자인, 기술 구현, 기획서 발표",
       ],
+      buttons: ["기획서보기", "깃허브보기", "사이트보기"],
       links: [
         "https://drive.google.com/file/d/15sw527-_DG9N2a7QjPQ7kDxKGT97i8DN/view?usp=sharing",
+        "https://github.com/heebon00/Team_Synergos_esg",
         "https://heebon00.github.io/Team_Synergos_esg/",
       ],
     },
@@ -178,8 +181,10 @@ export const PROJECTS = {
         "주요 기술:  Figma, REACT,  AI CLI, Tailwind CSS,등",
         "기획 의도: 이용자 편리성을 극대화한 UX · UI 디자인 ",
       ],
+      buttons: ["기획서보기", "깃허브보기", "사이트보기"],
       links: [
         "https://www.figma.com/proto/u6TqUveQz3qthryUClDCPY/youtube-music?node-id=48-512&p=f&viewport=271%2C348%2C0.03&t=QYlt75s80T8WN0PJ-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=48%3A512&page-id=0%3A1",
+        "https://github.com/heebon00/yt_music",
         "https://heebon00.github.io/yt_music/",
       ],
     },
