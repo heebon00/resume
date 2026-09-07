@@ -17,6 +17,7 @@ import Skills from "./sections/Skills";
 import MobilePage from "./sections/mobile/MobilePage";
 import { du } from "./lib/design";
 import useScrollReveal from "./lib/useScrollReveal";
+import ContactUs from "./components/ContactUs";
 
 const MENU_ID = "mobile-menu";
 
@@ -115,6 +116,7 @@ export default function App() {
           </div>
         </div>
       </main>
+      <ContactUs />
     </>
   );
 }
