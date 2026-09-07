@@ -34,3 +34,29 @@ export const FADE_IN = { duration: 0.8, ease: "power3.out" };
  * 그래서 (1) 첫 화면 이미지만 기다리고 (2) 그래도 안 되면 여기서 끊는다.
  */
 export const INTRO_TIMEOUT = 4000;
+
+/**
+ * 글자 테두리 세 겹 — 데모의 effect 2 · 4 색 그대로.
+ *
+ * 데모는 얇은 것부터 쌓아 굵은 것이 앞을 덮지만, 그러면 색이 하나만 보인다.
+ * 그래서 굵은 것을 뒤에 깔아 세 색이 동심원처럼 다 보이게 뒤집어 쌓는다.
+ *
+ * 데모 굵기는 10 / 4 / 1 인데 그건 알파벳 한 줄 획 기준이다. 한글은 획이 촘촘해
+ * 그대로 쓰면 속공간이 메워져 뭉갠다. 비율은 지키고 크기만 이 값으로 줄인다.
+ */
+export const STROKE_SCALE = 0.3;
+const w = (n) => n * STROKE_SCALE;
+
+/** 초록 카피(좋아하는 일은 / 애정을,)가 쓰는 색. */
+export const LAYERS_EFFECT_2 = [
+  { color: "var(--color-letter2-back)", width: w(10) },
+  { color: "var(--color-letter2-mid)", width: w(4) },
+  { color: "var(--color-letter2-front)", width: w(1) },
+];
+
+/** 빨강 카피(맡은 임무는 / 책임감을)가 쓰는 색. */
+export const LAYERS_EFFECT_4 = [
+  { color: "var(--color-letter4-back)", width: w(10) },
+  { color: "var(--color-letter4-mid)", width: w(4) },
+  { color: "var(--color-letter4-front)", width: w(1) },
+];

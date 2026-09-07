@@ -36,7 +36,12 @@ const randInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 // (붙이면 Tailwind 가 .absolute 를 먼저 내보내므로 relative 가 이겨 배치가 깨진다)
 const POSITIONED = /(?:^|\s)(?:absolute|fixed|sticky)(?:\s|$)/;
 
-export default function SlicedText({ children, className = "", as: Tag = "p" }) {
+export default function SlicedText({
+  children,
+  className = "",
+  as: Tag = "p",
+  ...rest
+}) {
   const wrapRef = useRef(null);
   const sliceRefs = useRef([]);
 
@@ -99,6 +104,7 @@ export default function SlicedText({ children, className = "", as: Tag = "p" }) 
   return (
     <Tag
       ref={wrapRef}
+      {...rest}
       className={`sliced-text inline-block whitespace-nowrap ${
         POSITIONED.test(className) ? "" : "relative"
       } ${className}`}

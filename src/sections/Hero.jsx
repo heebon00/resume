@@ -1,16 +1,11 @@
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
+import { useRef } from "react";
 import SlicedText from "../components/SlicedText";
 import SafeImage from "../components/SafeImage";
 import StrokedText from "../components/StrokedText";
 import { HERO, IMAGES } from "../content/portfolio";
 import { box, du } from "../lib/design";
-import {
-  FADE_IN,
-  INTRO_DONE,
-  LETTER_IN,
-  LETTER_STAGGER,
-} from "../lib/intro";
+import { LAYERS_EFFECT_2, LAYERS_EFFECT_4 } from "../lib/intro";
+import useIntroReveal from "../lib/useIntroReveal";
 
 /**
  * 히어로 — 피그마 76:195 "co" (1920 x 888), 캔버스 top 154
@@ -74,54 +69,9 @@ function Tag({ label, color, left, top, width, height, padX, padY, fontSize, til
   );
 }
 
-// 데모 effect 2 · 4 의 세 겹. 굵은 것부터 깔아야 세 색이 다 보인다(StrokedText 주석 참조).
-//
-// 데모 굵기는 10 / 4 / 1 인데, 그건 알파벳 한 줄 획 기준이다. 한글은 획이 촘촘해서
-// 그대로 쓰면 속공간이 메워져 글자가 뭉갠다. 비율은 지키고 크기만 이 값으로 줄인다.
-// 더 얇게/굵게는 이 숫자 하나만 바꾸면 된다.
-const STROKE_SCALE = 0.3;
-const w = (n) => n * STROKE_SCALE;
-
-const LAYERS_2 = [
-  { color: "var(--color-letter2-back)", width: w(10) },
-  { color: "var(--color-letter2-mid)", width: w(4) },
-  { color: "var(--color-letter2-front)", width: w(1) },
-];
-const LAYERS_4 = [
-  { color: "var(--color-letter4-back)", width: w(10) },
-  { color: "var(--color-letter4-mid)", width: w(4) },
-  { color: "var(--color-letter4-front)", width: w(1) },
-];
-
 export default function Hero() {
   const root = useRef(null);
-
-  useEffect(() => {
-    const scope = root.current;
-    if (!scope) return undefined;
-
-    const letters = scope.querySelectorAll("[data-letter]");
-    const rest = scope.querySelectorAll("[data-intro-fade]");
-
-    gsap.set(letters, { opacity: 0 });
-    gsap.set(rest, { opacity: 0, y: 20 });
-
-    const play = () => {
-      gsap
-        .timeline()
-        .to(letters, {
-          ...LETTER_IN,
-          y: 0,
-          startAt: { y: LETTER_IN.y, opacity: 0 },
-          opacity: 1,
-          stagger: LETTER_STAGGER,
-        })
-        .to(rest, { ...FADE_IN, opacity: 1, y: 0, stagger: 0.06 }, "-=0.8");
-    };
-
-    window.addEventListener(INTRO_DONE, play, { once: true });
-    return () => window.removeEventListener(INTRO_DONE, play);
-  }, []);
+  useIntroReveal(root);
 
   return (
     <section
@@ -151,10 +101,10 @@ export default function Hero() {
           style={box({ top: 110 })}
         >
           {[
-            { text: HERO.greenLines[0], size: "text-display-sm", l: LAYERS_2 },
-            { text: HERO.greenLines[1], size: "text-display-sm", l: LAYERS_2 },
-            { text: HERO.redLines[0], size: "text-display", l: LAYERS_4 },
-            { text: HERO.redLines[1], size: "text-display", l: LAYERS_4 },
+            { text: HERO.greenLines[0], size: "text-display-sm", l: LAYERS_EFFECT_2 },
+            { text: HERO.greenLines[1], size: "text-display-sm", l: LAYERS_EFFECT_2 },
+            { text: HERO.redLines[0], size: "text-display", l: LAYERS_EFFECT_4 },
+            { text: HERO.redLines[1], size: "text-display", l: LAYERS_EFFECT_4 },
           ].map((line, i) => (
             <StrokedText
               key={i}
