@@ -1,6 +1,12 @@
 import { useEffect } from "react";
 import gsap from "gsap";
-import { FADE_IN, INTRO_DONE, LETTER_IN, LETTER_STAGGER } from "./intro";
+import {
+  FADE_IN,
+  LETTER_IN,
+  LETTER_STAGGER,
+  REVEAL_FAILSAFE,
+  onIntroDone,
+} from "./intro";
 
 /**
  * 히어로 등장 — 로딩 화면이 끝나며 보내는 INTRO_DONE 신호를 받아 시작한다.
@@ -23,7 +29,11 @@ export default function useIntroReveal(scopeRef) {
     gsap.set(letters, { opacity: 0 });
     gsap.set(rest, { opacity: 0, y: 20 });
 
+    let played = false;
     const play = () => {
+      if (played) return;
+      played = true;
+
       gsap
         .timeline()
         .to(letters, {
@@ -36,7 +46,15 @@ export default function useIntroReveal(scopeRef) {
         .to(rest, { ...FADE_IN, opacity: 1, y: 0, stagger: 0.06 }, "-=0.8");
     };
 
-    window.addEventListener(INTRO_DONE, play, { once: true });
-    return () => window.removeEventListener(INTRO_DONE, play);
+    // 이미 신호가 지나갔으면 그 자리에서 바로 보여준다(lib/intro.js 주석 참조).
+    const stop = onIntroDone(play);
+
+    // 마지막 안전장치 — 어떤 이유로든 신호가 오지 않아도 글자는 반드시 나온다.
+    const guard = setTimeout(play, REVEAL_FAILSAFE);
+
+    return () => {
+      stop();
+      clearTimeout(guard);
+    };
   }, [scopeRef]);
 }

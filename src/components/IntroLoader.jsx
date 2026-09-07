@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import { INTRO_DONE, INTRO_TIMEOUT } from "../lib/intro";
+import { INTRO_TIMEOUT, markIntroDone } from "../lib/intro";
 
 /**
  * 인트로 로딩 화면 — 요청으로 tympanus.net/Development/IntroTrailEffect 의
  * 도입부를 옮겼다(55.md). 화면을 먹색으로 덮고 가운데에서 퍼센트가 올라가다가,
  * 다 받으면 위로 걷히며 히어로에 신호를 보낸다.
  *
- * 히어로와는 window 의 INTRO_DONE 이벤트로만 이어져 있다 — 서로를 직접 알지 않는다.
+ * 히어로와는 markIntroDone / onIntroDone 으로만 이어져 있다 — 서로를 직접 알지 않는다.
  * 이 화면을 건너뛰는 경우(재방문·모션 최소화)에도 같은 이벤트를 바로 쏘므로,
  * 히어로 쪽은 "언제 오든 이벤트가 오면 등장한다" 하나만 지키면 된다.
  *
@@ -52,7 +52,7 @@ export default function IntroLoader() {
 
   useEffect(() => {
     if (skip) {
-      window.dispatchEvent(new Event(INTRO_DONE));
+      markIntroDone();
       return undefined;
     }
 
@@ -94,7 +94,7 @@ export default function IntroLoader() {
           yPercent: -100,
           duration: 1.1,
           ease: "power4.inOut",
-          onStart: () => window.dispatchEvent(new Event(INTRO_DONE)),
+          onStart: markIntroDone,
         })
         .set(root.current, { display: "none" });
     };

@@ -9,6 +9,35 @@
 export const INTRO_DONE = "intro:done";
 
 /**
+ * 신호가 이미 지나갔는지 기억한다.
+ *
+ * 로딩 화면(App 의 <IntroLoader />)이 히어로가 든 <main> 보다 앞에 있어서,
+ * 화면을 건너뛸 때는 히어로가 수신 등록을 마치기 전에 신호가 날아간다.
+ * 그러면 글자가 숨은 채로 영영 남는다 — 실제로 그렇게 사라졌었다.
+ * 그래서 이벤트만 쓰지 않고 "이미 끝났음"을 여기에 남긴다.
+ */
+let passed = false;
+
+/** 로딩이 끝났음을 알린다. */
+export function markIntroDone() {
+  passed = true;
+  window.dispatchEvent(new Event(INTRO_DONE));
+}
+
+/**
+ * 끝나면 콜백을 부른다. 이미 끝났으면 그 자리에서 바로 부른다.
+ * 정리 함수를 돌려주므로 그대로 useEffect 에서 반환하면 된다.
+ */
+export function onIntroDone(callback) {
+  if (passed) {
+    callback();
+    return () => {};
+  }
+  window.addEventListener(INTRO_DONE, callback, { once: true });
+  return () => window.removeEventListener(INTRO_DONE, callback);
+}
+
+/**
  * 글자 하나가 들어오는 모습 — tympanus.net/Development/FancyLetterAnimation 의
  * inAnimation 값(translateY -30 → 0, 900ms, easeOutElastic / opacity 500ms)을 옮겼다.
  * anime.js 의 elasticity 600 은 gsap 에서 elastic.out 의 진폭·주기로 바꿔 잡는다.
@@ -36,27 +65,7 @@ export const FADE_IN = { duration: 0.8, ease: "power3.out" };
 export const INTRO_TIMEOUT = 4000;
 
 /**
- * 글자 테두리 세 겹 — 데모의 effect 2 · 4 색 그대로.
- *
- * 데모는 얇은 것부터 쌓아 굵은 것이 앞을 덮지만, 그러면 색이 하나만 보인다.
- * 그래서 굵은 것을 뒤에 깔아 세 색이 동심원처럼 다 보이게 뒤집어 쌓는다.
- *
- * 데모 굵기는 10 / 4 / 1 인데 그건 알파벳 한 줄 획 기준이다. 한글은 획이 촘촘해
- * 그대로 쓰면 속공간이 메워져 뭉갠다. 비율은 지키고 크기만 이 값으로 줄인다.
+ * 신호가 끝내 오지 않아도 글자는 나와야 한다. 이 시간(ms)이 지나면 그냥 보여준다.
+ * 로딩 화면의 자체 제한(INTRO_TIMEOUT)보다 넉넉하게 잡는다.
  */
-export const STROKE_SCALE = 0.3;
-const w = (n) => n * STROKE_SCALE;
-
-/** 초록 카피(좋아하는 일은 / 애정을,)가 쓰는 색. */
-export const LAYERS_EFFECT_2 = [
-  { color: "var(--color-letter2-back)", width: w(10) },
-  { color: "var(--color-letter2-mid)", width: w(4) },
-  { color: "var(--color-letter2-front)", width: w(1) },
-];
-
-/** 빨강 카피(맡은 임무는 / 책임감을)가 쓰는 색. */
-export const LAYERS_EFFECT_4 = [
-  { color: "var(--color-letter4-back)", width: w(10) },
-  { color: "var(--color-letter4-mid)", width: w(4) },
-  { color: "var(--color-letter4-front)", width: w(1) },
-];
+export const REVEAL_FAILSAFE = 6000;
