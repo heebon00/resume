@@ -20,13 +20,17 @@ import useIntroReveal from "../lib/useIntroReveal";
  *   3. 인물 사진 — 판 위에 얹어 블렌드에서 빼낸다(색이 섞이면 안 되니까).
  * 원리와 수치는 index.css 의 .hero-fill 주석 참조.
  *
- * 배치는 앞서 잡아 둔 것을 그대로 쓴다 — 카피를 가운데 쌓고 그 아래 사진,
+ * 배치는 앞서 잡아 둔 것을 그대로 쓴다 — 카피를 가운데, 그 아래 사진,
  * 200% · 300% 태그는 각각 "애정을," 과 "책임감을" 앞에 붙는다(모바일과 같은 배치).
  * 원래 시안 배치(사진 가운데 · 흰 배경 · 초록/빨강 카피)는 git 이력에 남아 있다.
  *
- * [등장 연출]
- * 글자 하나하나가 위에서 탄성을 받아 떨어진다. 로딩 화면이 끝나며 보내는
- * INTRO_DONE 신호를 받아 시작한다 — lib/useIntroReveal.js.
+ * [등장 연출 — 2026-09-07 추가, 요청으로 자리 교체 방식으로 수정]
+ * 참고 사이트(treethemes brave, 55.md)처럼 "좋아하는 일은 200% 애정을," 이
+ * 3D로 접혔다 펴지며 나와 잠깐 머문 뒤, 그 자리에서 접혀 사라지고 같은
+ * 자리에 "맡은 임무는 300% 책임감" 이 펴지며 나타난다. 두 구간은
+ * data-intro-group="1"/"2" 로 묶고, grid 로 같은 칸에 겹쳐 둬야
+ * "그 자리에서" 바뀐다 — 자세한 타이밍은 lib/useIntroReveal.js 참조.
+ * 로딩 화면이 끝나며 보내는 INTRO_DONE 신호를 받아 시작한다.
  */
 
 // 태그는 시안 크기 그대로면 사진 옆에서 너무 커서 줄여 붙인다.
@@ -51,7 +55,6 @@ const PHOTO_LEFT = Math.round((1920 - PHOTO_W) / 2);
 function Tag({ label, width, height, fontSize, tilt }) {
   return (
     <span
-      data-intro-fade
       className="inline-block shrink-0"
       style={{ transform: `rotate(${tilt}deg)` }}
     >
@@ -126,41 +129,54 @@ export default function Hero() {
             {HERO.labelRight}
           </SlicedText>
 
-          {/* 카피 — 가운데로 쌓는다. 줄간격 0.9 는 참고 사이트 값이다. */}
+          {/* 카피 — 가운데로 쌓는다. 줄간격 0.9 는 참고 사이트 값이다.
+              두 구간을 grid 로 같은 칸에 겹쳐 놓는다 — "좋아하는 일은 200%
+              애정을," 이 사라진 자리에 "맡은 임무는 300% 책임감" 이 나타나도록
+              (요청, lib/useIntroReveal.js 참조). */}
           <h1
-            className="absolute left-0 w-1920 text-center font-display leading-[0.9] font-extrabold text-white"
+            className="absolute left-0 grid w-1920 text-center font-display leading-[0.9] font-extrabold text-white"
             style={box({ top: 110 })}
           >
-            <span className="block text-display-sm">
-              <Letters text={HERO.greenLines[0]} />
+            <span className="col-start-1 row-start-1" data-intro-group="1">
+              <span className="block text-display-sm" data-flip-line>
+                <Letters text={HERO.greenLines[0]} />
+              </span>
+
+              {/* 98:135 200% — "애정을," 앞 */}
+              <span
+                className="flex items-center justify-center gap-30 text-display-sm"
+                data-flip-line
+              >
+                <Tag
+                  label={HERO.greenTag}
+                  width={213.849}
+                  height={97.91}
+                  fontSize={78}
+                  tilt={-2.69}
+                />
+                <Letters text={HERO.greenLines[1]} />
+              </span>
             </span>
 
-            {/* 98:135 200% — "애정을," 앞 */}
-            <span className="flex items-center justify-center gap-30 text-display-sm">
-              <Tag
-                label={HERO.greenTag}
-                width={213.849}
-                height={97.91}
-                fontSize={78}
-                tilt={-2.69}
-              />
-              <Letters text={HERO.greenLines[1]} />
-            </span>
+            <span className="col-start-1 row-start-1" data-intro-group="2">
+              <span className="block text-display" data-flip-line>
+                <Letters text={HERO.redLines[0]} />
+              </span>
 
-            <span className="block text-display">
-              <Letters text={HERO.redLines[0]} />
-            </span>
-
-            {/* 98:120 300% — "책임감을" 앞. 기울기는 요청으로 200%(-2.69)와 통일 */}
-            <span className="flex items-center justify-center gap-30 text-display">
-              <Tag
-                label={HERO.redTag}
-                width={250.833}
-                height={100.529}
-                fontSize={88}
-                tilt={-2.69}
-              />
-              <Letters text={HERO.redLines[1]} />
+              {/* 98:120 300% — "책임감을" 앞. 기울기는 요청으로 200%(-2.69)와 통일 */}
+              <span
+                className="flex items-center justify-center gap-30 text-display"
+                data-flip-line
+              >
+                <Tag
+                  label={HERO.redTag}
+                  width={250.833}
+                  height={100.529}
+                  fontSize={88}
+                  tilt={-2.69}
+                />
+                <Letters text={HERO.redLines[1]} />
+              </span>
             </span>
           </h1>
 

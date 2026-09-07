@@ -66,35 +66,44 @@ export default function MobileHero() {
             </SlicedText>
           </div>
 
-          <h1 className="mt-32 font-display text-[calc(52*var(--u))] leading-display font-extrabold text-white">
-            <Letters text={HERO.greenLines[0]} />
-            <span className="mt-8 flex items-center gap-12">
-              <span
-                data-intro-fade
-                className="inline-flex shrink-0 -rotate-[2.69deg] items-center border-[length:calc(2*var(--u))] border-white px-12 py-6"
-              >
-                <span className="font-stencil text-[calc(36*var(--u))] leading-none font-extrabold">
-                  {HERO.greenTag}
-                </span>
+          {/* "좋아하는 일은 200% 애정을" 이 나와 잠깐 머문 뒤, 같은 자리에서
+              "맡은 임무는 300% 책임감" 으로 바뀐다 — grid 로 h1·p 를 같은 칸에
+              겹쳐야 "그 자리에서" 바뀐다(요청, lib/useIntroReveal.js 참조). */}
+          <div className="mt-32 grid">
+            <h1
+              data-intro-group="1"
+              className="col-start-1 row-start-1 font-display text-[calc(52*var(--u))] leading-display font-extrabold text-white"
+            >
+              <span className="block" data-flip-line>
+                <Letters text={HERO.greenLines[0]} />
               </span>
-              <Letters text={HERO.greenLines[1]} />
-            </span>
-          </h1>
+              <span className="mt-8 flex items-center gap-12" data-flip-line>
+                <span className="inline-flex shrink-0 -rotate-[2.69deg] items-center border-[length:calc(2*var(--u))] border-white px-12 py-6">
+                  <span className="font-stencil text-[calc(36*var(--u))] leading-none font-extrabold">
+                    {HERO.greenTag}
+                  </span>
+                </span>
+                <Letters text={HERO.greenLines[1]} />
+              </span>
+            </h1>
 
-          <p className="mt-28 font-display text-[calc(52*var(--u))] leading-display font-extrabold text-white">
-            <Letters text={HERO.redLines[0]} />
-            <span className="mt-8 flex items-center gap-12">
-              <span
-                data-intro-fade
-                className="inline-flex shrink-0 -rotate-[2.69deg] items-center border-[length:calc(2*var(--u))] border-white px-12 py-6"
-              >
-                <span className="font-stencil text-[calc(36*var(--u))] leading-none font-extrabold">
-                  {HERO.redTag}
-                </span>
+            <p
+              data-intro-group="2"
+              className="col-start-1 row-start-1 font-display text-[calc(52*var(--u))] leading-display font-extrabold text-white"
+            >
+              <span className="block" data-flip-line>
+                <Letters text={HERO.redLines[0]} />
               </span>
-              <Letters text={HERO.redLines[1]} />
-            </span>
-          </p>
+              <span className="mt-8 flex items-center gap-12" data-flip-line>
+                <span className="inline-flex shrink-0 -rotate-[2.69deg] items-center border-[length:calc(2*var(--u))] border-white px-12 py-6">
+                  <span className="font-stencil text-[calc(36*var(--u))] leading-none font-extrabold">
+                    {HERO.redTag}
+                  </span>
+                </span>
+                <Letters text={HERO.redLines[1]} />
+              </span>
+            </p>
+          </div>
         </div>
       </div>
 
