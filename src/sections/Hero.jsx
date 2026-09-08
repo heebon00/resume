@@ -81,12 +81,11 @@ function Tag({ label, width, height, fontSize, tilt }) {
       style={{ transform: `rotate(${tilt}deg)` }}
     >
       <span
-        className="flex items-center justify-center border-ink"
+        className="hero-tag-frame flex items-center justify-center"
         style={{
           width: s(width),
           height: s(height),
-          borderWidth: s(3),
-          borderStyle: "solid",
+          "--tag-border": s(3),
           paddingInline: s(12),
         }}
       >
@@ -104,9 +103,9 @@ function Tag({ label, width, height, fontSize, tilt }) {
 /** 글자 단위로 쪼갠다 — 등장 연출이 글자 하나씩 잡을 수 있도록. */
 function Letters({ text }) {
   return (
-    // 자간은 요청으로 조금 벌렸다(tracking-wide 0.025em). 태그(200%/300%)는
+    // 자간은 요청으로 벌렸다(tracking-wider 0.05em). 태그(200%/300%)는
     // 상자 폭이 고정이라 글자가 넘치므로 여기 글자 묶음에만 건다.
-    <span className="hero-copy-letters block tracking-wide">
+    <span className="hero-copy-letters block tracking-wider">
       {/* 읽히는 건 이 한 벌뿐이다. 쪼갠 글자는 전부 장식으로 둔다. */}
       <span className="sr-only">{text}</span>
       {[...text].map((char, i) => (
