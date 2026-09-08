@@ -57,6 +57,14 @@ const s = (n) => du(n * TAG_SCALE);
 // 잘린다.
 const TAG_BOX = { width: 213.849, height: 97.91, fontSize: 92 };
 
+// 카피·사진·버튼이 들어가는 안쪽 상자 높이 — 시안 원래 값은 888(피그마
+// 76:195). 요청으로 히어로 전체 높이를 살짝 줄인다. 안의 자리들이 전부
+// 이 값 기준(퍼센트 또는 이 값에서 뺀 계산)이라 여기 하나만 줄이면
+// 나머지가 그 비율로 따라 줄어든다. 아래 HERO_H·PHOTO.top·버튼 top 이
+// 전부 이 값을 쓴다 — Tailwind 정적 클래스(h-888 등)로는 이 값을 동적으로
+// 못 넣어서 그 자리는 box() 인라인 스타일로 바꿨다(아래 h1 감싸는 div 참조).
+const CONTENT_H = 820;
+
 // 사진 — 가운데, 원본 1099 x 744 의 가로세로비를 지킨다(요청으로 다시
 // 중앙으로). 카피는 오른쪽으로 옮겼다(아래 h1 참조).
 // 요청 — 캔버스(1920) 절반 너비, 가운데. 카피가 사진 위쪽 빈자리에 있어서
@@ -72,7 +80,7 @@ const PHOTO_W = 1050; // 요청 — 985 → 1050. 이 폭은 카피(오른쪽 �
 // 채운다(원본이 잘리지만 뭉개지진 않는다).
 const EXTRA_HEIGHT = 130;
 const PHOTO_HEIGHT = Math.round(PHOTO_W * (744 / 1099)) + EXTRA_HEIGHT;
-const PHOTO = { top: 888 - PHOTO_HEIGHT, height: PHOTO_HEIGHT };
+const PHOTO = { top: CONTENT_H - PHOTO_HEIGHT, height: PHOTO_HEIGHT };
 const PHOTO_LEFT = Math.round((1920 - PHOTO_W) / 2);
 
 // 히어로 배경을 GNB 바 바로 밑(66 = 바 높이)까지 끌어올린다 — 원래는 154 에서
@@ -82,7 +90,10 @@ const PHOTO_LEFT = Math.round((1920 - PHOTO_W) / 2);
 // 맞춰 둔 카피·라벨·버튼 자리가 하나도 안 움직인다.
 const HERO_TOP = 66;
 const HERO_SHIFT = 154 - HERO_TOP; // 88
-const HERO_H = 888 + HERO_SHIFT; // 976 — 아래 끝은 1042 로 그대로다.
+// CONTENT_H 를 줄인 만큼 아래 끝(NameBanner 가 이어 붙는 자리)도
+// 앞당겨지므로 NameBanner.jsx 의 top 도 같은 값(HERO_TOP + HERO_H)으로
+// 맞춰 둬야 한다.
+const HERO_H = CONTENT_H + HERO_SHIFT; // 908 — 아래 끝은 974 로 줄었다(원래 1042).
 
 /**
  * 200% · 300% 태그 — 카피 줄 앞에 붙는다("애정을" 앞 200% / "책임감을" 앞 300%).
@@ -195,7 +206,10 @@ export default function Hero() {
           {HERO.labelRight}
         </SlicedText>
 
-        <div className="hero-knockout absolute inset-x-0 top-88 h-888">
+        <div
+          className="hero-knockout absolute inset-x-0 top-88"
+          style={{ height: du(CONTENT_H) }}
+        >
           {/* 카피 — 요청으로 레이아웃을 다시 짰다: 사진을 기점으로 카피는
               사진 왼쪽, 버튼은 사진 오른쪽 — 예전처럼 카피·버튼이 같이
               오른쪽에 있다가 사진과 겹치는 방식이 아니다. 그래서 위치를
@@ -274,7 +288,7 @@ export default function Hero() {
           <div
             data-intro-fade
             className="absolute z-10 flex gap-24"
-            style={box({ right: 150, top: 888 - 64 - 56 })}
+            style={box({ right: 150, top: CONTENT_H - 64 - 56 })}
           >
             {HERO.buttons.map(({ label, href }) =>
               href ? (
