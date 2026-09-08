@@ -550,7 +550,9 @@ body {
 
   /* 배치 기준값 — 제목과 설명이 같은 값을 공유해야 설명이 제목 바로 아래에 붙는다. */
   --pfr-gutter: calc(150 * var(--u)); /* 좌우 여백 */
-  --pfr-title-top: 16vh; /* 제목 윗줄 위치 */
+  /* 제목 윗줄 위치 — 요청으로 화면 여백을 줄였다(16vh → 9vh). 아래줄의
+     bottom(.pfr-line--down)과 같은 값으로 두어야 위아래가 대칭이다. */
+  --pfr-title-top: 9vh;
   --pfr-title-size: min(14vh, calc(148 * var(--u)));
   --pfr-title-box: calc(var(--pfr-title-size) * 1.02); /* 행간 0.9 + 위아래 여백 0.06em */
   --pfr-desc-gap: calc(24 * var(--u)); /* 제목과 설명 사이 */
@@ -563,7 +565,7 @@ body {
 .pfr-lead {
   display: flex;
   align-items: center;
-  padding-block: calc(48 * var(--u)) calc(72 * var(--u));
+  padding-block: calc(24 * var(--u)) calc(36 * var(--u)); /* 요청으로 절반 */
   padding-inline: var(--pfr-lead-x);
 }
 
@@ -591,25 +593,30 @@ body {
   background-color: var(--color-paper);
 }
 
+/* 요청 — 화면이 비어 보여서 68vh → 76vh 로 키웠다. 왼쪽 .pfr-copy(오른쪽
+   끝 599)와 부딪히지 않는 선이다(세로형 왼쪽 끝 약 667). */
 .pfr-svg {
-  height: min(68vh, calc(760 * var(--u)));
+  height: min(76vh, calc(850 * var(--u)));
   width: auto;
   aspect-ratio: var(--pfr-frame, 5 / 7); /* 카드가 프레임을 지정하면 그 비율 */
 }
 
 /* 가로형 시안(예: iKEA 목업 1200x800) — 세로형과 같은 높이면 폭이 넘치므로 낮춘다. */
+/* 가로형은 같은 비율로 키우면 폭이 설명 글에 닿는다 — 46 → 52vh 까지만. */
 .pfr-svg--wide {
-  height: min(46vh, calc(500 * var(--u)));
+  height: min(52vh, calc(570 * var(--u)));
 }
 
 /* 2·3번(iKEA·YouTube Music) 이미지가 가로형이라 가운데 정렬하면 왼쪽 설명
-   글과 겹친다 — 요청으로 오른쪽으로 살짝 밀었다. margin 을 쓰는 이유:
+   글과 겹친다 — 요청으로 오른쪽으로 살짝 밀었다. 여백을 줄이며 이미지를
+   46 → 52vh 로 키운 만큼(폭 +100) 미는 값도 90 → 190 으로 늘렸다 —
+   그래야 설명 상자(오른쪽 끝 599)와 26 정도가 그대로 남는다. margin 을 쓰는 이유:
    GSAP 이 이 요소의 scale 을 transform 으로 직접 조작하므로, 여기서
    transform 을 쓰면 그 값을 덮어써 애니메이션이 깨진다.
    모바일은 이미지가 아래로 내려가 겹칠 일이 없어 아래 미디어쿼리에서 되돌린다. */
 .pfr-item:nth-of-type(2) .pfr-svg,
 .pfr-item:nth-of-type(3) .pfr-svg {
-  margin-left: calc(90 * var(--u));
+  margin-left: calc(190 * var(--u));
 }
 
 /* 이미지를 못 받아왔을 때 자리와 대체 텍스트 */
@@ -628,6 +635,7 @@ body {
 
 .pfr-index {
   position: absolute;
+  /* 4vh 로 내렸더니 고정 GNB 바(높이 66) 뒤로 숨었다 — 8vh 가 바를 피하는 값이다. */
   top: 8vh;
   right: var(--pfr-gutter);
   font-family: var(--font-condensed);
@@ -670,7 +678,7 @@ body {
 }
 
 .pfr-line--down {
-  bottom: 16vh;
+  bottom: 9vh; /* --pfr-title-top 과 같은 값 */
   right: var(--pfr-gutter);
 }
 
