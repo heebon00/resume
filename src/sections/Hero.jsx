@@ -57,8 +57,8 @@ const PHOTO_LEFT = Math.round((1920 - PHOTO_W) / 2);
 
 /**
  * 200% · 300% 태그 — 카피 줄 앞에 붙는다("애정을," 앞 200% / "책임감을" 앞 300%).
- * 메인 카피는 색이 흐르는 그라디언트(.hero-copy-letters)를 쓰지만, 태그는
- * 배지처럼 구분되게 진한 색(--color-ink) 그대로 둔다.
+ * 글자는 카피와 똑같이 색이 흐르는 그라디언트(.hero-copy-letters)를 쓴다(요청).
+ * 테두리만 배지처럼 구분되게 진한 색(--color-ink) 그대로 둔다.
  *
  * 시안의 안쪽 여백(px 31 · py 26)과 줄 높이(--leading-tag 47)를 그대로 쓰면
  * 글자가 상자를 뚫고 나온다 — 상자와 글자는 TAG_SCALE 로 줄었는데 --leading-tag 는
@@ -82,7 +82,7 @@ function Tag({ label, width, height, fontSize, tilt }) {
         }}
       >
         <span
-          className="font-stencil font-extrabold whitespace-nowrap text-ink uppercase"
+          className="hero-copy-letters font-stencil font-extrabold whitespace-nowrap uppercase"
           style={{ fontSize: s(fontSize), lineHeight: 1 }}
         >
           {label}
