@@ -21,8 +21,8 @@ import ProjectsReveal from "../ProjectsReveal";
  * 데스크톱과 달리 절대 좌표가 아니라 일반 문서 흐름으로 쌓는다.
  *
  * MY PROJECTS 앞에는 데스크톱과 같은 마스크 연출(ProjectsReveal)이 들어간다.
- * 자리도 데스크톱과 같게 맞춘다 — 경력 → 갤러리 → 연출 → MY projects 제목 →
- * 카드 순서다(요청으로 갤러리를 경력 바로 아래로 옮긴 뒤의 순서다).
+ * 자리도 데스크톱과 같게 맞춘다 — 경력 → "— MY projects" 제목 → 갤러리 →
+ * 4개 컷 → 카드 순서다(요청).
  * 그 안의 스테이지가 position:sticky 라 바깥 overflow 는 hidden 이 아니라
  * x축 clip 이어야 한다(overflow:hidden 은 스크롤 컨테이너를 만들어 sticky 를 죽인다).
  *
@@ -37,8 +37,7 @@ export default function MobilePage() {
       <MobileNameBanner />
       <MobileAbout />
       <MobileExperience />
-      <MobileGallery />
-      <ProjectsReveal variant="mobile" />
+      <ProjectsReveal variant="mobile" afterLead={<MobileGallery />} />
       <MobileProjects />
       <MobileMarquee />
       <MobileDesign />

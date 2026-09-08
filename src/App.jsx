@@ -97,12 +97,10 @@ export default function App() {
             </div>
           </div>
 
-          {/* 이미지 갤러리 — 요청으로 경험 바로 아래(스크롤 연출 앞)에 둔다.
-              캔버스 절대 좌표가 아니라 두 창 사이의 흐름 요소다. */}
-          <Gallery />
-
-          {/* MY PROJECTS 도입부 — 화면마다 마스크가 열리는 스크롤 연출 */}
-          <ProjectsReveal variant="desktop" />
+          {/* MY PROJECTS 도입부 — 화면마다 마스크가 열리는 스크롤 연출.
+              이미지 갤러리는 요청으로 그 들머리 제목("— MY projects") 다음,
+              첫 컷 앞에 넣는다. 캔버스 절대 좌표가 아니라 흐름 요소다. */}
+          <ProjectsReveal variant="desktop" afterLead={<Gallery />} />
 
           {/* 창 2 — 캔버스 SPLIT_Y ~ 끝. 안쪽 래퍼를 끌어올려 좌표계를 유지한다. */}
           <div

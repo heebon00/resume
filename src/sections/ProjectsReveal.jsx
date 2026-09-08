@@ -44,7 +44,11 @@ const MEDIA = {
   mobile: "(width < 80rem)",
 };
 
-export default function ProjectsReveal({ variant = "desktop" }) {
+/**
+ * afterLead — 들머리 제목("— MY projects") 바로 다음, 첫 컷 앞에 끼워 넣을 것.
+ * 요청으로 이미지 갤러리가 여기 들어간다(App.jsx / MobilePage.jsx 참조).
+ */
+export default function ProjectsReveal({ variant = "desktop", afterLead = null }) {
   const rootRef = useRef(null);
   const [failed, setFailed] = useState({});
 
@@ -151,6 +155,8 @@ export default function ProjectsReveal({ variant = "desktop" }) {
           <SectionHeading>{PROJECTS.heading}</SectionHeading>
         )}
       </div>
+
+      {afterLead}
 
       {PROJECTS.cards.map((card, index) => {
         const maskId = `pfr-${variant}-mask-${card.id}`;
