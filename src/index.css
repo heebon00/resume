@@ -575,21 +575,31 @@ body {
   line-height: 1.2;
 }
 
-/* 화면 하나가 차지하는 스크롤 길이. 100vh 는 스테이지가 화면에 붙어 있는
-   몫이므로 실제 연출 구간은 120vh 다. */
-.pfr-item {
+/* 핀 트랙 — ScrollTrigger 가 이 상자를 화면에 고정해 두고, 그 안의 카드를
+   한 장씩 넘긴다(JS 쪽 ProjectsReveal.jsx 참조). 높이는 항상 한 화면(100vh)
+   뿐이고, 스크롤이 실제로 지나가는 몫(카드 수 * 100vh)은 ScrollTrigger 가
+   pin 으로 만들어 붙인다. */
+.pfr-track {
   position: relative;
-  height: 220vh;
+  height: 100vh;
+  overflow: hidden;
+  background-color: var(--color-paper);
 }
 
-/* 화면에 붙어 있는 동안 스크롤 진행도만큼 마스크가 열린다.
-   sticky 라 스태킹 문맥이 생기므로, 제목의 difference 합성이 기댈 바탕색을
-   여기에 직접 깔아 준다(투명이면 흰 글자가 종이 위에서 안 보인다). */
+/* 카드는 트랙 안에 전부 같은 자리로 겹쳐 쌓인다 — 차례가 아니면
+   JS 가 autoAlpha:0 으로 숨긴다(움직임 줄이기에서는 아래 미디어쿼리가
+   position 을 되돌려 세로로 나란히 보여준다). */
+.pfr-item {
+  position: absolute;
+  inset: 0;
+}
+
+/* 제목의 difference 합성이 기댈 바탕색을 여기에 직접 깔아 준다
+   (투명이면 흰 글자가 종이 위에서 안 보인다). */
 .pfr-stage {
-  position: sticky;
-  top: 0;
+  position: relative;
   display: grid;
-  height: 100vh;
+  height: 100%;
   place-items: center;
   overflow: hidden;
   background-color: var(--color-paper);
@@ -807,10 +817,6 @@ body {
     padding-block: calc(24 * var(--u)) calc(40 * var(--u));
   }
 
-  .pfr-item {
-    height: 200vh;
-  }
-
   /* 이미지를 화면 아래쪽에 붙인다(place-items:center 를 세로만 덮어쓴다) */
   .pfr-stage {
     align-items: end;
@@ -861,8 +867,15 @@ body {
 /* 움직임 줄이기 — 스크롤 연출 없이 완성된 모습만 보여 주고,
    화면마다 100vh 를 더 스크롤하게 만들 이유도 없으므로 높이를 접는다. */
 @media (prefers-reduced-motion: reduce) {
+  /* JS(ProjectsReveal.jsx)가 아예 돌지 않으므로 pin·절대배치를 도로 풀어
+     카드를 세로로 나란히, 전부 열린 모습으로 보여준다. */
+  .pfr-track {
+    height: auto;
+    overflow: visible;
+  }
+
   .pfr-item {
-    height: auto !important;
+    position: static;
   }
 
   .pfr-stage {
