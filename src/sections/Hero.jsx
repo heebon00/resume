@@ -202,6 +202,38 @@ export default function Hero() {
             </span>
           </h1>
 
+          {/* 밑단 버튼(요청) — 프로젝트 카드의 "기획서보기" 와 같은 .btn-cyber
+              규격(h 40 · w 130 · gap 11)을 그대로 쓴다. 자리는 위쪽 CREATIVE
+              라벨을 아래로 뒤집은 값이다 — 왼쪽 여백 75 는 같고, 히어로
+              밑변에서 51 띄운다(라벨이 위에서 51 내려온 것과 같은 값). */}
+          <div
+            data-intro-fade
+            className="absolute flex gap-11"
+            style={box({ left: 75, top: 888 - 51 - 40 })}
+          >
+            {HERO.buttons.map(({ label, href }) =>
+              href ? (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-cursor="explore"
+                  className="btn-cyber flex h-40 w-130 cursor-pointer items-center justify-center rounded-button no-underline"
+                >
+                  {label}
+                </a>
+              ) : (
+                <span
+                  key={label}
+                  className="btn-cyber flex h-40 w-130 items-center justify-center rounded-button"
+                >
+                  {label}
+                </span>
+              ),
+            )}
+          </div>
+
         </div>
       </div>
 

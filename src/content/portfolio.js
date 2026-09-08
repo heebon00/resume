@@ -63,6 +63,12 @@ export const HERO = {
   redLines: ["맡은 임무는", "책임감을"],
   greenTag: "200%",
   redTag: "300%",
+  // 히어로 밑단 버튼(요청) — 프로젝트 카드의 "기획서보기" 와 같은 .btn-cyber
+  // 방식이다. href 가 비면 ProjectCard 와 같은 규칙으로 링크 없이 모양만 나온다.
+  buttons: [
+    { label: "RESUME", href: "" },
+    { label: "GITHUB", href: "https://github.com/heebon00" },
+  ],
   script: "creative",
   portraitAlt: "흰 셔츠를 입고 서 있는 인물",
 };
