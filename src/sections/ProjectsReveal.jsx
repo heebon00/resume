@@ -93,11 +93,13 @@ export default function ProjectsReveal({ variant = "desktop", afterLead = null }
             { attr: { r: rEnd }, duration: 0.75 },
             0,
           )
-            // 이미지는 살짝 커지며 밝아진다(데모와 같은 값).
+            // 이미지는 살짝 커지며 밝아진다. 원본 데모는 130% 인데, 배경에
+            // 옅은 색이 깔린 시안(YouTube Music 목업의 분홍 그라데이션)이
+            // 끝에서 하얗게 날아가서 요청으로 110% 로 낮췄다.
             .fromTo(
               image,
               { transformOrigin: "50% 50%", scale: 1, filter: "brightness(100%)" },
-              { scale: 1.12, filter: "brightness(130%)", duration: 1 },
+              { scale: 1.12, filter: "brightness(110%)", duration: 1 },
               0,
             )
             // 제목 두 줄은 가운데에서 위·아래 제자리로 벌어진다.
