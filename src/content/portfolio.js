@@ -56,9 +56,11 @@ export const HERO = {
   labelLeft: "Creative",
   labelRight: "PORTFOLIO",
   greenLines: ["좋아하는 일은", "애정을,"],
-  // 첫 줄 뒤의 공백 12칸은 시안(98:132)에 실제로 들어 있는 값이다.
-  // 가운데 정렬이라 이 공백이 글자를 왼쪽으로 당기며, 빼면 위치가 어긋난다.
-  redLines: ["맡은 임무는            ", "책임감을"],
+  // 시안(98:132)에는 첫 줄 뒤에 공백 12칸이 들어 있지만 여기서는 뺐다 —
+  // 카피 h1 은 text-right 인데, Letters 가 글자를 inline-block whitespace-pre
+  // 로 쪼개므로 그 공백이 폭 95u 짜리 빈 박스로 남아 두 구간의 오른쪽
+  // 정렬선을 139.5u 어긋나게 만들었다. docs/08_13_10.md 참조.
+  redLines: ["맡은 임무는", "책임감을"],
   greenTag: "200%",
   redTag: "300%",
   script: "creative",
