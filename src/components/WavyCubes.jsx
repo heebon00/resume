@@ -18,11 +18,12 @@ import * as THREE from "three";
  *      계산해 기둥 윗부분(y>0)을 그만큼 밀어 올린다. 여러 파동이 겹치면
  *      더해지지 않고 가중평균 — 그래야 무질서하게 안 튄다.
  *   4. 밀려 올라간 높이를 0~1로 정규화해 색을 입힌다 — 대기 상태(높이 0)는
- *      원본 그대로 흰색이고, 높이가 올라간 만큼만 사이트 팔레트 두 색
- *      (#D4183D 크림슨 → #EFFF58 라임, 요청)이 섞여 배어 나온다. 그래서
- *      안 움직이는 칸은 흰색, 마우스가 지나간 자리만 물든다. 예전엔
- *      HSL(hue)로 무지개 전체를 훑었는데, 지정된 두 색만 쓰도록 RGB
- *      mix() 로 바꿨다(아래 COLOR_A·COLOR_B 정의와 셰이더 참조).
+ *      원본 그대로 흰색이고, 높이가 올라간 만큼만 포인트 컬러 크림슨
+ *      (#D4183D, 요청 — "움직일 때 색은 이 색만")이 짙게 배어 나온다.
+ *      그래서 안 움직이는 칸은 흰색, 마우스가 지나간 자리만 물든다.
+ *      예전엔 HSL(hue)로 무지개 전체를 훑었고, 그 다음엔 라임(#EFFF58)과
+ *      섞었었는데, 지금은 이 한 색만 흰색과 mix() 한다(아래 COLOR_A
+ *      정의와 셰이더 참조).
  *   5. 마우스가 3초 넘게 안 움직이면 1.5초마다 임의의 자리에 궤적점을
  *      찍어 화면이 계속 살아있게 한다 — 마우스가 없는 모바일 터치·데스크톱
  *      무동작 상태에서도 파도가 저절로 인다.
@@ -58,14 +59,14 @@ const WAVE = {
   trailSpacing: 0.1,
 };
 
-// 색상 — 요청으로 사이트 팔레트의 두 색(#D4183D 크림슨 · #EFFF58 라임)만
-// 쓰도록 바꿨다. 예전엔 무지개(마젠타→주황)를 HSL 로 훑었는데, 이제는
-// 이 두 RGB 색 사이만 섞는다(아래 fragment 셰이더 mix() 참조) — 파도
-// 높이(t)에 따라 크림슨에서 라임으로 번진다. 대기 상태(t=0)는 원본
+// 색상 — 처음엔 사이트 팔레트의 두 색(#D4183D 크림슨 · #EFFF58 라임)을
+// 파도 높이에 따라 섞었는데, 요청으로 "움직일 때 색은 #D4183D 하나만"
+// 쓰도록 라임을 뺐다. 이제 파도가 지나가며 배어 나오는 색은 전부
+// 크림슨뿐이고, 진하기(대기 흰색 ↔ 크림슨)만 파도 높이(t)에 따라
+// 달라진다(아래 fragment 셰이더 mix() 참조). 대기 상태(t=0)는 원본
 // MeshPhongMaterial(white) 그대로 흰색 바탕을 지킨다("기본 배경은
 // 흰색이어야 한다"는 요청).
 const COLOR_A = [212 / 255, 24 / 255, 61 / 255]; // #D4183D
-const COLOR_B = [239 / 255, 255 / 255, 88 / 255]; // #EFFF58
 const BG_COLOR = new THREE.Color(0xffffff);
 
 /** 원본 Stage.js 의 onBeforeCompile 셰이더 주입을 그대로 옮긴 것. */
@@ -280,7 +281,6 @@ export default function WavyCubes({ className, style }) {
       shader.uniforms.uJitter = { value: WAVE.jitter };
       shader.uniforms.uMaxHeight = { value: WAVE.maxHeight };
       shader.uniforms.uColorA = { value: COLOR_A };
-      shader.uniforms.uColorB = { value: COLOR_B };
       shader.vertexShader = overrideVertexShader(shader.vertexShader);
       shader.fragmentShader = shader.fragmentShader
         .replace(
@@ -288,7 +288,6 @@ export default function WavyCubes({ className, style }) {
           `#include <common>
           varying float vHeight;
           uniform vec3 uColorA;
-          uniform vec3 uColorB;
           uniform float uMaxHeight;`,
         )
         .replace(
@@ -296,15 +295,13 @@ export default function WavyCubes({ className, style }) {
           `#include <color_fragment>
           float t = clamp( vHeight / uMaxHeight, 0.0, 1.0 );
           // 기본(대기, t=0)은 흰색으로 두고, 파도로 밀려 올라간 만큼(t)만
-          // uColorA(#D4183D)에서 uColorB(#EFFF58)로 섞인 색이 배어 나온다
-          // — 그래서 안 움직이는 칸은 흰색 그대로, 파도가 지나간 자리만 물든다.
-          // uColorA 가 포인트 컬러라는 요청으로, 둘을 반씩 섞지 않고 pow()
-          // 로 편향을 준다 — 낮거나 중간 높이 파도는 거의 uColorA(크림슨)만
-          // 보이고, 아주 높이 튄 파도의 꼭대기에서만 uColorB(라임)가 살짝
-          // 비친다.
-          float colorMix = pow( t, 2.4 );
-          vec3 waveColor = mix( uColorA, uColorB, colorMix );
-          diffuseColor.rgb = mix( vec3( 1.0 ), waveColor, t );`,
+          // uColorA(#D4183D) 크림슨이 배어 나온다 — 그래서 안 움직이는
+          // 칸은 흰색 그대로, 파도가 지나간 자리만 물든다. 색은 이
+          // 하나뿐이다(요청 — "움직일 때 색은 #D4183D 만"). 파도 꼭대기
+          // (t=1)에서 순색 크림슨까지 다 가면 너무 진해 부담스럽다는
+          // 요청으로, 섞이는 최대 강도를 0.6 으로 눌러 가장 높은 파도도
+          // 옅은 크림슨에서 멈춘다.
+          diffuseColor.rgb = mix( vec3( 1.0 ), uColorA, t * 0.6 );`,
         );
     };
 

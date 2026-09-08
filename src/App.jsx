@@ -33,6 +33,17 @@ const CANVAS_H = 6533; // 갤러리 이동(354) + 제목~카드(218) + MY DESIGN
 // 경력 표 바로 아래에서 자른다 — 더 내려 잡으면 연출 제목 앞에 빈 칸이 크게 생긴다.
 const SPLIT_Y = 2560;
 
+// 그리드(Projects, 2773~3616 정도)를 가려 둔 동안(SHOW_PROJECTS_GRID=false)
+// 만 쓰는 창2 시작점 — 요청("세번째 프로젝트 다음 여백 줄여줘")으로 추가.
+// 그리드가 보일 때는 창2가 SPLIT_Y(2560)부터 시작해 제목(2773) 앞에 213,
+// 카드 뒤에 Marquee(3726) 앞까지 110 의 원래 여백이 남는다. 그리드를
+// 가리면 그 사이(2560~3726, 총 1166)가 통째로 빈 캔버스라 스크롤
+// 연출 바로 다음에 여백만 크게 남았다. 그리드가 원래 있던 자리를 건너뛰고
+// 그 카드 바로 밑(3616 — 카드~Marquee 원래 여백 110 과 같은 값)에서
+// 시작하게 해서, 그리드가 있을 때와 같은 여백만 남기고 나머지는 없앤다.
+// 그리드를 다시 켜면 이 값은 안 쓰이고 원래 SPLIT_Y 로 돌아간다.
+const WINDOW2_START = SHOW_PROJECTS_GRID ? SPLIT_Y : 3616;
+
 /**
  * 원페이지 포트폴리오.
  *
@@ -106,14 +117,16 @@ export default function App() {
               첫 컷 앞에 넣는다. 캔버스 절대 좌표가 아니라 흐름 요소다. */}
           <ProjectsReveal variant="desktop" afterLead={<Gallery />} />
 
-          {/* 창 2 — 캔버스 SPLIT_Y ~ 끝. 안쪽 래퍼를 끌어올려 좌표계를 유지한다. */}
+          {/* 창 2 — 캔버스 WINDOW2_START ~ 끝. 안쪽 래퍼를 끌어올려 좌표계를
+              유지한다(그리드를 가린 동안은 WINDOW2_START 가 SPLIT_Y 보다
+              커서 그만큼 더 끌어올린다 — 위 WINDOW2_START 주석 참조). */}
           <div
             className="relative w-full overflow-hidden"
-            style={{ height: du(CANVAS_H - SPLIT_Y) }}
+            style={{ height: du(CANVAS_H - WINDOW2_START) }}
           >
             <div
               className="absolute inset-x-0"
-              style={{ top: du(-SPLIT_Y), height: du(CANVAS_H) }}
+              style={{ top: du(-WINDOW2_START), height: du(CANVAS_H) }}
             >
               {SHOW_PROJECTS_GRID && <Projects />}
               <Marquee />

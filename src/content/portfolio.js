@@ -145,7 +145,7 @@ export const PROJECTS = {
       titleLines: ["AI Video Creator", "Editor & Director"],
       descriptionLines: [
         "2026 _ SOLO PROJECT",
-        "작업 기간: 2주 (26.06.22~26.07.01)",
+        "작업 기간: 2주 (26.06.18~26.07.01)",
         "주요기술: Google Flow, PREMIERE PRO,",
         "                 AFTER EFFECTS",
         "기획 의도: League of Legends 2026 MSI in 대전 홍보영상 ",

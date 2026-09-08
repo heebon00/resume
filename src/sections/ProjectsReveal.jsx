@@ -106,6 +106,12 @@ export default function ProjectsReveal({ variant = "desktop", afterLead = null }
           el: item,
           index,
           image: item.querySelector("[data-pfr-image]"),
+          // 프레임(.pfr-svg, overflow:hidden) — 1번 카드는 요청으로 이
+          // 박스 자체를 키웠다 줄인다(아래 buildEnterTimeline 참조). 안의
+          // <img> 만 키우면 프레임 밖으로 나온 부분이 잘려서 "이미지 안에서
+          // 확대"로 보인다 — 참고 사이트(treethemes brave 메인 사진)처럼
+          // 사진 자체가 커 보이려면 프레임째로 키워야 한다.
+          imageWrap: item.querySelector("[data-pfr-svg]"),
           upChars: [...item.querySelectorAll("[data-pfr-up] [data-pfr-char]")],
           downChars: [
             ...item.querySelectorAll("[data-pfr-down] [data-pfr-char]"),
@@ -114,6 +120,11 @@ export default function ProjectsReveal({ variant = "desktop", afterLead = null }
           buttons: item.querySelector("[data-pfr-buttons]"),
         }));
 
+        // 프레임째로 확대됐다 돌아오는 효과(아래 buildEnterTimeline 참조)를
+        // 쓰는 카드 — 처음엔 1번만이었는데 요청으로 3번도 추가했다("이거
+        // 너무 좋다"). 2번(iKEA)은 기존 그대로(단순 확대) 둔다.
+        const ZOOM_FRAME_INDEXES = new Set([0, 2]);
+
         // 시작은 전부 숨겨 둔다 — enter() 가 자기 차례에 연다. 이미지·글자의
         // "닫힌" 모습(아래 buildEnterTimeline 의 fromTo 시작값과 같다)도
         // 여기서 한 번에 못박아 둔다 — 이유는 buildEnterTimeline 의
@@ -121,7 +132,14 @@ export default function ProjectsReveal({ variant = "desktop", afterLead = null }
         // 튀는" 버그).
         for (const part of parts) {
           gsap.set(part.el, { autoAlpha: 0 });
-          gsap.set(part.image, { yPercent: -12, scale: 0.92, opacity: 0 });
+          if (ZOOM_FRAME_INDEXES.has(part.index)) {
+            // 프레임(imageWrap)이 스케일을 맡으므로 <img> 자신은 스케일
+            // 없이 슬라이드·페이드만 가진다.
+            gsap.set(part.image, { yPercent: -12, opacity: 0 });
+            gsap.set(part.imageWrap, { scale: 0.92 });
+          } else {
+            gsap.set(part.image, { yPercent: -12, scale: 0.92, opacity: 0 });
+          }
           gsap.set(part.upChars, { rotateY: 80, xPercent: -70, opacity: 0 });
           gsap.set(part.downChars, { rotateY: -80, xPercent: 70, opacity: 0 });
           gsap.set(part.desc, { y: 24, opacity: 0 });
@@ -154,23 +172,23 @@ export default function ProjectsReveal({ variant = "desktop", afterLead = null }
           // 목표로만 가므로 이런 역행이 없다. 대신 맨 처음(한 번도 연 적
           // 없는 최초 상태)의 시작 모습은 위 mount 시점 gsap.set 이
           // 대신 맡는다 — 여기 목표값과 그 set 값이 서로 짝이다.
-          // 1번(AI Video Creator) 만 요청으로 "적절히 확대됐다가 원래
-          // 크기로 돌아오는" 효과를 쓴다 — ease 를 back.out 으로 바꾸면
-          // GSAP 이 목표(scale:1)를 넘어 살짝 커졌다가(overshoot) 다시
-          // 그 목표로 되돌아온다, 별도 트윈 두 단계로 안 쪼개도 한 번의
-          // to() 로 된다. 2·3번은 기존 그대로(단순 확대, power3.out).
-          if (part.index === 0) {
-            tl.to(
-              part.image,
-              {
-                yPercent: 0,
-                scale: 1,
-                opacity: 1,
-                duration: 1.1,
-                ease: "back.out(1.9)",
-              },
-              0,
-            );
+          // 1·3번(AI Video Creator·YouTube Music, ZOOM_FRAME_INDEXES) 만
+          // 요청으로 "이미지만 확대됐다 다시 돌아오는" 효과를 쓴다 — 참고:
+          // treethemes brave 메인 사진처럼 사진 자체가 커 보여야 한다
+          // (요청으로 정정 — 처음엔 <img> 만 키웠더니 프레임(.pfr-svg,
+          // overflow:hidden)에 잘려 "이미지 안에서" 확대되는 걸로 보였다).
+          // 그래서 스케일을 <img> 가 아니라 프레임(imageWrap)에 건다 —
+          // 프레임째로 커지니 잘리지 않고 화면에서 실제로 사진이 커
+          // 보인다. <img> 자신은 슬라이드·페이드(yPercent·opacity)만
+          // 맡는다.
+          // 처음 400%까지 키웠더니 너무 과했다(요청) — 참고 사이트의 실제
+          // 폭은 은은한 정도라, 1.12배(12%)까지만 커졌다가(0~0.45) 원래
+          // 크기로 돌아온다(0.45~0.95). 3번도 같은 효과가 좋다는 요청으로
+          // 그대로 재사용한다. 2번(iKEA)은 기존 그대로(단순 확대).
+          if (ZOOM_FRAME_INDEXES.has(part.index)) {
+            tl.to(part.image, { yPercent: 0, opacity: 1, duration: 0.45, ease: "power2.out" }, 0);
+            tl.to(part.imageWrap, { scale: 1.12, duration: 0.45, ease: "power2.out" }, 0);
+            tl.to(part.imageWrap, { scale: 1, duration: 0.5, ease: "power3.inOut" }, 0.45);
           } else {
             tl.to(part.image, { yPercent: 0, scale: 1, opacity: 1, duration: 0.9 }, 0);
           }
@@ -372,6 +390,7 @@ export default function ProjectsReveal({ variant = "desktop", afterLead = null }
                   <p className="pfr-fallback">{shot.alt}</p>
                 ) : (
                   <div
+                    data-pfr-svg
                     className={`pfr-svg${wide ? " pfr-svg--wide" : ""}`}
                     style={{ "--pfr-frame": `${frame.w} / ${frame.h}` }}
                   >
