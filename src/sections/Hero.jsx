@@ -64,6 +64,15 @@ const PHOTO_HEIGHT = Math.round(PHOTO_W * (744 / 1099));
 const PHOTO = { top: 888 - PHOTO_HEIGHT, height: PHOTO_HEIGHT };
 const PHOTO_LEFT = Math.round((1920 - PHOTO_W) / 2);
 
+// 히어로 배경을 GNB 바 바로 밑(66 = 바 높이)까지 끌어올린다 — 원래는 154 에서
+// 시작해서 바와 히어로 사이에 흰 띠 88 이 보였다(요청으로 없앴다).
+// 늘어난 만큼은 배경(큐브)만 차지하고, 글자 층과 사진은 HERO_SHIFT 만큼
+// 아래로 밀어 원래 캔버스 좌표(154 기준)를 그대로 지킨다 — 그래야 지금까지
+// 맞춰 둔 카피·라벨·버튼 자리가 하나도 안 움직인다.
+const HERO_TOP = 66;
+const HERO_SHIFT = 154 - HERO_TOP; // 88
+const HERO_H = 888 + HERO_SHIFT; // 976 — 아래 끝은 1042 로 그대로다.
+
 /**
  * 200% · 300% 태그 — 카피 줄 앞에 붙는다("애정을," 앞 200% / "책임감을" 앞 300%).
  * 글자는 카피와 똑같이 색이 흐르는 그라디언트(.hero-copy-letters)를 쓴다(요청).
@@ -130,13 +139,16 @@ export default function Hero() {
     <section
       ref={root}
       id="hero"
-      className="absolute top-154 left-0 h-888 w-1920 overflow-hidden"
+      className="absolute left-0 w-1920 overflow-hidden"
+      style={box({ top: HERO_TOP, height: HERO_H })}
     >
       {/* 1 · 2겹 — 물결치는 큐브 배경과 그 위의 글자 층 */}
       <div className="hero-fill absolute inset-0">
         <WavyCubes className="hero-scene" />
 
-        <div className="hero-knockout absolute inset-0">
+        {/* 글자 층은 늘어나기 전 자리(154 ~ 1042)에 그대로 둔다 — 안쪽
+            좌표(top-51 · top-1/2 · 밑단 버튼)가 전부 이 888 상자 기준이다. */}
+        <div className="hero-knockout absolute inset-x-0 top-88 h-888">
           {/* 폰트를 21→24로 키우면서 상자가 좁아 SlicedText 조각(clip-path 가 상자
               폭 기준 %)이 글자 일부를 잘라먹었다 — 요청대로 안쪽으로 당기고
               상자도 넉넉하게 키웠다. */}
@@ -251,7 +263,7 @@ export default function Hero() {
         className="absolute overflow-hidden"
         style={box({
           left: PHOTO_LEFT,
-          top: PHOTO.top,
+          top: PHOTO.top + HERO_SHIFT,
           width: PHOTO_W,
           height: PHOTO.height,
         })}
