@@ -151,7 +151,15 @@ export default function Hero() {
     <section
       ref={root}
       id="hero"
-      className="absolute left-0 w-1920 overflow-hidden"
+      // left-0 → left-1/2 -translate-x-1/2(요청, "헤더 이미지도 항상
+      // 중간에"): 짧은 화면에서 --u 가 vh 상한에 걸리면(위 index.css
+      // "히어로 전용 --u 상한" 참조) 이 섹션의 실제 폭(1920*u)이 뷰포트
+      // 폭보다 좁아진다 — left-0 로 왼쪽에 고정돼 있으면 남는 여백이 전부
+      // 오른쪽에만 몰려 사진(과 히어로 전체)이 화면 가운데가 아니라
+      // 왼쪽으로 쏠려 보였다. 가운데 정렬로 바꾸면 그 여백이 양옆에
+      // 고르게 남는다. 폭이 뷰포트와 똑같은(letterbox 가 없는) 보통
+      // 상황에서는 두 방식이 같은 자리라 차이가 없다.
+      className="absolute left-1/2 w-1920 -translate-x-1/2 overflow-hidden"
       style={box({ top: HERO_TOP, height: HERO_H })}
     >
       {/* 1 · 2겹 — 물결치는 큐브 배경과 그 위의 글자 층 */}
