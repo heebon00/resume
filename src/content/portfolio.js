@@ -96,9 +96,9 @@ export const EXPERIENCE = {
   heading: "MY Work Experience",
   subheading: "Work Experience",
   rows: [
-    { id: "exp-1", index: "", title: "경주시청 기획예산과(청년인턴)", year: "2009" },
+    { id: "exp-1", index: "", title: "경주시청 기획예산과(청년인턴)", year: "2009~2009" },
     { id: "exp-2", index: "", title: "국민연금(청년인턴)", year: "2011~2012" },
-    { id: "exp-3", index: "", title: "재능교육 경주지국 (CS)", year: "~2016" },
+    { id: "exp-3", index: "", title: "재능교육 경주지국 (CS)", year: "2015~2016" },
     { id: "exp-4", index: "", title: "경주시청 (기간제)", year: "2017~2021" },
     { id: "exp-5", index: "", title: "메가스터디 잇츠 리얼 타임 스터디카페 (선임 서포터즈)", year: "2023~2025" },
   ],
