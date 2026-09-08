@@ -5,7 +5,8 @@ import { PROJECTS } from "../content/portfolio";
 
 /**
  * MY PROJECTS — 피그마 20:1247 "Process Section" (섹션 x=-4, y=3378)
- *   20:1249 div.row  캔버스 left 370, top 3408, 1246 x 780
+ *   20:1249 div.row  캔버스 left 370, top 3054(시안 3408 — 갤러리를 위로
+ *   옮기면서 그 자리 354 를 메웠다), 1246 x 780
  * 아래 카드 좌표는 모두 div.row 기준이다.
  *   제목은 20:1250 으로 분리돼 캔버스 (353.98, 2773.36) 에 따로 놓인다.
  *   카드 1 (20:1252, y 119.36)  썸네일 30.96 / 150.03, 제목 209.98 / 150.36,
@@ -119,7 +120,7 @@ export default function Projects() {
       <div
         className="absolute"
         data-reveal
-        style={box({ left: 370, top: 3408, width: 1246, height: 780 })}
+        style={box({ left: 370, top: 3054, width: 1246, height: 780 })}
       >
         {CARDS.map((card) => (
           <ProjectCard

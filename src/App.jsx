@@ -23,7 +23,7 @@ import ContactUs from "./components/ContactUs";
 const MENU_ID = "mobile-menu";
 
 // 데스크톱 캔버스 높이(피그마 Main Content 20:971)
-const CANVAS_H = 7711;
+const CANVAS_H = 7357; // 갤러리를 흐름으로 빼면서 아래 섹션이 354 씩 올라갔다.
 // 캔버스를 자르는 선. 위쪽 마지막 요소는 MY WORK EXPERIENCE(1968+557=2525),
 // 아래쪽 첫 요소는 MY PROJECTS 제목(2773.36) 이라 그 사이는 비어 있다.
 // 경력 표 바로 아래에서 자른다 — 더 내려 잡으면 연출 제목 앞에 빈 칸이 크게 생긴다.
@@ -97,6 +97,10 @@ export default function App() {
             </div>
           </div>
 
+          {/* 이미지 갤러리 — 요청으로 경험 바로 아래(스크롤 연출 앞)에 둔다.
+              캔버스 절대 좌표가 아니라 두 창 사이의 흐름 요소다. */}
+          <Gallery />
+
           {/* MY PROJECTS 도입부 — 화면마다 마스크가 열리는 스크롤 연출 */}
           <ProjectsReveal variant="desktop" />
 
@@ -109,7 +113,6 @@ export default function App() {
               className="absolute inset-x-0"
               style={{ top: du(-SPLIT_Y), height: du(CANVAS_H) }}
             >
-              <Gallery />
               <Projects />
               <Marquee />
               <MyDesign />

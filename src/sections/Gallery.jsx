@@ -1,5 +1,5 @@
 import SafeImage from "../components/SafeImage";
-import { box, du } from "../lib/design";
+import { du } from "../lib/design";
 import { GALLERY } from "../content/portfolio";
 
 /**
@@ -27,9 +27,12 @@ const GAP = 43; // 시안 슬롯 간격(약 129)의 1/3
 const SPEED = 80; // 디자인 px / 초 — 키워드 마퀴와 같은 속도
 const VIEW_W = 1920;
 
-// 시안 띠(2886, 높이 558.8) 안에서 세로 가운데에 둔다. 주변 좌표는 그대로다.
-const BAND_TOP = 2886;
+// 시안 띠(20:1207)는 높이 558.8 이고 그 안에서 이미지가 세로 가운데였다.
+// 요청으로 자리를 MY WORK EXPERIENCE 바로 아래(스크롤 연출 앞)로 옮기면서
+// 캔버스 절대 좌표를 버리고 흐름 요소가 됐다 — 위아래 여백은 시안 띠에서
+// 이미지를 뺀 값의 절반씩으로 그대로 가져온다.
 const BAND_H = 558.8;
+const BAND_PAD = (BAND_H - ITEM_H) / 2;
 
 const ITEMS = GALLERY.map((item) => ({
   ...item,
@@ -46,17 +49,17 @@ export default function Gallery() {
   if (!ITEMS.length) return null;
 
   return (
-    <section id="gallery" aria-label="작업 이미지 갤러리">
+    <section
+      id="gallery"
+      aria-label="작업 이미지 갤러리"
+      className="relative w-full"
+      style={{ paddingBlock: du(BAND_PAD) }}
+    >
       <div
-        className="absolute overflow-hidden"
+        className="relative w-full overflow-hidden"
         data-reveal
         data-cursor="drag"
-        style={box({
-          left: 0,
-          top: BAND_TOP + (BAND_H - ITEM_H) / 2,
-          width: VIEW_W,
-          height: ITEM_H,
-        })}
+        style={{ height: du(ITEM_H) }}
       >
         <div
           className="marquee-track flex w-max items-center"
