@@ -148,24 +148,27 @@ export default function Hero() {
 
         {/* 글자 층은 늘어나기 전 자리(154 ~ 1042)에 그대로 둔다 — 안쪽
             좌표(top-51 · top-1/2 · 밑단 버튼)가 전부 이 888 상자 기준이다. */}
+        {/* 좌우 라벨 — 요청으로 CREATIVE 위 빈 자리를 없앴다. 아래 글자 층
+            (원래 888 상자)이 아니라 섹션 기준으로 두고 GNB 바(높이 66) 바로
+            밑에 붙인다. 20 은 두 라벨의 원래 간격차(51 : 54)를 그대로 지킨 값이다.
+            폰트를 21→24로 키우면서 상자가 좁아 SlicedText 조각(clip-path 가 상자
+            폭 기준 %)이 글자 일부를 잘라먹었다 — 요청대로 안쪽으로 당기고
+            상자도 넉넉하게 키웠다. */}
+        <SlicedText
+          data-intro-fade
+          className="hero-knockout absolute top-20 left-75 h-30 w-125 font-sans text-nav font-extrabold text-ink uppercase"
+        >
+          {HERO.labelLeft}
+        </SlicedText>
+
+        <SlicedText
+          data-intro-fade
+          className="hero-knockout absolute top-23 left-1705 h-30 w-150 font-sans text-nav leading-nav font-extrabold text-ink uppercase"
+        >
+          {HERO.labelRight}
+        </SlicedText>
+
         <div className="hero-knockout absolute inset-x-0 top-88 h-888">
-          {/* 폰트를 21→24로 키우면서 상자가 좁아 SlicedText 조각(clip-path 가 상자
-              폭 기준 %)이 글자 일부를 잘라먹었다 — 요청대로 안쪽으로 당기고
-              상자도 넉넉하게 키웠다. */}
-          <SlicedText
-            data-intro-fade
-            className="absolute top-51 left-75 h-30 w-125 font-sans text-nav font-extrabold text-ink uppercase"
-          >
-            {HERO.labelLeft}
-          </SlicedText>
-
-          <SlicedText
-            data-intro-fade
-            className="absolute top-54 left-1705 h-30 w-150 font-sans text-nav leading-nav font-extrabold text-ink uppercase"
-          >
-            {HERO.labelRight}
-          </SlicedText>
-
           {/* 카피 — 사진은 가운데 아래쪽에 크게 두고(요청), 카피는 오른쪽
               가장자리에 붙여 화면 세로 한가운데에 둔다(요청, top-1/2 +
               -translate-y-1/2 — 두 구간의 높이가 달라도 가운데가 안 흔들린다).
