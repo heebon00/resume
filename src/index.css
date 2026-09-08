@@ -992,17 +992,18 @@ body {
 }
 
 /* ===========================================================================
-   히어로 글자 채움 — 요청으로 tympanus.net/Tutorials/AnimatedTextFills/index19
-   ("Text with mix-blend-mode and box-shadow animation")를 옮겼다(55.md).
+   히어로 배경 — arkon.digital 의 "wavy-cubes" 참고(55.md 후속 요청,
+   "심플이즈베스트"). 실제 3D(WebGL) 정육면체 격자가 물결친다 —
+   components/WavyCubes.jsx 참조. 배경은 밝게 둔다(요청으로 검정 배경은
+   버렸다).
 
-   원리: 뒤에 커다란 색 원들을 box-shadow 로 깔아 두고 색을 돌린다. 그 위에
-   "검은 판 + 흰 글자"를 얹고 mix-blend-mode: darken 을 건다.
-   판(검정)은 뒤의 색보다 어두우니 그대로 검게 남고, 글자(흰색)는 뒤의 색보다
-   밝으니 뒤가 이긴다 — 그래서 글자 자리에만 색이 흐른다.
-
-   원 격자는 데모의 vmax 대신 우리 캔버스 단위로 다시 잡았다.
-   간격 300 · 번짐 200 · 퍼짐 200 으로 8 x 4 = 32 개면 1920 x 888 을 덮는다.
-   색은 데모 팔레트 그대로이고, 한 칸씩 밀며 도는 것도 같다.
+   [지운 것] 전에는 "검은 판 + 흰 글자를 mix-blend-mode: darken 으로 겹쳐
+   글자 자리에만 색이 비치는" 넉아웃 기법을 썼다. 물방울처럼 화면 군데군데
+   떠 있는(글자와 안 겹치는 자리가 많은) 배경에 그 기법을 쓰면 글자 없는
+   자리가 전부 검은 판에 덮여 배경이 안 보이는 문제가 있었다 — 그래서
+   걷어냈고, 배경도 밝게 바꾼 지금은 애초에 그 판(검정 전제)이 맞지 않는다.
+   "색이 바뀌는" 글자 연출은 이제 .hero-copy-title 의 CSS 그라디언트
+   애니메이션이 대신한다(아래).
    =========================================================================== */
 /* 자리 잡는 방식(absolute / relative)은 쓰는 쪽의 유틸리티 클래스가 정한다.
    여기서 position 을 지정하면 안 된다 — 이 파일이 Tailwind 유틸리티보다 뒤에
@@ -1010,207 +1011,54 @@ body {
    높이 0 이 되면서 overflow:hidden 에 전부 잘려 나간다(실제로 그렇게 사라졌었다). */
 .hero-fill {
   overflow: hidden;
-  /* 이 안에서만 블렌드가 일어나게 가둔다 — 바깥 배경까지 섞이면 안 된다. */
   isolation: isolate;
+  /* 큐브가 안 덮는 자리는 이 색으로 남는다. */
+  background: var(--color-paper-alt);
 }
 
-/* 크기 0 인 점 하나에 그림자만 잔뜩 달아 원을 그린다(데모와 같은 수법). */
-.hero-fill::before {
-  content: "";
+.hero-scene {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  box-shadow:
-    calc(0 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) purple,
-    calc(300 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) violet,
-    calc(600 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) teal,
-    calc(900 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) orangered,
-    calc(1200 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) yellow,
-    calc(1500 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) crimson,
-    calc(1800 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) yellowgreen,
-    calc(2100 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) orange,
-    calc(0 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) darkturquoise,
-    calc(300 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) pink,
-    calc(600 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) steelblue,
-    calc(900 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) turquoise,
-    calc(1200 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) coral,
-    calc(1500 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) skyblue,
-    calc(1800 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) darkviolet,
-    calc(2100 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) gold,
-    calc(0 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) darkslateblue,
-    calc(300 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) purple,
-    calc(600 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) violet,
-    calc(900 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) teal,
-    calc(1200 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) orangered,
-    calc(1500 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) yellow,
-    calc(1800 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) crimson,
-    calc(2100 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) yellowgreen,
-    calc(0 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) orange,
-    calc(300 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) darkturquoise,
-    calc(600 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) pink,
-    calc(900 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) steelblue,
-    calc(1200 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) turquoise,
-    calc(1500 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) coral,
-    calc(1800 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) skyblue,
-    calc(2100 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) darkviolet;
-  animation: hero-fill-cells 2.5s linear infinite;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
 }
 
-/* 검은 판 + 흰 글자. 글자 자리에만 뒤의 색이 비친다. */
+/* 카피 · 라벨 · 태그가 든 글자 층 — 큐브 배경 위에 진한 색으로 얹는다.
+   .hero-knockout 은 모바일에서 position 이 없어(자연스러운 흐름 배치)
+   .hero-scene(positioned)보다 페인트 순서상 먼저 그려진다 — 그냥 두면
+   큐브가 이 글자 층을 통째로 덮어버린다. .hero-scene 의 음수 z-index 가
+   (.hero-fill 이 isolation:isolate 라 이 안에서만 통한다) 이 층을 항상
+   큐브 위에 그려지게 한다. */
 .hero-knockout {
-  background: #000;
-  color: #fff;
-  mix-blend-mode: darken;
+  color: var(--color-ink);
+}
+
+/* 메인 카피만 색이 흐르는 그라디언트로 채운다("글자 효과는 색깔 바뀌는
+   걸로" 요청) — background-position 을 애니메이션해 팔레트가 계속
+   지나가게 한다. 라벨·태그는 진한 색 그대로 둔다. */
+.hero-copy-title {
+  background: linear-gradient(
+    90deg,
+    #f27fb0,
+    #5fb4ec,
+    #9d6eea,
+    #f27fb0
+  );
+  background-size: 300% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: hero-title-shift 6s linear infinite;
+}
+
+@keyframes hero-title-shift {
+  to {
+    background-position: 300% 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-fill::before {
+  .hero-copy-title {
     animation: none;
-  }
-}
-
-@keyframes hero-fill-cells {
-  25% {
-    box-shadow:
-    calc(0 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) violet,
-    calc(300 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) teal,
-    calc(600 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) orangered,
-    calc(900 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) yellow,
-    calc(1200 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) crimson,
-    calc(1500 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) yellowgreen,
-    calc(1800 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) orange,
-    calc(2100 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) darkturquoise,
-    calc(0 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) pink,
-    calc(300 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) steelblue,
-    calc(600 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) turquoise,
-    calc(900 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) coral,
-    calc(1200 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) skyblue,
-    calc(1500 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) darkviolet,
-    calc(1800 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) gold,
-    calc(2100 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) darkslateblue,
-    calc(0 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) purple,
-    calc(300 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) violet,
-    calc(600 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) teal,
-    calc(900 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) orangered,
-    calc(1200 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) yellow,
-    calc(1500 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) crimson,
-    calc(1800 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) yellowgreen,
-    calc(2100 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) orange,
-    calc(0 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) darkturquoise,
-    calc(300 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) pink,
-    calc(600 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) steelblue,
-    calc(900 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) turquoise,
-    calc(1200 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) coral,
-    calc(1500 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) skyblue,
-    calc(1800 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) darkviolet,
-    calc(2100 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) gold;
-  }
-  50% {
-    box-shadow:
-    calc(0 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) teal,
-    calc(300 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) orangered,
-    calc(600 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) yellow,
-    calc(900 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) crimson,
-    calc(1200 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) yellowgreen,
-    calc(1500 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) orange,
-    calc(1800 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) darkturquoise,
-    calc(2100 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) pink,
-    calc(0 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) steelblue,
-    calc(300 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) turquoise,
-    calc(600 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) coral,
-    calc(900 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) skyblue,
-    calc(1200 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) darkviolet,
-    calc(1500 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) gold,
-    calc(1800 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) darkslateblue,
-    calc(2100 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) purple,
-    calc(0 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) violet,
-    calc(300 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) teal,
-    calc(600 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) orangered,
-    calc(900 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) yellow,
-    calc(1200 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) crimson,
-    calc(1500 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) yellowgreen,
-    calc(1800 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) orange,
-    calc(2100 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) darkturquoise,
-    calc(0 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) pink,
-    calc(300 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) steelblue,
-    calc(600 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) turquoise,
-    calc(900 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) coral,
-    calc(1200 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) skyblue,
-    calc(1500 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) darkviolet,
-    calc(1800 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) gold,
-    calc(2100 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) darkslateblue;
-  }
-  75% {
-    box-shadow:
-    calc(0 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) orangered,
-    calc(300 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) yellow,
-    calc(600 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) crimson,
-    calc(900 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) yellowgreen,
-    calc(1200 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) orange,
-    calc(1500 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) darkturquoise,
-    calc(1800 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) pink,
-    calc(2100 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) steelblue,
-    calc(0 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) turquoise,
-    calc(300 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) coral,
-    calc(600 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) skyblue,
-    calc(900 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) darkviolet,
-    calc(1200 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) gold,
-    calc(1500 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) darkslateblue,
-    calc(1800 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) purple,
-    calc(2100 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) violet,
-    calc(0 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) teal,
-    calc(300 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) orangered,
-    calc(600 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) yellow,
-    calc(900 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) crimson,
-    calc(1200 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) yellowgreen,
-    calc(1500 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) orange,
-    calc(1800 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) darkturquoise,
-    calc(2100 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) pink,
-    calc(0 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) steelblue,
-    calc(300 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) turquoise,
-    calc(600 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) coral,
-    calc(900 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) skyblue,
-    calc(1200 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) darkviolet,
-    calc(1500 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) gold,
-    calc(1800 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) darkslateblue,
-    calc(2100 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) purple;
-  }
-  100% {
-    box-shadow:
-    calc(0 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) yellow,
-    calc(300 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) crimson,
-    calc(600 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) yellowgreen,
-    calc(900 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) orange,
-    calc(1200 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) darkturquoise,
-    calc(1500 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) pink,
-    calc(1800 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) steelblue,
-    calc(2100 * var(--u)) calc(0 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) turquoise,
-    calc(0 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) coral,
-    calc(300 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) skyblue,
-    calc(600 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) darkviolet,
-    calc(900 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) gold,
-    calc(1200 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) darkslateblue,
-    calc(1500 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) purple,
-    calc(1800 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) violet,
-    calc(2100 * var(--u)) calc(300 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) teal,
-    calc(0 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) orangered,
-    calc(300 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) yellow,
-    calc(600 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) crimson,
-    calc(900 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) yellowgreen,
-    calc(1200 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) orange,
-    calc(1500 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) darkturquoise,
-    calc(1800 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) pink,
-    calc(2100 * var(--u)) calc(600 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) steelblue,
-    calc(0 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) turquoise,
-    calc(300 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) coral,
-    calc(600 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) skyblue,
-    calc(900 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) darkviolet,
-    calc(1200 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) gold,
-    calc(1500 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) darkslateblue,
-    calc(1800 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) purple,
-    calc(2100 * var(--u)) calc(900 * var(--u)) calc(200 * var(--u)) calc(200 * var(--u)) violet;
   }
 }
