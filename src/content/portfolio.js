@@ -16,10 +16,6 @@ import musicApp from "../assets/images/gallery-music-app.webp";
 import webRedesign from "../assets/images/gallery-web-redesign.webp";
 import ikeaMockup from "../assets/images/project-ikea-mockup.webp";
 import youtubeMusicMockup from "../assets/images/project-youtube-music-mockup.png";
-import darkBuilding from "../assets/images/design-dark-building.webp";
-import dubaiSkyline from "../assets/images/design-dubai-skyline.webp";
-import resort from "../assets/images/design-resort.webp";
-import whiteCurve from "../assets/images/design-white-curve.webp";
 // 임시 목업 — MY DESIGN 카드에 들어갈 실제 이미지가 정해지기 전까지 쓰는 자리표시 이미지다.
 // 확정되면 아래 4개 import 와 DESIGN.cards 의 src·alt 를 실제 이미지로 되돌린다.
 import designMock01 from "../assets/images/design-mock-01.svg";
@@ -32,16 +28,15 @@ import gitLogo from "../assets/images/skill-git.webp";
 import photoshop from "../assets/images/skill-photoshop.webp";
 import premierePro from "../assets/images/skill-premiere-pro.webp";
 
+// MY DESIGN 용 design-*.webp 넉 장은 2026-09-08 삭제됐다 — import 만 돼 있고
+// 화면에서는 임시 목업(designMock01~04)을 쓰고 있어서 참조를 함께 걷어냈다.
+// 새 이미지를 넣을 때 여기 다시 추가하면 된다. docs/08_16_47.md 참조.
 export const IMAGES = {
   aboutPortrait,
   portrait,
   greenhouse,
   musicApp,
   webRedesign,
-  darkBuilding,
-  dubaiSkyline,
-  resort,
-  whiteCurve,
 };
 
 /* --- 이름 배너 (110:2 Header, 1920 x 186) -------------------------------- */
