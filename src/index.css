@@ -565,7 +565,9 @@ body {
 .pfr-lead {
   display: flex;
   align-items: center;
-  padding-block: calc(24 * var(--u)) calc(36 * var(--u)); /* 요청으로 절반 */
+  /* 위 72 — 요청으로 제목을 조금 내렸다(24 → 72).
+     아래 24 — 뒤따르는 갤러리와의 간격을 줄인 값이다(36 → 24). */
+  padding-block: calc(72 * var(--u)) calc(24 * var(--u));
   padding-inline: var(--pfr-lead-x);
 }
 

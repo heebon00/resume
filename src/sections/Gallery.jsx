@@ -33,6 +33,9 @@ const VIEW_W = 1920;
 // 이미지를 뺀 값의 절반씩으로 그대로 가져온다.
 const BAND_H = 558.8;
 const BAND_PAD = (BAND_H - ITEM_H) / 2;
+// 위쪽만 따로 — 바로 위 "— MY projects" 제목과의 간격을 줄여 달라는 요청.
+// 아래쪽은 첫 컷(전체 화면)과 붙지 않게 시안 값 그대로 둔다.
+const PAD_TOP = 76;
 
 const ITEMS = GALLERY.map((item) => ({
   ...item,
@@ -53,7 +56,7 @@ export default function Gallery() {
       id="gallery"
       aria-label="작업 이미지 갤러리"
       className="relative w-full"
-      style={{ paddingBlock: du(BAND_PAD) }}
+      style={{ paddingTop: du(PAD_TOP), paddingBottom: du(BAND_PAD) }}
     >
       <div
         className="relative w-full overflow-hidden"
