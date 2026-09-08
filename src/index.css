@@ -1071,3 +1071,12 @@ body {
     animation: none;
   }
 }
+
+/* 히어로 밑단 버튼 — 스크롤 연출의 .pfr-swipe 를 그대로 쓰되, 도입부라
+   조금 크게 키운다(요청). 글자는 히어로 상단 라벨과 같은 --text-nav(24) 로
+   두고, 높이와 좌우 여백은 원래 비율(40 : 16)을 지켜 56 : 24 로 키웠다. */
+.hero-cta {
+  height: calc(56 * var(--u));
+  padding-inline: calc(24 * var(--u));
+  font-size: var(--text-nav);
+}

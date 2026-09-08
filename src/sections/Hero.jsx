@@ -204,14 +204,18 @@ export default function Hero() {
 
           {/* 밑단 버튼(요청) — 스크롤 연출(ProjectsReveal)에 나오는 것과 같은
               .pfr-swipe 버튼이다(요청으로 사이버펑크 노란 버튼에서 바꿨다).
-              높이 40 · 좌우 여백 16 · 간격 8 은 .pfr-buttons 값 그대로다.
-              자리는 위쪽 CREATIVE
-              라벨을 아래로 뒤집은 값이다 — 왼쪽 여백 75 는 같고, 히어로
-              밑변에서 51 띄운다(라벨이 위에서 51 내려온 것과 같은 값). */}
+              간격 8 은 .pfr-buttons 값 그대로고, 크기만 .hero-cta 로 키웠다
+              (요청, index.css 참조).
+              가로 자리 — 요청으로 오른쪽으로 당겼다. 사진이 글자 층 위에
+              그려지므로(아래 3겹 참조) 사진 왼쪽 끝(PHOTO_LEFT)을 넘기면
+              버튼이 사진 뒤로 숨는다. 그래서 거기 딱 붙는 데까지만 당기고
+              오른쪽 끝을 사진 왼쪽 끝에 맞춘다.
+              세로 자리 — 히어로 밑변에서 51 띄운다(위쪽 CREATIVE 라벨이
+              위에서 51 내려온 것과 같은 값). */}
           <div
             data-intro-fade
             className="absolute flex gap-8"
-            style={box({ left: 75, top: 888 - 51 - 40 })}
+            style={box({ right: 1920 - PHOTO_LEFT, top: 888 - 51 - 56 })}
           >
             {HERO.buttons.map(({ label, href }) =>
               href ? (
@@ -220,14 +224,14 @@ export default function Hero() {
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="pfr-swipe cursor-pointer no-underline"
+                  className="pfr-swipe hero-cta cursor-pointer no-underline"
                 >
                   {label}
                 </a>
               ) : (
                 <span
                   key={label}
-                  className="pfr-swipe"
+                  className="pfr-swipe hero-cta"
                 >
                   {label}
                 </span>
