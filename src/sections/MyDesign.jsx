@@ -8,7 +8,7 @@ import { DESIGN } from "../content/portfolio";
 
 /**
  * MY DESIGN — 피그마 20:1295 "Projects Section" (섹션 y=4695.23)
- *   20:1296 div.ld-container  캔버스 left 390, top 4401.23(시안 4755.23 - 354), 1170 x 638
+ *   20:1296 div.ld-container  캔버스 left 390, top 4183.23(시안 4755.23 - 572), 1170 x 638
  *     20:1300 왼쪽 칼럼 390  제목 "— MY Design"(40px SemiBold, leading 33.92) +
  *                            필터 목록 5개 + "See more" 링크
  *     20:1331 오른쪽 칼럼 780  20:1332 div.carousel-items(1154, pl 50)
@@ -116,7 +116,7 @@ export default function MyDesign() {
       <div
         className="absolute"
         data-reveal
-        style={box({ left: 390, top: 4401.23, width: 1170, height: 638 })}
+        style={box({ left: 390, top: 4183.23, width: 1170, height: 638 })}
       >
         {/* 20:1300 왼쪽 칼럼 */}
         <div

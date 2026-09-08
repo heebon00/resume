@@ -23,7 +23,7 @@ import ContactUs from "./components/ContactUs";
 const MENU_ID = "mobile-menu";
 
 // 데스크톱 캔버스 높이(피그마 Main Content 20:971)
-const CANVAS_H = 7357; // 갤러리를 흐름으로 빼면서 아래 섹션이 354 씩 올라갔다.
+const CANVAS_H = 7139; // 갤러리를 흐름으로 빼고(354) 제목~카드 간격을 줄이며(218) 올라간 만큼.
 // 캔버스를 자르는 선. 위쪽 마지막 요소는 MY WORK EXPERIENCE(1968+557=2525),
 // 아래쪽 첫 요소는 MY PROJECTS 제목(2773.36) 이라 그 사이는 비어 있다.
 // 경력 표 바로 아래에서 자른다 — 더 내려 잡으면 연출 제목 앞에 빈 칸이 크게 생긴다.

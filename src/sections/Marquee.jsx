@@ -4,7 +4,7 @@ import { box, du } from "../lib/design";
 
 /**
  * 키워드 마퀴 — 피그마 20:1670 "Skills Marquee" (섹션 x=25, y=4218)
- *   20:1671 div.ld-container  캔버스 left -72, top 3944(시안 4298 - 354), 2144 x 333.39
+ *   20:1671 div.ld-container  캔버스 left -72, top 3726(시안 4298 - 572), 2144 x 333.39
  *   각 줄(20:1673 / 20:1701 / 20:1735)의 뷰포트는 left -15 부터 1950 폭이라
  *   캔버스 기준 left -87, 높이 96.13, overflow clip. 줄 간격 111.13.
  *   태그 위치는 flickity 슬라이더 오프셋(줄마다 -176.09 / -1795.95 / -132.01)을
@@ -98,7 +98,7 @@ export default function Marquee() {
           data-reveal
           style={box({
             left: -87,
-            top: 3944 + row.top,
+            top: 3726 + row.top,
             width: 1950,
             height: 96.13,
           })}
