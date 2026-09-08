@@ -18,12 +18,26 @@ gsap.registerPlugin(ScrollTrigger);
  * 스크롤하는 동안 마스크가 서서히 열리는 방식)은 스크롤 4번 = 화면 4번
  * 넘기기라 느리고 장황했다. 지금은 전체를 한 화면(100vh)에 고정하고,
  * 그 위에서 스크롤 진행도만큼 "현재 프로젝트 인덱스"만 넘긴다 —
- * ScrollTrigger 의 pin + snap 으로 화면을 붙박고, 인덱스가 바뀔 때만
- * 이전 프로젝트를 끄고 다음 프로젝트를 켠다(교차 전환).
+ * ScrollTrigger 의 pin 으로 화면을 붙박고, 인덱스가 바뀔 때만 이전
+ * 프로젝트를 끄고 다음 프로젝트를 켠다(교차 전환). snap 은 걸지 않는다 —
+ * 스크롤을 멈춰도 GSAP 이 자리를 스스로 보정하며 화면이 저절로 더 넘어가는
+ * 게 사용자에게는 "안 건드렸는데 넘어간다"로 보였다(요청으로 뺌).
+ * 딱 스크롤한 만큼만 인덱스가 움직인다.
  *
- * 마스크 서클(OnScrollFilter, tympanus.net/Development/OnScrollFilter,
- * 소스 직접 확인 2026-09-02)은 그대로 남겨 "열리는" 인상을 준다 — 다만
- * 이제는 자기 스크롤 위치가 아니라 "지금 이 프로젝트 차례인가"에 반응한다.
+ * [전환 방식 — 요청으로 원형 마스크(OnScrollFilter)를 걷어냈다]
+ * 처음에는 마스크 서클이 열리는 연출이었는데, 참고 사이트 메인 화면과 똑같이
+ * 해 달라는 요청을 받았다. 그 사이트 CSS(@keyframes bb3d-front/bb3d-back,
+ * 소스 직접 확인)는 세로축(rotateX·아래에서 위로) 플립이었는데, 실제로 보이는
+ * 텍스트는 아래가 아니라 양옆에서 생기고 사라진다는 재확인을 받아 축을
+ * 가로(rotateY)로 바꿔 옮겼다 — 글자 하나하나가 Y축으로 접히듯 뒤집히며
+ * 나타나고 사라진다. 왼쪽 줄(up)은 왼쪽에서, 오른쪽 줄(down)은 오른쪽에서
+ * 들어오고, 나갈 때도 들어온 쪽으로 그대로 되접혀 빠진다("양옆에서 생기고
+ * 사라진다"). 그래서:
+ *   - 제목 두 줄의 글자를 한 자씩 <span data-pfr-char> 로 쪼개고, 각 글자를
+ *     살짝 시차(stagger)를 두고 순서대로 뒤집는다 — 참고 사이트의
+ *     --text-3d-rotate-delay 값과 같은 방식.
+ *   - 썸네일은 위에서 살짝 내려오며(yPercent) 축소된 상태(scale 0.92)에서
+ *     원래 크기로 커진다 — 마스크 없이 사각 프레임 그대로 드러난다.
  *
  * 내용은 content/portfolio.js 의 PROJECTS.cards 를 그대로 쓴다(카드와 같은 정보·이미지).
  *
@@ -41,18 +55,25 @@ gsap.registerPlugin(ScrollTrigger);
  * 전체 화면 컷이 시작되면 갑작스러워서, 들어가는 자리를 알려 주는 몫이다.
  */
 
-// 기본 프레임 — 갤러리 이미지가 세로형이라 5:7 뷰박스에 잘라 넣는다.
+// 기본 프레임 비율 — 갤러리 이미지가 세로형이라 5:7 로 잘라 넣는다.
 // 카드가 reveal.frame 을 주면(가로형 시안 등) 그 비율을 대신 쓴다.
 const FRAME = { w: 1000, h: 1400 };
-
-// 마스크 원이 프레임 모서리까지 덮으려면 대각선의 절반보다 커야 한다.
-const maskEnd = ({ w, h }) => Math.ceil((Math.hypot(w, h) / 2) * 1.03);
 
 // 캔버스별 적용 폭 — 1280(80rem)이 데스크톱/모바일 경계다(index.css 와 같은 값).
 const MEDIA = {
   desktop: "(min-width: 80rem)",
   mobile: "(width < 80rem)",
 };
+
+// 제목을 한 글자씩 <span> 으로 쪼갠다 — 3D 플립을 글자 단위로 걸기 위함.
+// 빈칸은 폭이 꺼지지 않도록 줄바꿈 없는 공백으로 바꾼다.
+function splitChars(text) {
+  return [...text].map((ch, i) => (
+    <span className="pfr-char" data-pfr-char key={i}>
+      {ch === " " ? " " : ch}
+    </span>
+  ));
+}
 
 /**
  * afterLead — 들머리 제목("— MY projects") 바로 다음, 첫 컷 앞에 끼워 넣을 것.
@@ -79,102 +100,161 @@ export default function ProjectsReveal({ variant = "desktop", afterLead = null }
         if (!track || count < 1) return undefined;
 
         // 프로젝트마다 손댈 부분을 미리 모아 둔다 — 인덱스가 바뀔 때마다
-        // querySelector 를 새로 하지 않는다.
-        const parts = items.map((item) => {
-          const mask = item.querySelector("[data-pfr-mask]");
-          return {
-            el: item,
-            mask,
-            // 최종 반지름은 마크업의 기본값(= 다 열린 상태)에서 읽는다.
-            rEnd: mask.getAttribute("r"),
-            image: item.querySelector("[data-pfr-image]"),
-            up: item.querySelector("[data-pfr-up]"),
-            down: item.querySelector("[data-pfr-down]"),
-            desc: item.querySelector("[data-pfr-desc]"),
-            buttons: item.querySelector("[data-pfr-buttons]"),
-          };
-        });
+        // querySelector 를 새로 하지 않는다. 제목 두 줄은 나오는/들어가는
+        // 쪽(왼쪽·오른쪽)이 서로 반대라 글자 목록을 따로 모은다.
+        const parts = items.map((item) => ({
+          el: item,
+          image: item.querySelector("[data-pfr-image]"),
+          upChars: [...item.querySelectorAll("[data-pfr-up] [data-pfr-char]")],
+          downChars: [
+            ...item.querySelectorAll("[data-pfr-down] [data-pfr-char]"),
+          ],
+          desc: item.querySelector("[data-pfr-desc]"),
+          buttons: item.querySelector("[data-pfr-buttons]"),
+        }));
 
-        // 시작은 전부 닫힌 채로 숨겨 둔다 — enter() 가 자기 차례에 연다.
+        // 시작은 전부 숨겨 둔다 — enter() 가 자기 차례에 연다.
         for (const part of parts) {
           gsap.set(part.el, { autoAlpha: 0 });
-          gsap.set(part.mask, { attr: { r: 0 } });
         }
 
         let activeIndex = -1;
         let activeTween = null;
 
-        // 마스크가 열리며(가장자리는 SVG 필터가 일렁이게 만든다) 이미지가
-        // 살짝 커지고 밝아지고, 제목 두 줄이 위·아래 제자리로 벌어진 뒤
-        // 설명·버튼이 뒤따라 올라온다 — 순서는 이전 버전과 같다. 원본 데모는
-        // 밝기 130% 인데, 옅은 색이 깔린 시안(YouTube Music 목업의 분홍
-        // 그라데이션)이 끝에서 하얗게 날아가서 요청으로 110% 로 낮췄다.
+        // 글자가 하나씩 시차를 두고 Y축으로 접히며 나타난다 — 왼쪽 줄(up)은
+        // 왼쪽에서, 오른쪽 줄(down)은 오른쪽에서 온다("양옆에서 생기고
+        // 사라진다", 요청 확인). 썸네일은 위에서 살짝 내려오며 커진다.
+        // paused 로 만들어 둔다 — enter() 는 이걸 그대로 재생시키고, 첫
+        // 컷은 아래 firstReveal 이 스크롤 진행도에 맞춰 이 타임라인의
+        // progress() 를 직접 문지른다(scrub).
+        function buildEnterTimeline(part) {
+          const tl = gsap.timeline({
+            paused: true,
+            defaults: { ease: "power3.out" },
+          });
+
+          tl.fromTo(
+            part.image,
+            { yPercent: -12, scale: 0.92, opacity: 0 },
+            { yPercent: 0, scale: 1, opacity: 1, duration: 0.9 },
+            0,
+          );
+          tl.fromTo(
+            part.upChars,
+            { rotateY: 80, xPercent: -70, opacity: 0 },
+            {
+              rotateY: 0,
+              xPercent: 0,
+              opacity: 1,
+              duration: 0.5,
+              stagger: 0.025,
+            },
+            0.05,
+          );
+          tl.fromTo(
+            part.downChars,
+            { rotateY: -80, xPercent: 70, opacity: 0 },
+            {
+              rotateY: 0,
+              xPercent: 0,
+              opacity: 1,
+              duration: 0.5,
+              stagger: 0.025,
+            },
+            0.05,
+          );
+
+          // 부연설명 — 스크램블 효과를 시도했다가(gabrielcontassot.com 참고)
+          // 요청으로 뺐다. 다른 큰 텍스트(제목·버튼)와 같은 방식, 살짝
+          // 아래에서 올라오며 옅게 나타나는 것으로 통일한다.
+          tl.fromTo(
+            part.desc,
+            { y: 24, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.3 },
+            0.4,
+          );
+
+          tl.fromTo(
+            part.buttons,
+            { y: 24, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.3 },
+            0.5,
+          );
+
+          return tl;
+        }
+
         function enter(part) {
           gsap.set(part.el, { autoAlpha: 1 });
           activeTween?.kill();
-          activeTween = gsap
-            .timeline({ defaults: { ease: "power2.out" } })
-            .fromTo(
-              part.mask,
-              { attr: { r: 0 } },
-              { attr: { r: part.rEnd }, duration: 0.75, ease: "none" },
-              0,
-            )
-            .fromTo(
-              part.image,
-              {
-                transformOrigin: "50% 50%",
-                scale: 1,
-                filter: "brightness(100%)",
-              },
-              { scale: 1.12, filter: "brightness(110%)", duration: 0.9 },
-              0,
-            )
-            .fromTo(
-              part.up,
-              { yPercent: 120, opacity: 0 },
-              { yPercent: 0, opacity: 1, duration: 0.6 },
-              0.05,
-            )
-            .fromTo(
-              part.down,
-              { yPercent: -120, opacity: 0 },
-              { yPercent: 0, opacity: 1, duration: 0.6 },
-              0.05,
-            )
-            .fromTo(
-              part.desc,
-              { y: 24, opacity: 0 },
-              { y: 0, opacity: 1, duration: 0.3 },
-              0.35,
-            )
-            .fromTo(
-              part.buttons,
-              { y: 24, opacity: 0 },
-              { y: 0, opacity: 1, duration: 0.3 },
-              0.45,
-            );
+          activeTween = buildEnterTimeline(part).play();
         }
 
-        // 자리를 넘겨준 프로젝트는 빠르게 사라지고, 다시 차례가 오면 처음부터
-        // 열리도록 마스크를 도로 닫아 둔다.
+        // 자리를 넘겨준 프로젝트는 들어온 쪽으로 그대로 되접혀 빠진다
+        // (up 은 왼쪽으로, down 은 오른쪽으로).
         function leave(part) {
-          gsap.to(part.el, {
-            autoAlpha: 0,
-            duration: 0.35,
-            ease: "power1.out",
-            onComplete: () => gsap.set(part.mask, { attr: { r: 0 } }),
-          });
+          gsap
+            .timeline({
+              defaults: { ease: "power2.in" },
+              onComplete: () => gsap.set(part.el, { autoAlpha: 0 }),
+            })
+            .to(
+              part.upChars,
+              { rotateY: 80, xPercent: -70, opacity: 0, duration: 0.3, stagger: 0.015 },
+              0,
+            )
+            .to(
+              part.downChars,
+              { rotateY: -80, xPercent: 70, opacity: 0, duration: 0.3, stagger: 0.015 },
+              0,
+            )
+            .to(part.image, { scale: 0.94, opacity: 0, duration: 0.3 }, 0)
+            .to(part.desc, { opacity: 0, duration: 0.2 }, 0)
+            .to(part.buttons, { opacity: 0, duration: 0.2 }, 0);
         }
 
         function goTo(index) {
+          // 방어 — progress 가 0 미만/1 초과로 튀는 순간(레이아웃이 아직
+          // 자리잡는 중일 때 등) index 가 범위를 벗어나면 parts[index] 가
+          // undefined 라 여기서 조용히 죽는다. 그러면 activeIndex 가
+          // 갱신되기 전에 멈춰서 화면 전체가 빈 채로 남는다 — 실제로 겪은
+          // 버그라 범위를 여기서 한 번 더 못박는다.
+          index = Math.max(0, Math.min(parts.length - 1, index));
           if (index === activeIndex) return;
           if (activeIndex >= 0) leave(parts[activeIndex]);
           enter(parts[index]);
           activeIndex = index;
         }
 
-        goTo(0);
+        // goTo(0) 을 마운트하자마자, 혹은 핀이 걸리자마자 부르지 않는다.
+        // 전자는 사용자가 스크롤로 실제 들어오기도 전에 첫 컷이 이미 다
+        // 열린 "정적인" 모습으로 기다리고 있게 되고, 후자는 트랙이 화면
+        // 아래에서 올라오는 동안 안의 카드가 전부 숨은 채라 흰 배경만
+        // 한참 보인다(둘 다 요청으로 확인된 문제).
+        //
+        // 첫 컷만은 고정 시간 애니메이션이 아니라 "이전 화면에서 스크롤
+        // 내리는 동작 자체"에 반응해 열린다(요청) — 트랙이 화면 아래에서
+        // 올라오기 시작하는 순간(top bottom)부터 화면 맨 위에 닿아 핀이
+        // 걸리는 순간(top top)까지를 스크롤 진행도에 그대로 물려서
+        // (scrub) buildEnterTimeline 을 문지른다. 빨리 내리면 빨리, 천천히
+        // 내리면 천천히 열린다 — 나머지 컷의 "정해진 시간 동안 재생" 방식과
+        // 다르다.
+        const firstTl = buildEnterTimeline(parts[0]);
+        gsap.set(parts[0].el, { autoAlpha: 1 });
+        const firstReveal = ScrollTrigger.create({
+          trigger: track,
+          start: "top bottom",
+          end: "top top",
+          scrub: true,
+          onUpdate: (self) => firstTl.progress(self.progress),
+          // 핀이 걸리는 시점(=이 구간의 끝)에 다다르면 첫 컷은 이미 다
+          // 열려 있는 상태다 — activeIndex 를 미리 0으로 못박아 둬서, 핀
+          // 트리거의 onUpdate 가 다시 goTo(0) 을 불러 처음부터 재생하는
+          // 일이 없게 한다(이미 열려 있는 걸 다시 접었다 펴는 게 됨).
+          onLeave: () => {
+            activeIndex = 0;
+          },
+        });
 
         const trigger = ScrollTrigger.create({
           trigger: track,
@@ -183,15 +263,19 @@ export default function ProjectsReveal({ variant = "desktop", afterLead = null }
           end: () => `+=${count * window.innerHeight}`,
           pin: true,
           anticipatePin: 1,
-          // 스크롤을 멈추면 가장 가까운 프로젝트 자리로 붙는다(다음 프로젝트가
-          // "딱" 넘어오는 느낌).
-          snap: count > 1 ? 1 / (count - 1) : undefined,
+          // snap 을 걸었더니 스크롤을 멈추자마자 GSAP 이 스스로 다음/이전
+          // 자리로 스크롤을 더 이어가서, 사용자가 손을 뗐는데도 화면이 저절로
+          // 넘어가는 것처럼 보였다(요청으로 확인) — 자동 보정 없이 스크롤한
+          // 만큼만 넘어가도록 뺐다.
           onUpdate(self) {
-            goTo(Math.min(count - 1, Math.floor(self.progress * count)));
+            if (!self.isActive) return;
+            goTo(Math.floor(self.progress * count));
           },
         });
 
         return () => {
+          firstReveal.kill();
+          firstTl.kill();
           trigger.kill();
           activeTween?.kill();
         };
@@ -201,10 +285,14 @@ export default function ProjectsReveal({ variant = "desktop", afterLead = null }
     return () => mm.revert();
   }, [variant]);
 
-  // 빈 데이터 — 목록이 비면 섹션 자체를 렌더링하지 않는다(빈 껍데기 노출 금지).
-  if (!PROJECTS.cards.length) return null;
+  // 요청으로 스크롤 컷의 4번째(ai-video-creator-2, 1번째와 같은 "AI Video
+  // Creator" 항목) 를 뺐다 — 아래 2x2 카드(Projects.jsx)는 그대로 4개다.
+  const cards = PROJECTS.cards.slice(0, 3);
 
-  const total = String(PROJECTS.cards.length).padStart(2, "0");
+  // 빈 데이터 — 목록이 비면 섹션 자체를 렌더링하지 않는다(빈 껍데기 노출 금지).
+  if (!cards.length) return null;
+
+  const total = String(cards.length).padStart(2, "0");
 
   return (
     <section
@@ -228,10 +316,7 @@ export default function ProjectsReveal({ variant = "desktop", afterLead = null }
       {/* 핀 트랙 — ScrollTrigger 가 이 통째를 화면에 고정해 두고, 스크롤
           진행도만큼 안의 카드(pfr-item)를 한 장씩 넘긴다. */}
       <div className="pfr-track" data-pfr-track>
-        {PROJECTS.cards.map((card, index) => {
-          const maskId = `pfr-${variant}-mask-${card.id}`;
-          const filterId = `pfr-${variant}-filter-${card.id}`;
-
+        {cards.map((card, index) => {
           // 연출 전용 이미지가 있으면 그것을, 없으면 카드 썸네일을 쓴다.
           const shot = card.reveal ?? { src: card.src, alt: card.alt };
           const frame = shot.frame ?? FRAME;
@@ -248,59 +333,30 @@ export default function ProjectsReveal({ variant = "desktop", afterLead = null }
                 {failed[card.id] ? (
                   <p className="pfr-fallback">{shot.alt}</p>
                 ) : (
-                  <svg
+                  <div
                     className={`pfr-svg${wide ? " pfr-svg--wide" : ""}`}
-                    viewBox={`0 0 ${frame.w} ${frame.h}`}
                     style={{ "--pfr-frame": `${frame.w} / ${frame.h}` }}
-                    aria-hidden="true"
                   >
-                    <defs>
-                      <filter id={filterId}>
-                        <feTurbulence
-                          type="fractalNoise"
-                          baseFrequency="0.03"
-                          numOctaves="3"
-                          result="noise"
-                        />
-                        <feDisplacementMap
-                          in="SourceGraphic"
-                          in2="noise"
-                          scale="50"
-                          xChannelSelector="R"
-                          yChannelSelector="G"
-                        />
-                      </filter>
-                      <mask id={maskId}>
-                        <circle
-                          data-pfr-mask
-                          cx="50%"
-                          cy="50%"
-                          r={maskEnd(frame)}
-                          fill="white"
-                          style={{ filter: `url(#${filterId})` }}
-                        />
-                      </mask>
-                    </defs>
-                    <image
+                    <img
                       data-pfr-image
-                      href={shot.src}
-                      width={frame.w}
-                      height={frame.h}
-                      preserveAspectRatio="xMidYMid slice"
-                      mask={`url(#${maskId})`}
+                      className="pfr-image"
+                      src={shot.src}
+                      alt={shot.alt}
                       onError={() =>
                         setFailed((prev) => ({ ...prev, [card.id]: true }))
                       }
                     />
-                  </svg>
+                  </div>
                 )}
 
                 <h3 className="pfr-title">
                   <span className="pfr-line pfr-line--up">
-                    <span data-pfr-up>{card.titleLines[0]}</span>
+                    <span data-pfr-up>{splitChars(card.titleLines[0])}</span>
                   </span>
                   <span className="pfr-line pfr-line--down">
-                    <span data-pfr-down>{card.titleLines[1]}</span>
+                    <span data-pfr-down>
+                      {splitChars(card.titleLines[1])}
+                    </span>
                   </span>
                 </h3>
 

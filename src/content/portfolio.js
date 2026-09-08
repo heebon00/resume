@@ -16,6 +16,7 @@ import musicApp from "../assets/images/gallery-music-app.webp";
 import webRedesign from "../assets/images/gallery-web-redesign.webp";
 import ikeaMockup from "../assets/images/project-ikea-mockup.webp";
 import youtubeMusicMockup from "../assets/images/project-youtube-music-mockup.png";
+import aiVideoMockup from "../assets/images/project-ai-video-mockup.png";
 // 임시 목업 — MY DESIGN 카드에 들어갈 실제 이미지가 정해지기 전까지 쓰는 자리표시 이미지다.
 // 확정되면 아래 4개 import 와 DESIGN.cards 의 src·alt 를 실제 이미지로 되돌린다.
 import designMock01 from "../assets/images/design-mock-01.svg";
@@ -50,7 +51,8 @@ export const BANNER = {
 export const HERO = {
   labelLeft: "Creative",
   labelRight: "PORTFOLIO",
-  greenLines: ["좋아하는 일은", "애정을,"],
+  // 쉼표는 요청으로 뺐다 — 아래 줄("책임감을")과 끝맺음을 맞춘다.
+  greenLines: ["좋아하는 일은", "애정을"],
   // 시안(98:132)에는 첫 줄 뒤에 공백 12칸이 들어 있지만 여기서는 뺐다 —
   // 카피 h1 은 text-right 인데, Letters 가 글자를 inline-block whitespace-pre
   // 로 쪼개므로 그 공백이 폭 95u 짜리 빈 박스로 남아 두 구간의 오른쪽
@@ -133,6 +135,13 @@ export const PROJECTS = {
       ],
       src: greenhouse,
       alt: "AI로 제작한 영상 속 유리 온실 장면",
+      // 스크롤 연출 전용 이미지 — iKEA·유튜브뮤직 카드와 같은 방식(요청).
+      // 카드 썸네일(src)은 그대로 두고 연출 화면에서만 이걸 쓴다.
+      reveal: {
+        src: aiVideoMockup,
+        alt: "AI Video Creator 맥 목업 화면",
+        frame: { w: 1200, h: 588 },
+      },
       titleLines: ["AI Video Creator", "Editor & Director"],
       descriptionLines: [
         "2026 _ SOLO PROJECT",

@@ -51,7 +51,7 @@
   --color-skills-sub: #fffefeb3; /* MY SKILLS 부제 (rgba(255,254,254,0.7)) */
   --color-ring: #1f1f1f; /* 키워드 태그 외곽선 */
   --color-tag-crimson: #d4183d; /* 키워드 태그 채움(자주) */
-  --color-tag-lime: #c9fd37; /* 키워드 태그 채움(라임) */
+  --color-tag-lime: #efff58; /* 키워드 태그 채움(라임) — 요청으로 변경 */
   --color-muted: #353535; /* 프로젝트 카드 설명 */
 
   /* --- 서체 ------------------------------------------------------------- */
@@ -472,42 +472,6 @@ body {
   margin-left: -17.5px;
   margin-top: -17.5px;
   border: 1px solid rgb(0 0 0 / 0.3);
-  transition:
-    width 0.3s ease,
-    height 0.3s ease,
-    margin 0.3s ease,
-    background-color 0.3s ease,
-    border-color 0.3s ease;
-}
-
-.cc-ring[data-mode] {
-  width: 86px;
-  height: 86px;
-  margin-left: -43px;
-  margin-top: -43px;
-  background: #ffffff;
-  border-color: rgb(255 255 255 / 0.5);
-  box-shadow: 0 4px 20px rgb(0 0 0 / 0.12);
-}
-
-.cc-label {
-  display: none;
-  align-items: center;
-  gap: 4px;
-  font-size: 14px;
-  line-height: 22.99px;
-  color: #000000;
-  white-space: nowrap;
-}
-
-.cc-ring[data-mode] .cc-label {
-  display: flex;
-}
-
-.cc-arrow {
-  display: block;
-  width: 18px;
-  height: 18px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -519,10 +483,6 @@ body {
 
   .donut-arc {
     stroke-dashoffset: var(--arc-offset);
-    transition: none;
-  }
-
-  .cc-ring {
     transition: none;
   }
 }
@@ -548,8 +508,10 @@ body {
   position: relative;
   background-color: var(--color-paper);
 
-  /* 배치 기준값 — 제목과 설명이 같은 값을 공유해야 설명이 제목 바로 아래에 붙는다. */
-  --pfr-gutter: calc(150 * var(--u)); /* 좌우 여백 */
+  /* 배치 기준값 — 제목과 설명이 같은 값을 공유해야 설명이 제목 바로 아래에 붙는다.
+     요청으로 화면 가장자리보다 중앙(가운데 이미지) 쪽에 더 모이게
+     150 → 230 으로 늘렸다. */
+  --pfr-gutter: calc(230 * var(--u)); /* 좌우 여백 */
   /* 제목 윗줄 위치 — 요청으로 화면 여백을 줄였다(16vh → 9vh). 아래줄의
      bottom(.pfr-line--down)과 같은 값으로 두어야 위아래가 대칭이다. */
   --pfr-title-top: 9vh;
@@ -606,11 +568,25 @@ body {
 }
 
 /* 요청 — 화면이 비어 보여서 68vh → 76vh 로 키웠다. 왼쪽 .pfr-copy(오른쪽
-   끝 599)와 부딪히지 않는 선이다(세로형 왼쪽 끝 약 667). */
+   끝 599)와 부딪히지 않는 선이다(세로형 왼쪽 끝 약 667).
+   overflow:hidden — 안의 .pfr-image 가 확대되며 들어오므로 프레임 밖으로
+   튀어나온 부분을 가둔다. */
 .pfr-svg {
+  display: block;
   height: min(76vh, calc(850 * var(--u)));
   width: auto;
   aspect-ratio: var(--pfr-frame, 5 / 7); /* 카드가 프레임을 지정하면 그 비율 */
+  overflow: hidden;
+}
+
+/* 썸네일 — 위에서 살짝 내려오며 확대되는 등장(JS 쪽 enter() 참조).
+   object-fit:cover 로 프레임을 항상 꽉 채운다. */
+.pfr-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  will-change: transform;
 }
 
 /* 가로형 시안(예: iKEA 목업 1200x800) — 세로형과 같은 높이면 폭이 넘치므로 낮춘다. */
@@ -619,16 +595,22 @@ body {
   height: min(52vh, calc(570 * var(--u)));
 }
 
-/* 2·3번(iKEA·YouTube Music) 이미지가 가로형이라 가운데 정렬하면 왼쪽 설명
-   글과 겹친다 — 요청으로 오른쪽으로 살짝 밀었다. 여백을 줄이며 이미지를
-   46 → 52vh 로 키운 만큼(폭 +100) 미는 값도 90 → 190 으로 늘렸다 —
-   그래야 설명 상자(오른쪽 끝 599)와 26 정도가 그대로 남는다. margin 을 쓰는 이유:
-   GSAP 이 이 요소의 scale 을 transform 으로 직접 조작하므로, 여기서
-   transform 을 쓰면 그 값을 덮어써 애니메이션이 깨진다.
-   모바일은 이미지가 아래로 내려가 겹칠 일이 없어 아래 미디어쿼리에서 되돌린다. */
-.pfr-item:nth-of-type(2) .pfr-svg,
-.pfr-item:nth-of-type(3) .pfr-svg {
-  margin-left: calc(190 * var(--u));
+/* 1·2·3번(AI Video Creator·iKEA·YouTube Music) 전부 가로형 시안이라
+   가운데 정렬하면 왼쪽 설명 글과 겹친다. 처음엔 2·3번만 이미지를 오른쪽
+   으로 밀어 피했는데(margin-left:190u), 1번은 옆으로 밀 여유가 없어
+   설명을 이미지 "아래"로 내렸다 — 요청으로 2·3번도 같은 방식(아래로)으로
+   통일한다. 그래서 이미지를 다시 가운데로 두고(오른쪽으로 미는 margin
+   삭제), 셋 다 같은 규칙을 쓴다.
+   .pfr-svg 는 grid place-items:center 로 스테이지 안에서 위아래로도
+   가운데 정렬되므로, 이미지 아래 끝은 "스테이지 세로 중앙 + 이미지 높이의
+   절반"이다. 이미지 높이가 min(52vh, 570u) 이니(.pfr-svg--wide) 그 절반
+   min(26vh, 285u)을 50%에 더하고, 32u 만큼 더 띄운다. 왼쪽 위치·폭은
+   그대로 둔다(요청은 "이미지 아래로"만 이지 자리를 넓혀 달라는 것은
+   아니었다). */
+.pfr-item:nth-of-type(1) .pfr-copy,
+.pfr-item:nth-of-type(2) .pfr-copy,
+.pfr-item:nth-of-type(3) .pfr-copy {
+  top: calc(50% + min(26vh, 285 * var(--u)) + 32 * var(--u));
 }
 
 /* 이미지를 못 받아왔을 때 자리와 대체 텍스트 */
@@ -672,15 +654,34 @@ body {
   mix-blend-mode: difference;
 }
 
+/* perspective — 안의 글자(.pfr-char)가 Y축으로 접히는 입체감을 준다.
+   overflow 는 두지 않는다: 글자가 좌·우로 접히며 넘나드는데, 여기서
+   잘리면 뒤집히는 모습이 반쯤 잘려 보인다. 바깥 .pfr-stage 의
+   overflow:hidden 이 스테이지 경계 밖으로 넘치는 것만 막아 준다. */
 .pfr-line {
   position: absolute;
   display: block;
-  overflow: hidden;
   padding-block: 0.06em;
+  perspective: 600px;
 }
 
 .pfr-line > span {
   display: block;
+}
+
+/* 글자 하나 — 3D 플립의 최소 단위(JS 쪽 enter()/leave() 참조). 참고
+   사이트(treethemes.com/elementor/brandberry/brave)의 3D 텍스트 연출을
+   본떴다 — 다만 그 사이트의 CSS(@keyframes bb3d-front/back, 소스 직접
+   확인)는 세로축(rotateX) 플립인데, 실제로는 텍스트가 양옆에서 생기고
+   사라진다는 확인을 받아 가로축(rotateY)으로 바꿨다. 왼쪽 줄(up)은
+   왼쪽에서, 오른쪽 줄(down)은 오른쪽에서 접히며 들어오고 나간다.
+   backface-visibility:hidden 이 없으면 90도를 넘는 순간 글자가
+   뒤집힌 채로 보인다. white-space:pre 는 빈칸이 꺼지지 않게 한다. */
+.pfr-char {
+  display: inline-block;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  white-space: pre;
   will-change: transform;
 }
 
@@ -830,12 +831,6 @@ body {
     height: min(26vh, calc(220 * var(--u)));
   }
 
-  /* 모바일은 이미지가 아래쪽에 붙어 텍스트와 안 겹치니 데스크톱 보정을 되돌린다. */
-  .pfr-item:nth-of-type(2) .pfr-svg,
-  .pfr-item:nth-of-type(3) .pfr-svg {
-    margin-left: 0;
-  }
-
   .pfr-fallback {
     height: min(54vh, calc(470 * var(--u)));
     width: min(38.6vh, calc(336 * var(--u)));
@@ -856,6 +851,15 @@ body {
     left: var(--pfr-gutter);
     right: var(--pfr-gutter);
     width: auto;
+  }
+
+  /* 1·2·3번 카드의 "이미지 아래로" 보정(desktop, 위 .pfr-item:nth-of-type(1/2/3)
+     .pfr-copy)도 데스크톱 전용이다 — 모바일은 이미 이미지가 align-items:end
+     로 화면 아래에 붙어서 위쪽(제목 바로 밑)에 있는 설명과 겹치지 않는다. */
+  .pfr-item:nth-of-type(1) .pfr-copy,
+  .pfr-item:nth-of-type(2) .pfr-copy,
+  .pfr-item:nth-of-type(3) .pfr-copy {
+    top: calc(var(--pfr-title-top) + var(--pfr-title-box) + var(--pfr-desc-gap));
   }
 
   .pfr-desc {
@@ -1007,6 +1011,65 @@ body {
   text-underline-offset: calc(4 * var(--u));
 }
 
+/* 왼쪽 로고("HEEBON" + 위아래 점선, src/components/DesktopNav.jsx BrandMark
+   참조) — 요청으로 준 이미지를 참고해 점을 실제 요소로 다시 만들었다(이미지
+   그대로면 점 하나하나를 따로 애니메이션할 수 없어서). */
+.brand-mark-bg {
+  /* 참고 이미지(favicon 1.png) 배경색을 그대로 스포이트로 땄다 — #505050. */
+  background: #505050;
+}
+
+.brand-mark-text {
+  font-size: 15px;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  color: var(--color-tag-crimson);
+}
+
+.brand-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 9999px;
+  background: var(--color-tag-crimson);
+  opacity: 0;
+  transform: scale(0);
+}
+
+/* 애니메이션은 마운트 즉시가 아니라 인트로 로딩 화면이 끝난 뒤에만 건다
+   (DesktopNav.jsx 가 lib/intro.js 의 INTRO_DONE 신호를 받아 이 클래스를
+   붙인다). 마운트 즉시 걸면 로딩 화면에 가려진 채로 애니메이션이 끝나버려서,
+   정작 화면이 드러났을 때는 이미 정지 상태만 보여 "효과가 안 된다"는
+   요청으로 발견됐다.
+   처음엔 한 번만 나타나고 끝(forwards)이었는데, 요청으로 "계속계속
+   사라지고 나타나고" 반복하도록 infinite 로 바꿨다 — 각 점의 delay(가운데
+   점이 0, 바깥으로 갈수록 커짐, 위 BrandDots)는 그대로 두고 매 점이 같은
+   주기(1.4s)로 무한 반복하게만 했더니, delay 만큼의 위상차가 매 사이클
+   그대로 유지돼 가운데→양옆으로 퍼졌다 다시 가운데로 모이는 파도가
+   끊임없이 반복된다. */
+.brand-mark-ready .brand-dot {
+  animation: brand-dot-in 1.4s ease-in-out infinite;
+}
+
+@keyframes brand-dot-in {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-dot {
+    animation: none;
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 /* 앵커로 이동할 때 고정 GNB(높이 약 66) 아래로 섹션이 숨지 않게 여유를 둔다. */
 @media (min-width: 1280px) {
   html {
@@ -1059,6 +1122,9 @@ body {
 /* 메인 카피만 색이 흐르는 그라디언트로 채운다("글자 효과는 색깔 바뀌는
    걸로" 요청) — background-position 을 애니메이션해 팔레트가 계속
    지나가게 한다. 라벨·태그는 진한 색 그대로 둔다.
+   팔레트는 원래 분홍·하늘·보라였는데, 요청으로 검정~회색 무채색만
+   흐르도록 바꿨다 — --color-ink(검정에 가까운 잉크색)와 밝은 회색 사이를
+   오간다.
 
    [이 규칙이 카피 판이 아니라 글자 묶음에 붙어 있는 이유]
    background-clip:text 는 배경을 "그 요소 아래 모든 글자"로 오려낸다.
@@ -1071,10 +1137,10 @@ body {
 .hero-copy-letters {
   background: linear-gradient(
     90deg,
-    #f27fb0,
-    #5fb4ec,
-    #9d6eea,
-    #f27fb0
+    var(--color-ink),
+    #9a9a9a,
+    #3a3a3a,
+    var(--color-ink)
   );
   background-size: 300% 100%;
   background-clip: text;
@@ -1090,10 +1156,16 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-copy-letters,
-  .hero-tag-frame::before {
+  .hero-copy-letters {
     animation: none;
   }
+}
+
+/* 200% · 300% 태그 글자 — 카피의 색이 흐르는 그라디언트(.hero-copy-letters)
+   대신 포인트 컬러 크림슨 단색을 쓴다(요청 — "#D4183D 이 컬러가 포인트
+   컬러라"는 앞선 요청과 같은 맥락). */
+.hero-tag-letters {
+  color: var(--color-tag-crimson);
 }
 
 /* 히어로 밑단 버튼 — 스크롤 연출의 .pfr-swipe 를 그대로 쓰되, 도입부라
@@ -1105,36 +1177,10 @@ body {
   font-size: var(--text-nav);
 }
 
-/* 200% · 300% 태그 테두리 — 검정 대신 글자와 같은 그라디언트가 흐르게 한다
-   (요청). 테두리만 칠하는 방법이 CSS 에 따로 없으므로, 상자 전체를
-   그라디언트로 칠한 뒤 안쪽(padding-box)을 마스크로 도려내 테두리 띠만
-   남긴다. 색·배속(300% · 6s)은 .hero-copy-letters 와 같은 값이라 글자와
-   같은 리듬으로 흐른다. 테두리 두께·모양은 쓰는 쪽(Tag / MobileHero)이
-   그대로 정한다 — 여기서는 색만 바꾼다. */
+/* 200% · 300% 태그 상자 — 요청으로 그라디언트 테두리를 없앴다(예전엔
+   .hero-tag-frame::before 가 상자를 그라디언트로 칠한 뒤 안쪽을 마스크로
+   도려내 테두리 띠만 남기는 방식이었다). 지금은 글자만 담는 자리표시일
+   뿐이라 별도 스타일이 없다. */
 .hero-tag-frame {
-  /* 테두리 두께 — 쓰는 쪽이 --tag-border 로 정한다(기본은 모바일 값 2). */
-  --tag-border: calc(2 * var(--u));
   position: relative;
-}
-
-/* 링은 이 층이 그린다. 마스크를 상자 자신에 걸면 안쪽 글자(200%/300%)까지
-   같이 지워지므로, 글자가 없는 이 층으로 뺐다. */
-.hero-tag-frame::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border: var(--tag-border) solid transparent;
-  background: linear-gradient(90deg, #f27fb0, #5fb4ec, #9d6eea, #f27fb0)
-    border-box;
-  background-size: 300% 100%;
-  -webkit-mask:
-    linear-gradient(#fff 0 0) padding-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask:
-    linear-gradient(#fff 0 0) padding-box,
-    linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-  animation: hero-title-shift 6s linear infinite;
-  pointer-events: none;
 }

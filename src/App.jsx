@@ -22,6 +22,10 @@ import ContactUs from "./components/ContactUs";
 
 const MENU_ID = "mobile-menu";
 
+// 요청 — MY PROJECTS 2x2 카드 그리드(Projects.jsx)를 제출 전까지 잠시 가려
+// 둔다. 코드는 그대로 두고 이 값만 true로 되돌리면 다시 보인다.
+const SHOW_PROJECTS_GRID = false;
+
 // 데스크톱 캔버스 높이(피그마 Main Content 20:971)
 const CANVAS_H = 6533; // 갤러리 이동(354) + 제목~카드(218) + MY DESIGN 아래(606) 를 줄인 값.
 // 캔버스를 자르는 선. 위쪽 마지막 요소는 MY WORK EXPERIENCE(1968+557=2525),
@@ -111,7 +115,7 @@ export default function App() {
               className="absolute inset-x-0"
               style={{ top: du(-SPLIT_Y), height: du(CANVAS_H) }}
             >
-              <Projects />
+              {SHOW_PROJECTS_GRID && <Projects />}
               <Marquee />
               <MyDesign />
               <Skills />

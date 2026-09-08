@@ -10,6 +10,11 @@ import MobileProjects from "./MobileProjects";
 import MobileSkills from "./MobileSkills";
 import ProjectsReveal from "../ProjectsReveal";
 
+// 요청 — MY PROJECTS 2x2 카드 그리드(MobileProjects)를 제출 전까지 잠시
+// 가려 둔다. 코드는 그대로 두고 이 값만 true로 되돌리면 다시 보인다.
+// (데스크톱 쪽 같은 플래그는 App.jsx 의 SHOW_PROJECTS_GRID.)
+const SHOW_PROJECTS_GRID = false;
+
 /**
  * 모바일(1280 미만) 페이지.
  *
@@ -38,7 +43,7 @@ export default function MobilePage() {
       <MobileAbout />
       <MobileExperience />
       <ProjectsReveal variant="mobile" afterLead={<MobileGallery />} />
-      <MobileProjects />
+      {SHOW_PROJECTS_GRID && <MobileProjects />}
       <MobileMarquee />
       <MobileDesign />
       <MobileSkills />

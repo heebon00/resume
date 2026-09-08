@@ -18,13 +18,11 @@ import * as THREE from "three";
  *      계산해 기둥 윗부분(y>0)을 그만큼 밀어 올린다. 여러 파동이 겹치면
  *      더해지지 않고 가중평균 — 그래야 무질서하게 안 튄다.
  *   4. 밀려 올라간 높이를 0~1로 정규화해 색을 입힌다 — 대기 상태(높이 0)는
- *      원본 그대로 흰색이고, 높이가 올라간 만큼만 채도·명도가 올라오며
- *      HSL 색상(hue)이 마젠타→주황(그 사이 파랑·청록·초록·노랑)으로
- *      훑고 지나간다. 그래서 안 움직이는 칸은 흰색, 마우스가 지나간
- *      자리만 무지개색으로 물든다(요청 — 첨부 이미지의 저폴리 무지개
- *      배경 참고, 기본 배경은 흰색 유지). 원본은 흰색→파란색 두 색만
- *      섞었는데 스펙트럼 전체를 지나도록 hsl2rgb 로 바꿨다(아래
- *      HUE_START·HUE_END 정의와 셰이더 참조).
+ *      원본 그대로 흰색이고, 높이가 올라간 만큼만 사이트 팔레트 두 색
+ *      (#D4183D 크림슨 → #EFFF58 라임, 요청)이 섞여 배어 나온다. 그래서
+ *      안 움직이는 칸은 흰색, 마우스가 지나간 자리만 물든다. 예전엔
+ *      HSL(hue)로 무지개 전체를 훑었는데, 지정된 두 색만 쓰도록 RGB
+ *      mix() 로 바꿨다(아래 COLOR_A·COLOR_B 정의와 셰이더 참조).
  *   5. 마우스가 3초 넘게 안 움직이면 1.5초마다 임의의 자리에 궤적점을
  *      찍어 화면이 계속 살아있게 한다 — 마우스가 없는 모바일 터치·데스크톱
  *      무동작 상태에서도 파도가 저절로 인다.
@@ -60,18 +58,14 @@ const WAVE = {
   trailSpacing: 0.1,
 };
 
-// 색상은 요청으로 두 번째 첨부 이미지(마젠타→보라→파랑→청록→초록→노랑→
-// 주황으로 번지는 저폴리 삼각형 배경)를 참고했다. 처음엔 대기 상태 색도
-// 스펙트럼 시작색(마젠타)으로 맞췄더니 "기본 배경은 흰색이어야 한다,
-// 원본 코드 세팅(흰색 바탕)을 지켜야 한다"는 요청이 와서 — 원본
-// MeshPhongMaterial(white) 그대로 흰색 바탕은 지키고, 파도로 밀려
-// 올라간 자리만 채도·명도가 t 에 따라 올라오며 무지개색이 드러나게
-// 고쳤다(아래 fragment 셰이더의 sat/light 보간 참조).
-const HUE_START = 320 / 360;
-const HUE_END = 40 / 360;
-const SATURATION = 0.82;
-const LIGHTNESS = 0.56;
-// 배경(대기 상태)은 원본 그대로 흰색.
+// 색상 — 요청으로 사이트 팔레트의 두 색(#D4183D 크림슨 · #EFFF58 라임)만
+// 쓰도록 바꿨다. 예전엔 무지개(마젠타→주황)를 HSL 로 훑었는데, 이제는
+// 이 두 RGB 색 사이만 섞는다(아래 fragment 셰이더 mix() 참조) — 파도
+// 높이(t)에 따라 크림슨에서 라임으로 번진다. 대기 상태(t=0)는 원본
+// MeshPhongMaterial(white) 그대로 흰색 바탕을 지킨다("기본 배경은
+// 흰색이어야 한다"는 요청).
+const COLOR_A = [212 / 255, 24 / 255, 61 / 255]; // #D4183D
+const COLOR_B = [239 / 255, 255 / 255, 88 / 255]; // #EFFF58
 const BG_COLOR = new THREE.Color(0xffffff);
 
 /** 원본 Stage.js 의 onBeforeCompile 셰이더 주입을 그대로 옮긴 것. */
@@ -285,40 +279,32 @@ export default function WavyCubes({ className, style }) {
       shader.uniforms.uAmplitude = { value: WAVE.amplitude };
       shader.uniforms.uJitter = { value: WAVE.jitter };
       shader.uniforms.uMaxHeight = { value: WAVE.maxHeight };
-      shader.uniforms.uHueStart = { value: HUE_START };
-      shader.uniforms.uHueEnd = { value: HUE_END };
-      shader.uniforms.uSaturation = { value: SATURATION };
-      shader.uniforms.uLightness = { value: LIGHTNESS };
+      shader.uniforms.uColorA = { value: COLOR_A };
+      shader.uniforms.uColorB = { value: COLOR_B };
       shader.vertexShader = overrideVertexShader(shader.vertexShader);
       shader.fragmentShader = shader.fragmentShader
         .replace(
           "#include <common>",
           `#include <common>
           varying float vHeight;
-          uniform float uHueStart;
-          uniform float uHueEnd;
-          uniform float uSaturation;
-          uniform float uLightness;
-          uniform float uMaxHeight;
-
-          // 표준 HSL → RGB 변환(0~1 범위). 파도 높이에 따라 hue 만 훑고
-          // 채도·명도는 고정해 둔다.
-          vec3 hsl2rgb(vec3 hsl) {
-            vec3 rgb = clamp(abs(mod(hsl.x * 6.0 + vec3(0.0, 4.0, 2.0), 6.0) - 3.0) - 1.0, 0.0, 1.0);
-            return hsl.z + hsl.y * (rgb - 0.5) * (1.0 - abs(2.0 * hsl.z - 1.0));
-          }`,
+          uniform vec3 uColorA;
+          uniform vec3 uColorB;
+          uniform float uMaxHeight;`,
         )
         .replace(
           "#include <color_fragment>",
           `#include <color_fragment>
           float t = clamp( vHeight / uMaxHeight, 0.0, 1.0 );
-          float hue = mix( uHueStart, uHueEnd, t );
-          // 기본(대기, t=0)은 흰색(채도 0·명도 1)으로 두고, 파도로 밀려
-          // 올라간 만큼(t)만 채도·명도를 무지개 쪽으로 올린다 — 그래서
-          // 안 움직이는 칸은 흰색 그대로, 파도가 지나간 자리만 물든다.
-          float sat = uSaturation * t;
-          float light = mix( 1.0, uLightness, t );
-          diffuseColor.rgb = hsl2rgb( vec3( hue, sat, light ) );`,
+          // 기본(대기, t=0)은 흰색으로 두고, 파도로 밀려 올라간 만큼(t)만
+          // uColorA(#D4183D)에서 uColorB(#EFFF58)로 섞인 색이 배어 나온다
+          // — 그래서 안 움직이는 칸은 흰색 그대로, 파도가 지나간 자리만 물든다.
+          // uColorA 가 포인트 컬러라는 요청으로, 둘을 반씩 섞지 않고 pow()
+          // 로 편향을 준다 — 낮거나 중간 높이 파도는 거의 uColorA(크림슨)만
+          // 보이고, 아주 높이 튄 파도의 꼭대기에서만 uColorB(라임)가 살짝
+          // 비친다.
+          float colorMix = pow( t, 2.4 );
+          vec3 waveColor = mix( uColorA, uColorB, colorMix );
+          diffuseColor.rgb = mix( vec3( 1.0 ), waveColor, t );`,
         );
     };
 

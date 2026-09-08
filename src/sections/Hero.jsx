@@ -24,11 +24,11 @@ import useIntroReveal from "../lib/useIntroReveal";
  * 원리와 수치는 index.css 의 .hero-fill 주석 참조.
  *
  * 배치는 앞서 잡아 둔 것을 그대로 쓴다 — 카피를 가운데, 그 아래 사진,
- * 200% · 300% 태그는 각각 "애정을," 과 "책임감을" 앞에 붙는다(모바일과 같은 배치).
+ * 200% · 300% 태그는 각각 "애정을" 과 "책임감을" 앞에 붙는다(모바일과 같은 배치).
  * 원래 시안 배치(사진 가운데 · 흰 배경 · 초록/빨강 카피)는 git 이력에 남아 있다.
  *
  * [등장 연출 — 2026-09-07 추가, 요청으로 자리 교체 방식으로 수정]
- * 참고 사이트(treethemes brave, 55.md)처럼 "좋아하는 일은 200% 애정을," 이
+ * 참고 사이트(treethemes brave, 55.md)처럼 "좋아하는 일은 200% 애정을" 이
  * 3D로 접혔다 펴지며 나와 잠깐 머문 뒤, 그 자리에서 접혀 사라지고 같은
  * 자리에 "맡은 임무는 300% 책임감" 이 펴지며 나타난다. 두 구간은
  * data-intro-group="1"/"2" 로 묶고, grid 로 같은 칸에 겹쳐 둬야
@@ -40,10 +40,10 @@ import useIntroReveal from "../lib/useIntroReveal";
 // 시안 값(98:135 / 98:120)에 이 비율만 곱해 쓴다 — 임의 수치를 새로 만들지 않는다.
 // COPY_SCALE 은 카피(제목) 쪽에 곱하는 배율과 맞춘 값이다 — 카피를 줄이면서
 // 태그만 그대로 두면 카피 옆에서 태그가 상대적으로 커 보이기 때문이다.
-const COPY_SCALE = 0.62; // 요청 — 작아 보인다고 해서 0.48 → 0.56 → 0.62 로 키웠다.
-// 아래 text-[calc(... * 0.56)] 네 곳이 이 값과 같아야 한다 — Tailwind 임의값은
+const COPY_SCALE = 0.75; // 요청 — 작아 보인다고 해서 0.48 → 0.56 → 0.62 → 0.68 → 0.75 로 키웠다.
+// 아래 text-[calc(... * 0.75)] 네 곳이 이 값과 같아야 한다 — Tailwind 임의값은
 // 문자열이라 상수를 못 넣는다. 태그(TAG_SCALE)는 이 값에 딸려 같이 커진다.
-const TAG_SCALE = 0.6 * COPY_SCALE;
+const TAG_SCALE = 0.85 * COPY_SCALE; // 요청 — 카피만큼 커 보이게 0.6 → 0.85 로 올렸다.
 const s = (n) => du(n * TAG_SCALE);
 
 // 200% · 300% 태그는 시안(98:135 / 98:120)에서 서로 크기가 다르지만, 요청으로
@@ -51,16 +51,27 @@ const s = (n) => du(n * TAG_SCALE);
 // 왼쪽으로 삐져나왔다("맡은 임무는" 242 에서 "책임감을" 185 를 빼면 태그와
 // 간격에 쓸 수 있는 자리가 57 뿐인데 300% 태그만 73 이었다). 임의 수치를
 // 새로 만들지 않는 관례대로, 시안에 이미 있는 200% 쪽 값을 그대로 쓴다.
-const TAG_BOX = { width: 213.849, height: 97.91, fontSize: 78 };
+// fontSize 만 78 → 92 로 키웠다(요청, "좀더 키워줘") — width·height(상자 자리)는
+// 그대로 두고 글자만 키운다. 상자엔 테두리도 overflow:hidden 도 없어서
+// (위 Tag 컴포넌트 참조) 글자가 상자보다 커져도 좌우로 고르게 넘칠 뿐 안
+// 잘린다.
+const TAG_BOX = { width: 213.849, height: 97.91, fontSize: 92 };
 
 // 사진 — 가운데, 원본 1099 x 744 의 가로세로비를 지킨다(요청으로 다시
 // 중앙으로). 카피는 오른쪽으로 옮겼다(아래 h1 참조).
 // 요청 — 캔버스(1920) 절반 너비, 가운데. 카피가 사진 위쪽 빈자리에 있어서
-// (겹치면 안 되니, lib/design.js 참조) 세로로 키울 수 있는 한계는 카피
-// 자리를 침범하기 직전까지다 — 원본 가로세로비 그대로(안 잘리게) 키우면
-// 딱 그 한계에 맞는다.
-const PHOTO_W = 985; // 요청 — 사진 크기는 그대로 두고, 카피 쪽을 줄여 자리를 맞춘다.
-const PHOTO_HEIGHT = Math.round(PHOTO_W * (744 / 1099));
+// (겹치면 안 되니, lib/design.js 참조) 폭을 키울 수 있는 한계는 카피 자리를
+// 침범하기 직전까지다.
+const PHOTO_W = 1050; // 요청 — 985 → 1050. 이 폭은 카피(오른쪽 정렬)와 거의
+// 맞닿는 한계라 더 못 키운다 — 그래서 위쪽 빈자리는 아래 EXTRA_HEIGHT 로 채운다.
+
+// 요청 — "사진 위가 너무 비어 보인다"는 재확인을 받았다. 폭은 카피와
+// 맞닿는 한계라 그대로 두고, 높이만 더 키워 사진 위쪽 빈자리를 줄인다.
+// 이제부터는 원본 가로세로비를 그대로 지키지 않는다 — SafeImage 가
+// object-cover · object-top 이라 늘어난 세로만큼 좌우를 더 파고들어
+// 채운다(원본이 잘리지만 뭉개지진 않는다).
+const EXTRA_HEIGHT = 130;
+const PHOTO_HEIGHT = Math.round(PHOTO_W * (744 / 1099)) + EXTRA_HEIGHT;
 const PHOTO = { top: 888 - PHOTO_HEIGHT, height: PHOTO_HEIGHT };
 const PHOTO_LEFT = Math.round((1920 - PHOTO_W) / 2);
 
@@ -74,9 +85,11 @@ const HERO_SHIFT = 154 - HERO_TOP; // 88
 const HERO_H = 888 + HERO_SHIFT; // 976 — 아래 끝은 1042 로 그대로다.
 
 /**
- * 200% · 300% 태그 — 카피 줄 앞에 붙는다("애정을," 앞 200% / "책임감을" 앞 300%).
- * 글자는 카피와 똑같이 색이 흐르는 그라디언트(.hero-copy-letters)를 쓴다(요청).
- * 테두리만 배지처럼 구분되게 진한 색(--color-ink) 그대로 둔다.
+ * 200% · 300% 태그 — 카피 줄 앞에 붙는다("애정을" 앞 200% / "책임감을" 앞 300%).
+ * 처음엔 카피와 같은 색이 흐르는 그라디언트(.hero-copy-letters)를 썼는데,
+ * 요청으로 포인트 컬러 크림슨(#D4183D, --color-tag-crimson) 단색으로
+ * 바꿨다 — 그래서 카피와는 다른 클래스(.hero-tag-letters, index.css)를 쓴다.
+ * 테두리는 요청으로 없앴다 — 글자만 담는 자리표시 상자다.
  *
  * 시안의 안쪽 여백(px 31 · py 26)과 줄 높이(--leading-tag 47)를 그대로 쓰면
  * 글자가 상자를 뚫고 나온다 — 상자와 글자는 TAG_SCALE 로 줄었는데 --leading-tag 는
@@ -94,12 +107,11 @@ function Tag({ label, width, height, fontSize, tilt }) {
         style={{
           width: s(width),
           height: s(height),
-          "--tag-border": s(3),
           paddingInline: s(12),
         }}
       >
         <span
-          className="hero-copy-letters font-stencil font-extrabold whitespace-nowrap uppercase"
+          className="hero-tag-letters font-stencil font-extrabold whitespace-nowrap uppercase"
           style={{ fontSize: s(fontSize), lineHeight: 1 }}
         >
           {label}
@@ -112,9 +124,9 @@ function Tag({ label, width, height, fontSize, tilt }) {
 /** 글자 단위로 쪼갠다 — 등장 연출이 글자 하나씩 잡을 수 있도록. */
 function Letters({ text }) {
   return (
-    // 자간은 요청으로 벌렸다(tracking-wider 0.05em). 태그(200%/300%)는
+    // 자간은 요청으로 더 벌렸다(0.05em → 0.09em). 태그(200%/300%)는
     // 상자 폭이 고정이라 글자가 넘치므로 여기 글자 묶음에만 건다.
-    <span className="hero-copy-letters block tracking-wider">
+    <span className="hero-copy-letters block tracking-[0.09em]">
       {/* 읽히는 건 이 한 벌뿐이다. 쪼갠 글자는 전부 장식으로 둔다. */}
       <span className="sr-only">{text}</span>
       {[...text].map((char, i) => (
@@ -149,47 +161,65 @@ export default function Hero() {
         {/* 글자 층은 늘어나기 전 자리(154 ~ 1042)에 그대로 둔다 — 안쪽
             좌표(top-51 · top-1/2 · 밑단 버튼)가 전부 이 888 상자 기준이다. */}
         {/* 좌우 라벨 — 요청으로 CREATIVE 위 빈 자리를 없앴다. 아래 글자 층
-            (원래 888 상자)이 아니라 섹션 기준으로 두고 GNB 바(높이 66) 바로
-            밑에 붙인다. 20 은 두 라벨의 원래 간격차(51 : 54)를 그대로 지킨 값이다.
+            (원래 888 상자)이 아니라 섹션 기준으로 두고 GNB 바 바로 밑에 붙인다.
+            20 은 두 라벨의 원래 간격차(51 : 54)를 그대로 지킨 값이다.
             폰트를 21→24로 키우면서 상자가 좁아 SlicedText 조각(clip-path 가 상자
             폭 기준 %)이 글자 일부를 잘라먹었다 — 요청대로 안쪽으로 당기고
-            상자도 넉넉하게 키웠다. */}
+            상자도 넉넉하게 키웠다.
+            그 뒤 GNB 왼쪽에 로고 박스(DesktopNav BrandMark, 배경 있는
+            점선+HEEBON)가 생기면서 바 높이가 HERO_TOP(66, GNB 옛 높이 가정값)
+            보다 커졌다 — 실측하면 93u 정도. 라벨이 그 자리 그대로(20/23) 있으니
+            커진 바 밑단에 위쪽이 가려 잘려 보인다는 요청(글자 잘림)으로,
+            커진 만큼(93-66=27) 두 라벨 모두 아래로 민다(20→47, 23→50) —
+            간격차 3 은 그대로 지킨다. */}
         <SlicedText
           data-intro-fade
-          className="hero-knockout absolute top-20 left-75 h-30 w-125 font-sans text-nav font-extrabold text-ink uppercase"
+          className="hero-knockout absolute top-47 left-75 h-30 w-125 font-sans text-nav font-extrabold text-ink uppercase"
         >
           {HERO.labelLeft}
         </SlicedText>
 
         <SlicedText
           data-intro-fade
-          className="hero-knockout absolute top-23 left-1705 h-30 w-150 font-sans text-nav leading-nav font-extrabold text-ink uppercase"
+          className="hero-knockout absolute top-50 left-1705 h-30 w-150 font-sans text-nav leading-nav font-extrabold text-ink uppercase"
         >
           {HERO.labelRight}
         </SlicedText>
 
         <div className="hero-knockout absolute inset-x-0 top-88 h-888">
-          {/* 카피 — 사진은 가운데 아래쪽에 크게 두고(요청), 카피는 오른쪽
-              가장자리에 붙여 화면 세로 한가운데에 둔다(요청, top-1/2 +
-              -translate-y-1/2 — 두 구간의 높이가 달라도 가운데가 안 흔들린다).
-              오른쪽 정렬은 그대로다. 줄간격 0.9 는 참고 사이트 값이다. 두 구간을 grid 로
-              같은 칸에 겹쳐 놓는다 — "좋아하는 일은 200% 애정을," 이
-              사라진 자리에 "맡은 임무는 300% 책임감" 이 나타나도록(요청,
-              lib/useIntroReveal.js 참조). */}
+          {/* 카피 — 요청으로 레이아웃을 다시 짰다: 사진을 기점으로 카피는
+              사진 왼쪽, 버튼은 사진 오른쪽 — 예전처럼 카피·버튼이 같이
+              오른쪽에 있다가 사진과 겹치는 방식이 아니다. 그래서 위치를
+              right → left 로 바꿨다.
+              정렬은 text-right 그대로 둔다 — text-left 로 바꿔봤더니 두
+              줄(짧은 "맡은 임무는" · 태그가 붙어 긴 "300% 책임감을")이
+              왼쪽만 맞고 오른쪽 끝이 들쭉날쭉했다("왼쪽 텍스트를 오른쪽
+              텍스트 끝나는 지점으로 맞춰 달라"는 요청) — text-right 을
+              쓰면 박스 위치(left:150)는 그대로 왼쪽에 있으면서, 그 안의
+              두 줄은 짧은 쪽이 안쪽으로 들어와 긴 쪽과 오른쪽 끝이
+              맞는다. 아래 태그+글자 줄(flex)도 같은 이유로 justify-end.
+              화면 세로 자리는 원래 정가운데(top-1/2 -translate-y-1/2)였는데
+              "애매하다"는 요청으로 62% → "사진 머리 높이쯤으로" 85% →
+              "조금만 더 위로" 100% → 115% 까지 올렸다.
+              줄간격 1.05 는 그대로다. z-10 은 혹시 글줄이 길어
+              사진 왼쪽 끝을 살짝 넘보더라도 가려지지 않게 남겨 둔 안전장치다.
+              두 구간을 grid 로 같은 칸에 겹쳐 놓는다 — "좋아하는 일은
+              200% 애정을" 이 사라진 자리에 "맡은 임무는 300% 책임감" 이
+              나타나도록(요청, lib/useIntroReveal.js 참조). */}
           <h1
-            className="absolute top-1/2 grid -translate-y-1/2 text-right font-display leading-[0.9] font-extrabold"
-            style={box({ right: 75 })}
+            className="absolute top-1/2 z-10 grid -translate-y-[115%] text-right font-display leading-[1.05] font-extrabold"
+            style={box({ left: 150 })}
           >
             <span className="col-start-1 row-start-1" data-intro-group="1">
-              <span className="block text-[calc(var(--text-display-sm)*0.62)]" data-flip-line>
+              <span className="block text-[calc(var(--text-display-sm)*0.75)]" data-flip-line>
                 <Letters text={HERO.greenLines[0]} />
               </span>
 
-              {/* 98:135 200% — "애정을," 앞. 태그와 글자 사이는 30 이면
-                  태그가 윗줄 밖으로 나가서, 모바일 헤더와 같은 값(12)으로
-                  좁혔다(요청) — 아래 300% 줄도 같은 값이다. */}
+              {/* 98:135 200% — "애정을" 앞. 태그와 글자 사이는 6 이다(요청으로
+                  가깝게 붙였다). justify-end 로 위 h1 의 text-right 과 같은
+                  방향으로 오른쪽 끝을 맞춘다(위 h1 주석 참조). */}
               <span
-                className="flex items-center justify-end gap-12 text-[calc(var(--text-display-sm)*0.62)]"
+                className="flex items-center justify-end gap-6 text-[calc(var(--text-display-sm)*0.75)]"
                 data-flip-line
               >
                 <Tag label={HERO.greenTag} {...TAG_BOX} tilt={-2.69} />
@@ -202,7 +232,7 @@ export default function Hero() {
                   (--text-display)을 그대로 두고 이 줄에서만 3% 줄인다(임의
                   수치를 새로 만들지 않는 관례를 따른다, 위 TAG_SCALE 참조). */}
               <span
-                className="block text-[calc(var(--text-display)*0.62)]"
+                className="block text-[calc(var(--text-display)*0.75)]"
                 data-flip-line
               >
                 <Letters text={HERO.redLines[0]} />
@@ -211,7 +241,7 @@ export default function Hero() {
               {/* 98:120 300% — "책임감을" 앞. 기울기(-2.69)와 크기(TAG_BOX)는
                   요청으로 200% 와 통일했다 */}
               <span
-                className="flex items-center justify-end gap-12 text-[calc(var(--text-display)*0.62)]"
+                className="flex items-center justify-end gap-6 text-[calc(var(--text-display)*0.75)]"
                 data-flip-line
               >
                 <Tag label={HERO.redTag} {...TAG_BOX} tilt={-2.69} />
@@ -222,18 +252,20 @@ export default function Hero() {
 
           {/* 밑단 버튼(요청) — 스크롤 연출(ProjectsReveal)에 나오는 것과 같은
               .pfr-swipe 버튼이다(요청으로 사이버펑크 노란 버튼에서 바꿨다).
-              간격 8 은 .pfr-buttons 값 그대로고, 크기만 .hero-cta 로 키웠다
-              (요청, index.css 참조).
-              가로 자리 — 요청으로 오른쪽으로 당겼다. 사진이 글자 층 위에
-              그려지므로(아래 3겹 참조) 사진 왼쪽 끝(PHOTO_LEFT)을 넘기면
-              버튼이 사진 뒤로 숨는다. 그래서 거기 딱 붙는 데까지만 당기고
-              오른쪽 끝을 사진 왼쪽 끝에 맞춘다.
-              세로 자리 — 히어로 밑변에서 51 띄운다(위쪽 CREATIVE 라벨이
-              위에서 51 내려온 것과 같은 값). */}
+              간격은 .pfr-buttons 값(8) 그대로 쓰다가, "두 버튼 사이를 조금
+              더 벌려 달라"는 요청을 두 번 받아 8 → 16 → 24 로 늘렸다.
+              크기는 .hero-cta 로 키웠다(요청, index.css 참조).
+              가로 자리 — 사진을 기점으로 카피는 왼쪽, 버튼은 오른쪽에
+              두라는 요청으로 화면 오른쪽 가장자리 쪽(사진 오른쪽 바깥)으로
+              옮겼다. 예전엔 사진 왼쪽 끝(PHOTO_LEFT)에 맞추던 값이었다.
+              세로 자리 — 처음엔 "오른쪽 아래로" 라는 요청대로 히어로
+              밑변에서 20 만 띄웠는데, "조금 더 위로" 라는 요청을 두 번
+              받아 20 → 60 → 80 까지 올렸다(카피는 그대로 두고 버튼만).
+              "조금만 내려 달라"는 요청으로 80 → 64 로 다시 살짝 낮췄다. */}
           <div
             data-intro-fade
-            className="absolute flex gap-8"
-            style={box({ right: 1920 - PHOTO_LEFT, top: 888 - 51 - 56 })}
+            className="absolute z-10 flex gap-24"
+            style={box({ right: 150, top: 888 - 64 - 56 })}
           >
             {HERO.buttons.map(({ label, href }) =>
               href ? (
