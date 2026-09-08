@@ -1,4 +1,8 @@
 import { useCallback } from "react";
+import gsap from "gsap";
+import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
+
+gsap.registerPlugin(ScrambleTextPlugin);
 
 /**
  * 데스크톱 GNB — 화면 맨 위에 항상 붙어 있는 전역 내비게이션.
@@ -24,6 +28,14 @@ import { useCallback } from "react";
  * 브라우저 기본 앵커 이동은 섹션이 아니라 그 섹션을 담은 캔버스 창의 시작점으로
  * 간다(예: #projects 는 카드보다 2300 쯤 위). 그래서 클릭을 가로채
  * 실제 내용 상자([data-reveal], 없으면 섹션 자신)로 스크롤한다.
+ *
+ * [마우스 올리면 글자가 섞였다 맞춰지는 효과 — 요청, gabrielcontassot.com 참고]
+ * 그 사이트 소스(hoisted.*.js)를 직접 받아 확인했다 — GSAP ScrambleTextPlugin을
+ * 써서, hover 할 때 글자를 "그 단어 자신의 글자들"만으로 뒤섞은 뒤(완전히
+ * 무작위 알파벳이 아니라 원래 글자만 도니 더 차분해 보인다) 원래 글자로
+ * 되맞춰진다(duration 1 · ease expo.out · revealDelay 0.1). makeScramblePool 이
+ * 그 뒤섞는 글자 풀을 만든다(원본의 Kf 함수와 같은 방식 — 단어 길이의
+ * 2배만큼, 그 단어 글자 중에서 무작위로 뽑는다).
  */
 const ITEMS = [
   { href: "#about", label: "About" },
@@ -32,6 +44,31 @@ const ITEMS = [
   { href: "#design", label: "Design" },
   { href: "#contact", label: "Contact" },
 ];
+
+/** 단어 자신의 글자만으로 뒤섞을 풀을 만든다(단어 길이의 2배). */
+function makeScramblePool(word) {
+  const letters = [...word];
+  const length = letters.length * 2;
+  return Array.from(
+    { length },
+    () => letters[Math.floor(Math.random() * letters.length)],
+  ).join("");
+}
+
+function scrambleIn(event) {
+  const el = event.currentTarget;
+  const text = el.textContent;
+  gsap.to(el, {
+    duration: 1,
+    ease: "expo.out",
+    scrambleText: {
+      text,
+      chars: makeScramblePool(text),
+      revealDelay: 0.1,
+      speed: 1,
+    },
+  });
+}
 
 export default function DesktopNav() {
   const scrollToSection = useCallback((event, href) => {
@@ -81,6 +118,7 @@ export default function DesktopNav() {
                 <a
                   href={item.href}
                   onClick={(event) => scrollToSection(event, item.href)}
+                  onMouseEnter={scrambleIn}
                   data-cursor="explore"
                   className="gnb-link block py-22 font-sans text-body leading-body font-medium tracking-wide text-black uppercase"
                 >
