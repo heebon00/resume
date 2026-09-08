@@ -32,7 +32,6 @@ export default function ProjectCard({
           width={image.width}
           height={image.height}
           className="absolute"
-          data-cursor="explore"
           style={{ left: du(image.left), top: du(image.top) }}
           imgClassName={`block size-full object-cover ${image.objectClassName ?? ""}`}
         />

@@ -119,7 +119,6 @@ export default function DesktopNav() {
                   href={item.href}
                   onClick={(event) => scrollToSection(event, item.href)}
                   onMouseEnter={scrambleIn}
-                  data-cursor="explore"
                   className="gnb-link block py-22 font-sans text-body leading-body font-medium tracking-wide text-black uppercase"
                 >
                   {item.label}
