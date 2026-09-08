@@ -144,16 +144,16 @@ export default function Hero() {
             {HERO.labelRight}
           </SlicedText>
 
-          {/* 카피 — 사진은 가운데 아래쪽에 크게 두고(요청), 카피는 그 위
-              빈 자리에서 오른쪽 위, 맨 위에서 살짝 내려온 자리에 오른쪽
-              정렬로 둔다(요청) — 사진과 Y축이 안 겹치니 가로 위치는
-              자유롭다. 줄간격 0.9 는 참고 사이트 값이다. 두 구간을 grid 로
+          {/* 카피 — 사진은 가운데 아래쪽에 크게 두고(요청), 카피는 오른쪽
+              가장자리에 붙여 화면 세로 한가운데에 둔다(요청, top-1/2 +
+              -translate-y-1/2 — 두 구간의 높이가 달라도 가운데가 안 흔들린다).
+              오른쪽 정렬은 그대로다. 줄간격 0.9 는 참고 사이트 값이다. 두 구간을 grid 로
               같은 칸에 겹쳐 놓는다 — "좋아하는 일은 200% 애정을," 이
               사라진 자리에 "맡은 임무는 300% 책임감" 이 나타나도록(요청,
               lib/useIntroReveal.js 참조). */}
           <h1
-            className="hero-copy-title absolute grid text-right font-display leading-[0.9] font-extrabold"
-            style={box({ right: 75, top: 122 })}
+            className="hero-copy-title absolute top-1/2 grid -translate-y-1/2 text-right font-display leading-[0.9] font-extrabold"
+            style={box({ right: 75 })}
           >
             <span className="col-start-1 row-start-1" data-intro-group="1">
               <span className="block text-[calc(var(--text-display-sm)*0.48)]" data-flip-line>
