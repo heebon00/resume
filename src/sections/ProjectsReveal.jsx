@@ -102,8 +102,9 @@ export default function ProjectsReveal({ variant = "desktop", afterLead = null }
         // 프로젝트마다 손댈 부분을 미리 모아 둔다 — 인덱스가 바뀔 때마다
         // querySelector 를 새로 하지 않는다. 제목 두 줄은 나오는/들어가는
         // 쪽(왼쪽·오른쪽)이 서로 반대라 글자 목록을 따로 모은다.
-        const parts = items.map((item) => ({
+        const parts = items.map((item, index) => ({
           el: item,
+          index,
           image: item.querySelector("[data-pfr-image]"),
           upChars: [...item.querySelectorAll("[data-pfr-up] [data-pfr-char]")],
           downChars: [
@@ -113,13 +114,21 @@ export default function ProjectsReveal({ variant = "desktop", afterLead = null }
           buttons: item.querySelector("[data-pfr-buttons]"),
         }));
 
-        // 시작은 전부 숨겨 둔다 — enter() 가 자기 차례에 연다.
+        // 시작은 전부 숨겨 둔다 — enter() 가 자기 차례에 연다. 이미지·글자의
+        // "닫힌" 모습(아래 buildEnterTimeline 의 fromTo 시작값과 같다)도
+        // 여기서 한 번에 못박아 둔다 — 이유는 buildEnterTimeline 의
+        // fromTo → to 전환 주석 참조(요청으로 발견한 "두 번째 이미지가
+        // 튀는" 버그).
         for (const part of parts) {
           gsap.set(part.el, { autoAlpha: 0 });
+          gsap.set(part.image, { yPercent: -12, scale: 0.92, opacity: 0 });
+          gsap.set(part.upChars, { rotateY: 80, xPercent: -70, opacity: 0 });
+          gsap.set(part.downChars, { rotateY: -80, xPercent: 70, opacity: 0 });
+          gsap.set(part.desc, { y: 24, opacity: 0 });
+          gsap.set(part.buttons, { y: 24, opacity: 0 });
         }
 
         let activeIndex = -1;
-        let activeTween = null;
 
         // 글자가 하나씩 시차를 두고 Y축으로 접히며 나타난다 — 왼쪽 줄(up)은
         // 왼쪽에서, 오른쪽 줄(down)은 오른쪽에서 온다("양옆에서 생기고
@@ -133,15 +142,40 @@ export default function ProjectsReveal({ variant = "desktop", afterLead = null }
             defaults: { ease: "power3.out" },
           });
 
-          tl.fromTo(
-            part.image,
-            { yPercent: -12, scale: 0.92, opacity: 0 },
-            { yPercent: 0, scale: 1, opacity: 1, duration: 0.9 },
-            0,
-          );
-          tl.fromTo(
+          // fromTo 였다가 to 로 바꿨다 — 이유(요청으로 찾은 버그):
+          // fromTo 는 시작값을 강제로 못박아서, 직전 트윈이 자연스러운
+          // 끝(leave 의 0.94/0, 혹은 다음 enter 의 1/1)까지 못 가고
+          // 중간값에서 kill() 로 끊긴 채였다면(빠른 스크롤로 연달아
+          // 지나칠 때 실제로 그랬다) 그 중간값에서 fromTo 의 고정
+          // 시작값(scale 0.92 등)으로 "튕겨" 돌아간 뒤에야 다시 앞으로
+          // 나아갔다 — 이게 "두 번째로 넘어갈 때 이미지가 튄다"던
+          // 정체였다(계측: scale 이 0.9262 → 0.9124 → 0.9311 처럼 한
+          // 프레임 역행했다 되돌아옴). to 는 "지금 값이 뭐든 거기서부터"
+          // 목표로만 가므로 이런 역행이 없다. 대신 맨 처음(한 번도 연 적
+          // 없는 최초 상태)의 시작 모습은 위 mount 시점 gsap.set 이
+          // 대신 맡는다 — 여기 목표값과 그 set 값이 서로 짝이다.
+          // 1번(AI Video Creator) 만 요청으로 "적절히 확대됐다가 원래
+          // 크기로 돌아오는" 효과를 쓴다 — ease 를 back.out 으로 바꾸면
+          // GSAP 이 목표(scale:1)를 넘어 살짝 커졌다가(overshoot) 다시
+          // 그 목표로 되돌아온다, 별도 트윈 두 단계로 안 쪼개도 한 번의
+          // to() 로 된다. 2·3번은 기존 그대로(단순 확대, power3.out).
+          if (part.index === 0) {
+            tl.to(
+              part.image,
+              {
+                yPercent: 0,
+                scale: 1,
+                opacity: 1,
+                duration: 1.1,
+                ease: "back.out(1.9)",
+              },
+              0,
+            );
+          } else {
+            tl.to(part.image, { yPercent: 0, scale: 1, opacity: 1, duration: 0.9 }, 0);
+          }
+          tl.to(
             part.upChars,
-            { rotateY: 80, xPercent: -70, opacity: 0 },
             {
               rotateY: 0,
               xPercent: 0,
@@ -151,9 +185,8 @@ export default function ProjectsReveal({ variant = "desktop", afterLead = null }
             },
             0.05,
           );
-          tl.fromTo(
+          tl.to(
             part.downChars,
-            { rotateY: -80, xPercent: 70, opacity: 0 },
             {
               rotateY: 0,
               xPercent: 0,
@@ -167,33 +200,33 @@ export default function ProjectsReveal({ variant = "desktop", afterLead = null }
           // 부연설명 — 스크램블 효과를 시도했다가(gabrielcontassot.com 참고)
           // 요청으로 뺐다. 다른 큰 텍스트(제목·버튼)와 같은 방식, 살짝
           // 아래에서 올라오며 옅게 나타나는 것으로 통일한다.
-          tl.fromTo(
-            part.desc,
-            { y: 24, opacity: 0 },
-            { y: 0, opacity: 1, duration: 0.3 },
-            0.4,
-          );
+          tl.to(part.desc, { y: 0, opacity: 1, duration: 0.3 }, 0.4);
 
-          tl.fromTo(
-            part.buttons,
-            { y: 24, opacity: 0 },
-            { y: 0, opacity: 1, duration: 0.3 },
-            0.5,
-          );
+          tl.to(part.buttons, { y: 0, opacity: 1, duration: 0.3 }, 0.5);
 
           return tl;
         }
 
+        // 빠르게 스크롤하면(예: 1번 → 2번 → 3번을 순식간에 지나칠 때)
+        // 앞선 enter() 의 0.9초짜리 이미지 트윈이 채 안 끝났는데 곧바로
+        // leave() 가 같은 이미지의 scale·opacity 를 다른 값으로 트윈하려
+        // 든다 — 서로 다른 타임라인 인스턴스라 GSAP 이 자동으로 덮어쓰지
+        // 않고 둘 다 매 프레임 값을 써서 이미지가 튀어 보였다(요청으로
+        // 발견: "첫 번째에서 두 번째로 넘어갈 때 이미지가 튄다"). 그래서
+        // part 마다 지금 돌고 있는 트윈을 기억해 두고, enter()·leave() 는
+        // 항상 "이 part 를 마지막으로 건드린 트윈"부터 죽이고 시작한다 —
+        // 어느 쪽이 먼저든 같은 part 에는 한 번에 트윈이 하나만 있다.
         function enter(part) {
           gsap.set(part.el, { autoAlpha: 1 });
-          activeTween?.kill();
-          activeTween = buildEnterTimeline(part).play();
+          part.tween?.kill();
+          part.tween = buildEnterTimeline(part).play();
         }
 
         // 자리를 넘겨준 프로젝트는 들어온 쪽으로 그대로 되접혀 빠진다
         // (up 은 왼쪽으로, down 은 오른쪽으로).
         function leave(part) {
-          gsap
+          part.tween?.kill();
+          part.tween = gsap
             .timeline({
               defaults: { ease: "power2.in" },
               onComplete: () => gsap.set(part.el, { autoAlpha: 0 }),
@@ -240,6 +273,11 @@ export default function ProjectsReveal({ variant = "desktop", afterLead = null }
         // 내리면 천천히 열린다 — 나머지 컷의 "정해진 시간 동안 재생" 방식과
         // 다르다.
         const firstTl = buildEnterTimeline(parts[0]);
+        // enter()/leave() 의 "part 마다 트윈 하나" 규칙에 이것도 포함시킨다
+        // — 안 그러면 나중에 뒤로 스크롤해 0번으로 돌아왔을 때 enter(parts[0])
+        // 가 이 firstTl 을 모르고 그냥 새 트윈을 얹어, 둘이 같은 이미지를
+        // 동시에 건드리는 같은 문제가 재발한다.
+        parts[0].tween = firstTl;
         gsap.set(parts[0].el, { autoAlpha: 1 });
         const firstReveal = ScrollTrigger.create({
           trigger: track,
@@ -277,7 +315,7 @@ export default function ProjectsReveal({ variant = "desktop", afterLead = null }
           firstReveal.kill();
           firstTl.kill();
           trigger.kill();
-          activeTween?.kill();
+          for (const part of parts) part.tween?.kill();
         };
       },
     );
