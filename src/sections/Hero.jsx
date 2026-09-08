@@ -44,6 +44,13 @@ const COPY_SCALE = 0.48; // 요청 — 카피를 더 내린 만큼 사진과 안
 const TAG_SCALE = 0.6 * COPY_SCALE;
 const s = (n) => du(n * TAG_SCALE);
 
+// 200% · 300% 태그는 시안(98:135 / 98:120)에서 서로 크기가 다르지만, 요청으로
+// 200% 쪽 값 하나로 통일한다 — 카피가 오른쪽 정렬이라 큰 쪽(300%)이 윗줄보다
+// 왼쪽으로 삐져나왔다("맡은 임무는" 242 에서 "책임감을" 185 를 빼면 태그와
+// 간격에 쓸 수 있는 자리가 57 뿐인데 300% 태그만 73 이었다). 임의 수치를
+// 새로 만들지 않는 관례대로, 시안에 이미 있는 200% 쪽 값을 그대로 쓴다.
+const TAG_BOX = { width: 213.849, height: 97.91, fontSize: 78 };
+
 // 사진 — 가운데, 원본 1099 x 744 의 가로세로비를 지킨다(요청으로 다시
 // 중앙으로). 카피는 오른쪽으로 옮겼다(아래 h1 참조).
 // 요청 — 캔버스(1920) 절반 너비, 가운데. 카피가 사진 위쪽 빈자리에 있어서
@@ -160,18 +167,14 @@ export default function Hero() {
                 <Letters text={HERO.greenLines[0]} />
               </span>
 
-              {/* 98:135 200% — "애정을," 앞 */}
+              {/* 98:135 200% — "애정을," 앞. 태그와 글자 사이는 30 이면
+                  태그가 윗줄 밖으로 나가서, 모바일 헤더와 같은 값(12)으로
+                  좁혔다(요청) — 아래 300% 줄도 같은 값이다. */}
               <span
-                className="flex items-center justify-end gap-30 text-[calc(var(--text-display-sm)*0.48)]"
+                className="flex items-center justify-end gap-12 text-[calc(var(--text-display-sm)*0.48)]"
                 data-flip-line
               >
-                <Tag
-                  label={HERO.greenTag}
-                  width={213.849}
-                  height={97.91}
-                  fontSize={78}
-                  tilt={-2.69}
-                />
+                <Tag label={HERO.greenTag} {...TAG_BOX} tilt={-2.69} />
                 <Letters text={HERO.greenLines[1]} />
               </span>
             </span>
@@ -187,18 +190,13 @@ export default function Hero() {
                 <Letters text={HERO.redLines[0]} />
               </span>
 
-              {/* 98:120 300% — "책임감을" 앞. 기울기는 요청으로 200%(-2.69)와 통일 */}
+              {/* 98:120 300% — "책임감을" 앞. 기울기(-2.69)와 크기(TAG_BOX)는
+                  요청으로 200% 와 통일했다 */}
               <span
-                className="flex items-center justify-end gap-30 text-[calc(var(--text-display)*0.48)]"
+                className="flex items-center justify-end gap-12 text-[calc(var(--text-display)*0.48)]"
                 data-flip-line
               >
-                <Tag
-                  label={HERO.redTag}
-                  width={250.833}
-                  height={100.529}
-                  fontSize={88}
-                  tilt={-2.69}
-                />
+                <Tag label={HERO.redTag} {...TAG_BOX} tilt={-2.69} />
                 <Letters text={HERO.redLines[1]} />
               </span>
             </span>
