@@ -4,7 +4,7 @@ import footerLines from "../assets/icons/pattern-footer-lines.svg";
 
 /**
  * 푸터 — 피그마 20:1594 (섹션 x=173, y=7125) → 캔버스 left 76, top 6771
- * (시안 7125 - 572), 1976 x 586.1
+ * (시안 7125 - 1178), 1976 x 586.1
  *   20:1595 bg-1.svg clip  가로 막대 481 x 16 (푸터 기준 747.5 / 285.05)
  *                          내보낸 SVG 를 -54 만큼 올려 잘라 쓴다(시안의 클리핑과 동일).
  *   20:1609 형광 블록 #EFFF58  좌측 0, 639.98 x 586.1
@@ -47,7 +47,7 @@ export default function Footer() {
       id="contact"
       className="absolute"
       data-reveal
-      style={box({ left: 76, top: 6553, width: 1976, height: 586.1 })}
+      style={box({ left: 76, top: 5947, width: 1976, height: 586.1 })}
     >
       {/* 20:1595 가로 막대 */}
       <div
