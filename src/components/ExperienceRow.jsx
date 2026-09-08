@@ -16,13 +16,21 @@
  *
  * [오른쪽 여백이 컸던 이유] 세 칼럼(40+640+300=980)의 합이 행 폭(1264,
  * Experience.jsx 의 w-1264)보다 작아서, 기본 flex(justify 지정 없음)로는
- * 세 칼럼이 왼쪽부터 채워지고 남는 폭(1264-980=284)이 연도 뒤에 그대로
- * 빈 공간으로 남았다 — 즉 연도가 "오른쪽 끝에 붙어 있다"는 처음 짐작과
- * 달리 실제로는 행 중간쯤(980 지점)에서 끝나 있었다. 왼쪽 순번 칸을
- * 줄이고 나니 그 오른쪽 여백만 두드러져 보였다(요청으로 확인: "오른쪽
- * 텍스트 다음에 여백이 남는다"). 그래서 연도에 ml-auto 를 줘서 정말로
- * 행 오른쪽 끝까지 밀어붙이되, 행에도 순번 칸과 같은 폭(pr-40)만큼
- * 오른쪽 여백을 둬서 좌우가 같은 폭(40)으로 맞도록 했다. */
+ * 세 칼럼이 왼쪽부터 채워지고 남는 폭이 연도 뒤에 그대로 빈 공간으로
+ * 남았다 — 즉 연도가 "오른쪽 끝에 붙어 있다"는 처음 짐작과 달리 실제로는
+ * 행 중간쯤에서 끝나 있었다(요청으로 확인: "오른쪽 텍스트 다음에 여백이
+ * 남는다"). 그래서 연도에 ml-auto 를 줘서 행 오른쪽 끝까지 밀어붙이고,
+ * 행에도 순번 칸과 같은 폭(pr-, SIDE_GUTTER)만큼 오른쪽 여백을 둬서
+ * 좌우를 맞췄다.
+ *
+ * [그래도 양옆에 너무 붙어 보였다] 좌우를 맞추고 나니 이번엔 제목·연도가
+ * 서로 반대쪽 끝까지 밀려나 가운데가 휑해 보였다("사이드에 치우쳤다"는
+ * 요청). 좌우 여백(순번 칸 폭 · 행의 pr-)을 40 → 100 으로 같이 키웠다 —
+ * 인덱스 칸이 넓어진 만큼 제목이 오른쪽으로, pr- 여백이 커진 만큼 연도가
+ * 왼쪽으로 당겨져 가운데 빈 자리가 그만큼(양쪽 합 120) 줄어든다. 이
+ * 파일의 다른 폭(w-640 등)처럼 Tailwind 정적 클래스라 두 값(w-100·pr-100)
+ * 을 같은 숫자로 맞춰 직접 써야 한다 — 하나만 바꾸면 다시 좌우가 안
+ * 맞는다. */
 export default function ExperienceRow({
   index,
   title,
@@ -32,10 +40,10 @@ export default function ExperienceRow({
 }) {
   return (
     <div
-      className={`flex items-start border-b border-black-8 pt-25 pr-40 pb-[calc(6.96*var(--u))] ${className}`}
+      className={`flex items-start border-b border-black-8 pt-25 pr-100 pb-[calc(6.96*var(--u))] ${className}`}
       style={style}
     >
-      <span className="mt-[calc(8.13*var(--u))] w-40 shrink-0 font-sans text-label leading-body text-black opacity-[0.762]">
+      <span className="mt-[calc(8.13*var(--u))] w-100 shrink-0 font-sans text-label leading-body text-black opacity-[0.762]">
         {index}
       </span>
       <span className="mt-[calc(13.12*var(--u))] w-640 shrink-0 font-sans text-exp leading-exp font-medium text-black opacity-[0.563]">
