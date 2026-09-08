@@ -40,7 +40,9 @@ import useIntroReveal from "../lib/useIntroReveal";
 // 시안 값(98:135 / 98:120)에 이 비율만 곱해 쓴다 — 임의 수치를 새로 만들지 않는다.
 // COPY_SCALE 은 카피(제목) 쪽에 곱하는 배율과 맞춘 값이다 — 카피를 줄이면서
 // 태그만 그대로 두면 카피 옆에서 태그가 상대적으로 커 보이기 때문이다.
-const COPY_SCALE = 0.48; // 요청 — 카피를 더 내린 만큼 사진과 안 겹치게 더 줄였다.
+const COPY_SCALE = 0.56; // 요청 — 작아 보인다고 해서 0.48 에서 키웠다.
+// 아래 text-[calc(... * 0.56)] 네 곳이 이 값과 같아야 한다 — Tailwind 임의값은
+// 문자열이라 상수를 못 넣는다. 태그(TAG_SCALE)는 이 값에 딸려 같이 커진다.
 const TAG_SCALE = 0.6 * COPY_SCALE;
 const s = (n) => du(n * TAG_SCALE);
 
@@ -163,7 +165,7 @@ export default function Hero() {
             style={box({ right: 75 })}
           >
             <span className="col-start-1 row-start-1" data-intro-group="1">
-              <span className="block text-[calc(var(--text-display-sm)*0.48)]" data-flip-line>
+              <span className="block text-[calc(var(--text-display-sm)*0.56)]" data-flip-line>
                 <Letters text={HERO.greenLines[0]} />
               </span>
 
@@ -171,7 +173,7 @@ export default function Hero() {
                   태그가 윗줄 밖으로 나가서, 모바일 헤더와 같은 값(12)으로
                   좁혔다(요청) — 아래 300% 줄도 같은 값이다. */}
               <span
-                className="flex items-center justify-end gap-12 text-[calc(var(--text-display-sm)*0.48)]"
+                className="flex items-center justify-end gap-12 text-[calc(var(--text-display-sm)*0.56)]"
                 data-flip-line
               >
                 <Tag label={HERO.greenTag} {...TAG_BOX} tilt={-2.69} />
@@ -184,7 +186,7 @@ export default function Hero() {
                   (--text-display)을 그대로 두고 이 줄에서만 3% 줄인다(임의
                   수치를 새로 만들지 않는 관례를 따른다, 위 TAG_SCALE 참조). */}
               <span
-                className="block text-[calc(var(--text-display)*0.48)]"
+                className="block text-[calc(var(--text-display)*0.56)]"
                 data-flip-line
               >
                 <Letters text={HERO.redLines[0]} />
@@ -193,7 +195,7 @@ export default function Hero() {
               {/* 98:120 300% — "책임감을" 앞. 기울기(-2.69)와 크기(TAG_BOX)는
                   요청으로 200% 와 통일했다 */}
               <span
-                className="flex items-center justify-end gap-12 text-[calc(var(--text-display)*0.48)]"
+                className="flex items-center justify-end gap-12 text-[calc(var(--text-display)*0.56)]"
                 data-flip-line
               >
                 <Tag label={HERO.redTag} {...TAG_BOX} tilt={-2.69} />
