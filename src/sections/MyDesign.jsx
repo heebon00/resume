@@ -196,7 +196,6 @@ export default function MyDesign() {
               <div
                 key={card.id}
                 className="absolute overflow-hidden rounded-[calc(5*var(--u))]"
-                data-cursor="drag"
                 style={box({
                   left: card.left,
                   top: 0,

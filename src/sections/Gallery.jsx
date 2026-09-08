@@ -61,7 +61,6 @@ export default function Gallery() {
       <div
         className="relative w-full overflow-hidden"
         data-reveal
-        data-cursor="drag"
         style={{ height: du(ITEM_H) }}
       >
         <div
