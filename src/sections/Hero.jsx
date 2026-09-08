@@ -18,7 +18,7 @@ import useIntroReveal from "../lib/useIntroReveal";
  * 화면은 세 겹이다.
  *   1. .hero-fill  — 뒤에 깔린 물결치는 큐브 격자(실제 3D, WavyCubes 참고).
  *   2. .hero-knockout — 카피 · 좌우 라벨 · 200%/300% 태그가 든 글자 층.
- *      큐브 위에 진한 색으로 얹는다. 메인 카피만 .hero-copy-title 로
+ *      큐브 위에 진한 색으로 얹는다. 메인 카피의 글자만 .hero-copy-letters 로
  *      색이 흐르는 그라디언트를 준다.
  *   3. 인물 사진.
  * 원리와 수치는 index.css 의 .hero-fill 주석 참조.
@@ -57,7 +57,7 @@ const PHOTO_LEFT = Math.round((1920 - PHOTO_W) / 2);
 
 /**
  * 200% · 300% 태그 — 카피 줄 앞에 붙는다("애정을," 앞 200% / "책임감을" 앞 300%).
- * 메인 카피는 색이 흐르는 그라디언트(.hero-copy-title)를 쓰지만, 태그는
+ * 메인 카피는 색이 흐르는 그라디언트(.hero-copy-letters)를 쓰지만, 태그는
  * 배지처럼 구분되게 진한 색(--color-ink) 그대로 둔다.
  *
  * 시안의 안쪽 여백(px 31 · py 26)과 줄 높이(--leading-tag 47)를 그대로 쓰면
@@ -95,7 +95,7 @@ function Tag({ label, width, height, fontSize, tilt }) {
 /** 글자 단위로 쪼갠다 — 등장 연출이 글자 하나씩 잡을 수 있도록. */
 function Letters({ text }) {
   return (
-    <span className="block">
+    <span className="hero-copy-letters block">
       {/* 읽히는 건 이 한 벌뿐이다. 쪼갠 글자는 전부 장식으로 둔다. */}
       <span className="sr-only">{text}</span>
       {[...text].map((char, i) => (
@@ -152,7 +152,7 @@ export default function Hero() {
               사라진 자리에 "맡은 임무는 300% 책임감" 이 나타나도록(요청,
               lib/useIntroReveal.js 참조). */}
           <h1
-            className="hero-copy-title absolute top-1/2 grid -translate-y-1/2 text-right font-display leading-[0.9] font-extrabold"
+            className="absolute top-1/2 grid -translate-y-1/2 text-right font-display leading-[0.9] font-extrabold"
             style={box({ right: 75 })}
           >
             <span className="col-start-1 row-start-1" data-intro-group="1">

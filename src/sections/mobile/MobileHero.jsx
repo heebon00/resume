@@ -13,14 +13,14 @@ import useIntroReveal from "../../lib/useIntroReveal";
  *
  * 배경은 데스크톱과 같다(sections/Hero.jsx 와 index.css 의 .hero-fill 주석
  * 참조) — 물결치는 큐브 위에 진한 색 글자를 얹는다. 메인 카피(h1·p)만
- * .hero-copy-title 로 색이 흐르는 그라디언트를 준다. 다만 여기서는 판이
+ * .hero-copy-letters 로 색이 흐르는 그라디언트를 준다. 다만 여기서는 판이
  * 흐름 안에 있어 글자 높이만큼만 차지한다.
  */
 
 /** 글자 단위로 쪼갠다 — 등장 연출이 글자 하나씩 잡을 수 있도록. */
 function Letters({ text }) {
   return (
-    <span className="block">
+    <span className="hero-copy-letters block">
       {/* 읽히는 건 이 한 벌뿐이다. 쪼갠 글자는 전부 장식으로 둔다. */}
       <span className="sr-only">{text}</span>
       {[...text].map((char, i) => (
@@ -75,7 +75,7 @@ export default function MobileHero() {
           <div className="mt-32 grid">
             <h1
               data-intro-group="1"
-              className="hero-copy-title col-start-1 row-start-1 font-display text-[calc(52*var(--u))] leading-display font-extrabold"
+              className="col-start-1 row-start-1 font-display text-[calc(52*var(--u))] leading-display font-extrabold"
             >
               <span className="block" data-flip-line>
                 <Letters text={HERO.greenLines[0]} />
@@ -92,7 +92,7 @@ export default function MobileHero() {
 
             <p
               data-intro-group="2"
-              className="hero-copy-title col-start-1 row-start-1 font-display text-[calc(52*var(--u))] leading-display font-extrabold"
+              className="col-start-1 row-start-1 font-display text-[calc(52*var(--u))] leading-display font-extrabold"
             >
               <span className="block" data-flip-line>
                 <Letters text={HERO.redLines[0]} />
