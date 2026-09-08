@@ -55,7 +55,16 @@ const PLACEMENT = {
     buttons: { left: 828, top: 361.36 },
   },
   "youtube-music-redesign": {
-    image: { left: 655, top: 429, width: 142, height: 284 },
+    // 썸네일이 새 목업(가로 1200 x 800)으로 바뀌면서, 세로 상자(142 x 284)에
+    // 넣으면 가운데 세로 띠만 잘려 글자 조각이 보였다. 초점을 휴대폰 쪽
+    // (원본 가로 68% 지점)으로 옮겨 기기 화면이 담기게 한다.
+    image: {
+      left: 655,
+      top: 429,
+      width: 142,
+      height: 284,
+      objectClassName: "object-[68%_center]",
+    },
     title: { left: 832.98, top: 452.36 },
     description: {
       left: 832.98,

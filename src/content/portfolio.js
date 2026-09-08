@@ -174,9 +174,11 @@ export const PROJECTS = {
     },
     {
       id: "youtube-music-redesign",
-      src: musicApp,
+      // 요청으로 카드 썸네일도 스크롤 연출과 같은 새 목업(피그마 6:1229)으로
+      // 바꿨다. 갤러리 띠가 쓰는 musicApp 은 그대로 둔다.
+      src: youtubeMusicMockup,
       alt: "YouTube Music 리디자인 화면",
-      // 스크롤 연출 전용 이미지 — 피그마 139:361 (1200 x 800 가로형), iKEA와 같은 방식.
+      // 스크롤 연출 전용 이미지 — 피그마 6:1229 (1200 x 800 가로형), iKEA와 같은 방식.
       reveal: {
         src: youtubeMusicMockup,
         alt: "YouTube Music 리디자인 시안 — 모바일 화면",
