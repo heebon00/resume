@@ -23,7 +23,11 @@ import designMock03 from "../assets/images/design-mock-03.svg";
 import designMock04 from "../assets/images/design-mock-04.svg";
 import afterEffects from "../assets/images/skill-after-effects.webp";
 import figmaLogo from "../assets/images/skill-figma.webp";
-import gitLogo from "../assets/images/skill-git.webp";
+// GitHub 공식 마크 — primer/octicons 의 mark-github-16.svg 에서 path 를 가져와
+// 검정 바탕 · 흰 마크로 얹었다(다른 로고 타일과 톤 통일).
+import githubLogo from "../assets/images/skill-github.svg";
+// AI CLI — 상표가 없는 도구라 터미널 프롬프트 기호(>_)를 직접 그렸다.
+import aiCliLogo from "../assets/images/skill-ai-cli.svg";
 import photoshop from "../assets/images/skill-photoshop.webp";
 import premierePro from "../assets/images/skill-premiere-pro.webp";
 
@@ -331,20 +335,25 @@ export const SKILLS = {
       percent: 91,
     },
     {
-      id: "git",
-      name: "GIT",
-      description: "Version control • Branching • Merging",
-      logo: gitLogo,
-      percent: 89,
+      // 요청으로 GIT -> GITHUB. 예전 그림은 어두운 배경의 "git ->" 워드마크라
+      // 실제 깃허브 로고가 아니었고, 이름·설명도 Git(버전관리 도구) 기준이라
+      // 로고와 어긋났다. 셋을 GitHub 기준으로 맞춘다.
+      id: "github",
+      name: "GITHUB",
+      description: "Repositories • Pull requests • Collaboration",
+      logo: githubLogo,
+      percent: 92,
     },
     {
       id: "ai-cli",
       name: "AI CLI",
       description: "Prompt engineering • Automation • Agents",
       percent: 94,
-      // 전용 로고가 없어 illustrator 와 같은 방식으로 글자만 넣는다.
-      // (전에는 Blender 로고가 붙어 있었는데 AI CLI 와 무관한 3D 툴 로고였다)
-      markLabel: "_",
+      // 예전에는 그라디언트 사각형에 밑줄 한 글자(markLabel "_")만 넣었는데
+      // 의미가 안 읽힌다는 요청으로, CLI 를 나타내는 보편적 기호인 터미널
+      // 프롬프트(>_)를 직접 그려 넣었다. GitHub 타일과 같은 검정 바탕·흰 그림이다.
+      // (그 전에는 AI CLI 와 무관한 Blender 3D 툴 로고가 붙어 있었다)
+      logo: aiCliLogo,
     },
     {
       id: "photoshop",
