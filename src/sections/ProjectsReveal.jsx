@@ -392,16 +392,6 @@ export default function ProjectsReveal({ variant = "desktop", afterLead = null }
             (label, idx) => {
               const href = card.links?.[idx];
               const className = `pfr-swipe${onPanel ? " pfr-swipe--panel" : ""}`;
-              const body = onPanel ? (
-                <>
-                  {label}
-                  <span className="pfr-swipe-arrow" aria-hidden="true">
-                    →
-                  </span>
-                </>
-              ) : (
-                label
-              );
 
               if (href) {
                 return (
@@ -412,13 +402,13 @@ export default function ProjectsReveal({ variant = "desktop", afterLead = null }
                     rel="noopener noreferrer"
                     className={`${className} no-underline cursor-pointer`}
                   >
-                    {body}
+                    {label}
                   </a>
                 );
               }
               return (
                 <span key={label} className={className}>
-                  {body}
+                  {label}
                 </span>
               );
             },
