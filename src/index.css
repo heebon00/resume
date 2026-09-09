@@ -170,7 +170,9 @@ body {
 }
 
 .contact-form-eyebrow {
-  color: var(--color-accent-lime);
+  /* 요청 — 푸터 형광 블록과 같은 색(#EFFF58). 이 섹션의 다른 라임
+     (--color-accent-lime #BBFF00, 입력 포커스 선·상태 문구)은 그대로 둔다. */
+  color: var(--color-footer);
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.16em;
@@ -245,7 +247,7 @@ body {
 }
 
 .contact-form button {
-  background: var(--color-accent-lime);
+  background: var(--color-footer); /* 요청 — 푸터 형광 블록과 같은 색 */
   border: 0;
   color: var(--color-ink);
   cursor: pointer;
