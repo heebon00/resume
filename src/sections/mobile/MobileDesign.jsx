@@ -14,7 +14,7 @@ export default function MobileDesign() {
   return (
     <section
       data-reveal id={mobileId("design")} className="px-20 pb-60">
-      <h2 className="font-sans text-[calc(24*var(--u))] leading-[calc(40.32*var(--u))] font-semibold text-black">
+      <h2 className="font-sans text-[calc(24*var(--u))] leading-[calc(40.32*var(--u))] font-semibold text-ink">
         {DESIGN.heading}
       </h2>
 
@@ -22,7 +22,7 @@ export default function MobileDesign() {
         {DESIGN.filters.map((label, i) => (
           <li
             key={`${label}-${i}`}
-            className={`font-sans text-[calc(15*var(--u))] leading-desc text-black ${
+            className={`font-sans text-[calc(15*var(--u))] leading-desc text-ink ${
               i === 0 ? "border-b border-ink" : "underline decoration-solid"
             }`}
           >

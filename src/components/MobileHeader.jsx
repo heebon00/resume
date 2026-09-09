@@ -7,6 +7,7 @@
  *           막대 1·3 = 20 x 2, 막대 2 = 16 x 2(가운데 정렬), 막대 간격 4.25
  */
 import { mobileHref } from "../lib/sectionIds";
+import ThemeToggle from "./ThemeToggle";
 
 export default function MobileHeader({ open, onToggle, menuId }) {
   return (
@@ -27,20 +28,27 @@ export default function MobileHeader({ open, onToggle, menuId }) {
           />
         </a>
 
-        <button
-          type="button"
-          onClick={onToggle}
-          aria-expanded={open}
-          aria-controls={menuId}
-          aria-label={open ? "메뉴 닫기" : "메뉴 열기"}
-          className="flex items-center justify-end pt-[calc(25.61*var(--u))] pb-[calc(25.62*var(--u))]"
-        >
-          <span className="flex h-15 w-20 flex-col items-center justify-between">
-            <span className="block h-2 w-20 rounded-pill bg-black" />
-            <span className="block h-2 w-16 rounded-pill bg-black" />
-            <span className="block h-2 w-20 rounded-pill bg-black" />
-          </span>
-        </button>
+        {/* 오른쪽 — 다크 모드 토글 + 햄버거.
+            막대 색은 bg-black 이었는데 다크 모드에서 검은 바 위 검은 막대라
+            안 보였다. 글자색을 따라가는 bg-ink 로 바꾼다. */}
+        <div className="flex items-center gap-16 py-15">
+          <ThemeToggle className="size-22" />
+
+          <button
+            type="button"
+            onClick={onToggle}
+            aria-expanded={open}
+            aria-controls={menuId}
+            aria-label={open ? "메뉴 닫기" : "메뉴 열기"}
+            className="flex items-center justify-end"
+          >
+            <span className="flex h-15 w-20 flex-col items-center justify-between">
+              <span className="block h-2 w-20 rounded-pill bg-ink" />
+              <span className="block h-2 w-16 rounded-pill bg-ink" />
+              <span className="block h-2 w-20 rounded-pill bg-ink" />
+            </span>
+          </button>
+        </div>
       </div>
     </header>
   );

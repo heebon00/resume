@@ -3,6 +3,7 @@ import gsap from "gsap";
 import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 import { onIntroDone } from "../lib/intro";
 import { makeScramblePool } from "../lib/scramble";
+import ThemeToggle from "./ThemeToggle";
 
 gsap.registerPlugin(ScrambleTextPlugin);
 
@@ -154,22 +155,27 @@ export default function DesktopNav() {
           <BrandMark />
         </a>
 
-        <nav aria-label="주요 메뉴">
-          <ul className="flex items-center gap-40">
-            {ITEMS.map((item) => (
-              <li key={item.href}>
-                <a
-                  href={item.href}
-                  onClick={(event) => scrollToSection(event, item.href)}
-                  onMouseEnter={scrambleIn}
-                  className="gnb-link block py-22 font-sans text-body leading-body font-medium tracking-wide text-black uppercase"
-                >
-                  {item.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        {/* 오른쪽 — 메뉴와 다크 모드 토글. 토글은 메뉴 끝에 붙인다(요청). */}
+        <div className="flex items-center gap-32">
+          <nav aria-label="주요 메뉴">
+            <ul className="flex items-center gap-40">
+              {ITEMS.map((item) => (
+                <li key={item.href}>
+                  <a
+                    href={item.href}
+                    onClick={(event) => scrollToSection(event, item.href)}
+                    onMouseEnter={scrambleIn}
+                    className="gnb-link block py-22 font-sans text-body leading-body font-medium tracking-wide text-ink uppercase"
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <ThemeToggle className="size-24" />
+        </div>
       </div>
     </header>
   );

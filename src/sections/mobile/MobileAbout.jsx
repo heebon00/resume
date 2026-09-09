@@ -12,11 +12,11 @@ export default function MobileAbout() {
   return (
     <section
       data-reveal id={mobileId("about")} className="px-20 pt-60 pb-60">
-      <div className="flex items-center justify-between border-b border-black pt-7 pb-5">
-        <span className="font-sans text-label leading-label tracking-wide font-medium text-black uppercase">
+      <div className="flex items-center justify-between border-b border-ink pt-7 pb-5">
+        <span className="font-sans text-label leading-label tracking-wide font-medium text-ink uppercase">
           {ABOUT.barLeft}
         </span>
-        <span className="font-sans text-label leading-label tracking-wide font-medium text-black uppercase">
+        <span className="font-sans text-label leading-label tracking-wide font-medium text-ink uppercase">
           {ABOUT.barRight}
         </span>
       </div>
@@ -39,7 +39,7 @@ export default function MobileAbout() {
           <p
             key={line}
             style={{ transitionDelay: `${i * 0.12}s` }}
-            className="intro-line-m font-sans text-[calc(15.5*var(--u))] leading-desc tracking-body text-black"
+            className="intro-line-m font-sans text-[calc(15.5*var(--u))] leading-desc tracking-body text-ink"
           >
             {line}
           </p>
@@ -49,10 +49,10 @@ export default function MobileAbout() {
       <dl className="mt-28" hidden={ABOUT.rows.length === 0}>
         {ABOUT.rows.map(({ label, value }) => (
           <div key={label} className="flex border-b border-line pt-14 pb-14">
-            <dt className="w-120 shrink-0 font-sans text-[calc(15.5*var(--u))] leading-desc text-black uppercase">
+            <dt className="w-120 shrink-0 font-sans text-[calc(15.5*var(--u))] leading-desc text-ink uppercase">
               {label}
             </dt>
-            <dd className="font-sans text-[calc(15.5*var(--u))] leading-desc whitespace-pre-line text-black">
+            <dd className="font-sans text-[calc(15.5*var(--u))] leading-desc whitespace-pre-line text-ink">
               {value}
             </dd>
           </div>

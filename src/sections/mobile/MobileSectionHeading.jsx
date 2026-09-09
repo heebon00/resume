@@ -5,7 +5,7 @@
 export default function MobileSectionHeading({ children, className = "" }) {
   return (
     <h2
-      className={`font-sans text-[calc(24*var(--u))] leading-[calc(40.32*var(--u))] font-bold tracking-heading text-black uppercase ${className}`}
+      className={`font-sans text-[calc(24*var(--u))] leading-[calc(40.32*var(--u))] font-bold tracking-heading text-ink uppercase ${className}`}
     >
       — {children}
     </h2>

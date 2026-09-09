@@ -14,7 +14,7 @@ export default function TagPill({
   textWidth,
   textLeft = 0,
   fillClassName,
-  textClassName = "text-black",
+  textClassName = "text-ink",
 }) {
   return (
     <span

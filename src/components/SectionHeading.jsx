@@ -22,7 +22,7 @@ export default function SectionHeading({
 
   return (
     <Tag
-      className={`font-sans font-bold text-heading whitespace-nowrap text-black uppercase ${leadingClass} ${trackingClass} ${className}`}
+      className={`font-sans font-bold text-heading whitespace-nowrap text-ink uppercase ${leadingClass} ${trackingClass} ${className}`}
     >
       — {children}
     </Tag>

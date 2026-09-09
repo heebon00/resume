@@ -52,7 +52,11 @@
   --color-ring: #1f1f1f; /* 키워드 태그 외곽선 */
   --color-tag-crimson: #d4183d; /* 키워드 태그 채움(자주) */
   --color-tag-lime: #efff58; /* 키워드 태그 채움(라임) — 요청으로 변경 */
-  --color-muted: #353535; /* 프로젝트 카드 설명 */
+  --color-muted: #353535;
+  /* 어두운 띠로 쓰는 두 구간(연락 폼 · 이름 배너)은 따로 토큰을 둔다.
+     --color-ink 를 그대로 쓰면 다크 모드에서 색이 뒤집혀 밝은 덩어리가 된다. */
+  --color-contact-bg: #16171e;
+  --color-contact-fg: #f8f8f8; /* 프로젝트 카드 설명 */
 
   /* --- 서체 ------------------------------------------------------------- */
   --font-sans:
@@ -131,6 +135,49 @@ html {
 
 :root {
   --u: 0.0520833cqw; /* 1 / 1920 — 데스크톱 캔버스 */
+  color-scheme: light;
+}
+
+/* ===========================================================================
+   다크 모드 (요청)
+   색이 거의 전부 위 @theme 의 토큰을 거치므로, 여기서 값만 덮어쓰면 사이트
+   전체가 따라온다. 브랜드색(형광 #EFFF58 · 크림슨 #D4183D · 노랑 #FFDA01 등)은
+   두 테마에서 같은 색이라 건드리지 않는다.
+   적용 방식은 html[data-theme] 하나다 — 시스템 설정을 따를지, 사용자가 고른
+   값을 쓸지는 index.html 의 첫 스크립트가 판단해서 이 속성을 붙인다.
+   그래서 여기에는 prefers-color-scheme 을 두지 않는다(두 곳에서 정하면
+   사용자가 고른 값이 시스템 설정에 덮여 버린다).
+   =========================================================================== */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-ink: #f1f1f4; /* 기본 텍스트 — 밝게 뒤집는다 */
+  --color-ink-soft: #a6a6ad;
+  --color-muted: #b4b4bb;
+  --color-paper: #101114; /* 페이지 바탕 */
+  --color-paper-alt: #17181d;
+  --color-gray-50: #17181d;
+  --color-line: #3a3b42;
+  --color-header: #17181d;
+
+  /* 어두운 띠 — 바탕보다 한 단계 밝게 둬야 구간이 구분된다 */
+  --color-contact-bg: #1c1d23;
+  --color-contact-fg: #f1f1f4;
+  --color-banner: #1c1d23;
+  --color-skills-bg: #08090b;
+
+  /* MY SKILLS 카드 */
+  --color-card: #22232a;
+  --color-card-border: #3a3b42;
+  --color-card-text: #ffffffde;
+  --color-card-text-dim: #ffffff8a;
+
+  /* 반투명 겹침 — 밝은 바탕 기준이던 검정을 흰색으로 뒤집는다 */
+  --color-black-8: #ffffff14;
+  --color-black-25: #ffffff40;
+
+  --color-ring: #d5d5db; /* 태그 알약 테두리 */
+  --color-base-black: #e8e8ee;
 }
 
 /* 모바일 캔버스 — 시안 390 기준. xl(1280) 미만에서 모바일 시안을 쓴다.
@@ -151,8 +198,8 @@ body {
 }
 
 .contact-form-section {
-  background: var(--color-ink);
-  color: var(--color-paper);
+  background: var(--color-contact-bg);
+  color: var(--color-contact-fg);
   padding: clamp(4rem, 9vw, 10rem) clamp(1.25rem, 8vw, 9.5rem);
 }
 
@@ -446,43 +493,6 @@ body {
   stroke-dashoffset: var(--arc-offset);
 }
 
-/* ---------------------------------------------------------------------------
-   커스텀 커서 (20:1763 / 20:1791)
-   --------------------------------------------------------------------------- */
-.has-custom-cursor,
-.has-custom-cursor * {
-  cursor: none;
-}
-
-.cc-dot,
-.cc-ring {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 100;
-  pointer-events: none;
-  border-radius: 9999px;
-  margin-left: -3.5px;
-  margin-top: -3.5px;
-}
-
-.cc-dot {
-  width: 7px;
-  height: 7px;
-  background: var(--color-ink);
-}
-
-.cc-ring {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 35px;
-  height: 35px;
-  margin-left: -17.5px;
-  margin-top: -17.5px;
-  border: 1px solid rgb(0 0 0 / 0.3);
-}
-
 @media (prefers-reduced-motion: reduce) {
   .js-reveal [data-reveal] {
     opacity: 1;
@@ -567,13 +577,37 @@ body {
 
 /* 제목의 difference 합성이 기댈 바탕색을 여기에 직접 깔아 준다
    (투명이면 흰 글자가 종이 위에서 안 보인다). */
+/* 요청 — 제목(큰 텍스트)을 설명 아래로 내린다. 절대배치로는 제목 두 줄이
+   들어갈 세로 자리가 안 나와서(이미지+설명이 이미 화면을 거의 채운다),
+   모바일과 같은 흐름 배치로 바꾸고 order 로 순서만 돌린다.
+   DOM 순서는 이미지 -> 제목 -> 설명이라 의미상 그대로 두고, 보이는 순서만
+   이미지 -> 설명 -> 제목이 되게 한다.
+   자리가 모자라면 이미지가 먼저 줄어들고 글자는 잘리지 않는다. */
 .pfr-stage {
   position: relative;
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  gap: calc(18 * var(--u));
   height: 100%;
-  place-items: center;
+  padding: 7vh var(--pfr-gutter) 5vh;
   overflow: hidden;
   background-color: var(--color-paper);
+}
+
+.pfr-svg,
+.pfr-fallback {
+  order: 1;
+  align-self: center;
+  flex: 0 1 auto;
+  min-height: 0;
+  max-height: 100%;
+}
+
+.pfr-copy {
+  order: 2;
+  flex: 0 0 auto;
 }
 
 /* 요청 — 화면이 비어 보여서 68vh → 76vh 로 키웠다. 왼쪽 .pfr-copy(오른쪽
@@ -606,26 +640,6 @@ body {
   height: min(52vh, calc(570 * var(--u)));
 }
 
-/* 1·2·3번(AI Video Creator·iKEA·YouTube Music) 전부 가로형 시안이라
-   가운데 정렬하면 왼쪽 설명 글과 겹친다. 처음엔 2·3번만 이미지를 오른쪽
-   으로 밀어 피했는데(margin-left:190u), 1번은 옆으로 밀 여유가 없어
-   설명을 이미지 "아래"로 내렸다 — 요청으로 2·3번도 같은 방식(아래로)으로
-   통일한다. 그래서 이미지를 다시 가운데로 두고(오른쪽으로 미는 margin
-   삭제), 셋 다 같은 규칙을 쓴다.
-   top(이미지 아래 끝 = 스테이지 세로 중앙 + 이미지 높이 절반 + 여백)으로
-   고정한다 — bottom 으로 스테이지 밑에서 띄우는 방식도 써봤는데, 그러면
-   설명 위쪽이 이미지보다 위로 올라와 "왜 이미지 위로 올라갔냐"는 요청으로
-   바로 되돌렸다(이미지 "아래"에 있어야 한다는 게 원래 요청이었다).
-   대신 3번(버튼 3개라 2번보다 한 줄 더 김)이 노트북처럼 낮은 화면에서
-   버튼 아래쪽이 스테이지(overflow:hidden) 밖으로 살짝 잘렸던 문제(계측
-   약 4px)는, 이미지 뒤 여백을 32u → 12u 로 줄여 그만큼 아래쪽에 여유를
-   더 남기는 식으로 고쳤다. 왼쪽 위치·폭은 그대로 둔다. */
-.pfr-item:nth-of-type(1) .pfr-copy,
-.pfr-item:nth-of-type(2) .pfr-copy,
-.pfr-item:nth-of-type(3) .pfr-copy {
-  top: calc(50% + min(26vh, 285 * var(--u)) + 12 * var(--u));
-}
-
 /* 이미지를 못 받아왔을 때 자리와 대체 텍스트 */
 .pfr-fallback {
   display: grid;
@@ -653,18 +667,19 @@ body {
 
 /* 제목 두 줄 — 이미지 위에 겹치되 difference 로 뒤 배경과 항상 반전된다.
    (밝은 종이 위에서는 검정, 사진 위에서는 흰색처럼 보인다) */
+/* 제목 두 줄의 자리가 서로 다르다 — 윗줄은 맨 위, 아랫줄은 설명 아래다(요청).
+   두 줄이 이 h3 안에 함께 있어서 그대로는 따로 배치할 수 없으므로, h3 의
+   상자를 없애(display:contents) 두 줄이 stage 의 직접 자식처럼 놓이게 한다.
+   글꼴·색 같은 상속 속성은 display:contents 여도 그대로 내려가지만,
+   mix-blend-mode 는 상속되지 않으므로 아래 .pfr-line 으로 옮겼다. */
 .pfr-title {
-  position: absolute;
-  inset: 0;
-  margin: 0;
-  pointer-events: none;
+  display: contents;
   font-family: var(--font-condensed);
   font-size: var(--pfr-title-size);
   font-weight: 700;
   line-height: 0.9;
   text-transform: uppercase;
   color: #ffffff;
-  mix-blend-mode: difference;
 }
 
 /* perspective — 안의 글자(.pfr-char)가 Y축으로 접히는 입체감을 준다.
@@ -672,10 +687,14 @@ body {
    잘리면 뒤집히는 모습이 반쯤 잘려 보인다. 바깥 .pfr-stage 의
    overflow:hidden 이 스테이지 경계 밖으로 넘치는 것만 막아 준다. */
 .pfr-line {
-  position: absolute;
+  position: static;
   display: block;
+  flex: 0 0 auto;
   padding-block: 0.06em;
   perspective: 600px;
+  pointer-events: none;
+  /* 사진 위에 얹히면 반전된다 — h3 가 상자를 잃었으므로 여기서 건다 */
+  mix-blend-mode: difference;
 }
 
 .pfr-line > span {
@@ -698,9 +717,11 @@ body {
   will-change: transform;
 }
 
+/* 윗줄은 맨 위(왼쪽 정렬), 아랫줄은 설명 아래(오른쪽 정렬) — 대각선으로
+   갈리는 배치는 흐름에서도 그대로 살린다. */
 .pfr-line--up {
-  top: var(--pfr-title-top);
-  left: var(--pfr-gutter);
+  order: 0;
+  text-align: left;
 }
 
 /* 1·3번(줌인 효과 있는 카드, ProjectsReveal.jsx ZOOM_FRAME_INDEXES) 만
@@ -709,42 +730,25 @@ body {
    ±6% 씩) 이 줄과 살짝 겹쳤다. mix-blend-mode:difference 라 겹치는
    순간 글자 색이 배경(이미지)에 따라 이상하게 보였다(요청 — "색깔
    오류"). 2번은 이 확대 효과가 없어 안 겹치므로 그대로 둔다. */
-.pfr-item:nth-of-type(1) .pfr-line--up,
-.pfr-item:nth-of-type(3) .pfr-line--up {
-  top: calc(var(--pfr-title-top) - 3vh);
-}
+
 
 .pfr-line--down {
-  bottom: 9vh; /* --pfr-title-top 과 같은 값 */
-  right: var(--pfr-gutter);
+  order: 3;
+  text-align: right;
 }
 
-/* 오른쪽(아랫줄) 제목을 첫 글자 정도(50) 더 왼쪽으로 당겨 이미지에 살짝
-   걸치게 한다 — 제목에는 mix-blend-mode: difference 가 걸려 있어서 사진 위에
-   얹히는 만큼 글자가 반전되며 살아난다.
-   처음엔 2·3번(iKEA·YouTube Music)에만 걸었는데, 1번만 그 반전을 덜 받아
-   "효과가 아쉽다"는 요청으로 1번도 같이 넣었다 — 이제 세 컷이 같은 처리다.
-   (.pfr-item 은 article 이라 nth-of-type 으로 순서를 그대로 집는다) */
-.pfr-item:nth-of-type(1) .pfr-line--down,
-.pfr-item:nth-of-type(2) .pfr-line--down,
-.pfr-item:nth-of-type(3) .pfr-line--down {
-  right: calc(var(--pfr-gutter) + 50 * var(--u));
-}
+
 
 /* 설명 + 버튼 묶음 — 왼쪽 제목(윗줄) 바로 아래. 제목 크기가 바뀌어도 따라
    내려오도록 위치를 --pfr-title-* 값에서 계산한다. 폭을 제한해 가운데
    이미지와 겹치지 않는다. 위치·크기는 이 래퍼가 갖고, 설명 글은 안에서
    그냥 흐른다 — 그래야 버튼이 줄 수와 상관없이 설명 바로 아래 붙는다.
    left 는 요청으로 50 + 20 = 70 오른쪽으로 당겼다(데스크톱만, 시안 값 아님). */
+/* 흐름 배치로 바뀌면서 position·top·left·width 를 전부 뺐다 — 자리는 stage 의
+   flex 와 order 가 정한다. 남은 건 안쪽(설명 + 버튼) 세로 쌓기뿐이다. */
 .pfr-copy {
-  position: absolute;
-  top: calc(var(--pfr-title-top) + var(--pfr-title-box) + var(--pfr-desc-gap));
-  left: calc(var(--pfr-gutter) + 70 * var(--u));
-  /* 가운데 이미지의 왼쪽 끝(1920 기준 x=625)보다 앞에서 끝나야 한다.
-     520 이면 상자 오른쪽이 734 라 이미지를 109 파고든다 — 384 로 줄여
-     오른쪽 끝을 약 599 에 두고 26 정도를 띄운다. 세로형 이미지를 쓰는
-     1·4번(왼쪽 끝 약 698)도 같은 값으로 함께 해결된다. */
-  width: calc(384 * var(--u));
+  /* 표와 버튼도 가운데 축에 맞춘다(위 이미지와 같은 축) */
+  align-items: center;
   display: flex;
   flex-direction: column;
   gap: calc(24 * var(--u));
@@ -775,8 +779,15 @@ body {
    .pfr-desc 의 글꼴·색은 그대로 물려받고 배치만 여기서 바꾼다. */
 .pfr-desc--table {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: calc(28 * var(--u));
+  /* 1fr 1fr 이면 두 칸이 화면을 반씩 갈라 갖는다 — 내용은 500 남짓인데 칸이
+     796 이라 글이 왼쪽 끝에만 붙고 가운데가 텅 비어 읽기 나빴다(요청).
+     max-content 로 두면 칸이 내용 크기에 맞게 붙어 두 덩어리가 나란히 읽힌다. */
+  grid-template-columns: max-content max-content;
+  /* 표 덩어리를 가운데로 — 바로 위 이미지가 가운데라 축을 맞춘다(요청).
+     칸 "안"의 글자는 왼쪽 정렬 그대로다. 본문이 "작업 기간:" 처럼 항목명이
+     앞에 붙은 데이터 줄이라, 왼쪽을 맞춰야 항목명이 세로로 정렬돼 훑기 쉽다. */
+  justify-content: center;
+  column-gap: calc(40 * var(--u));
   border-top: 1px solid var(--color-line);
   border-bottom: 1px solid var(--color-line);
   padding-block: calc(16 * var(--u));
@@ -787,7 +798,7 @@ body {
 /* 두 번째 칸 앞에만 세로선 — 칸이 셋 이상이 돼도 그대로 통한다 */
 .pfr-desc-col + .pfr-desc-col {
   border-left: 1px solid var(--color-line);
-  padding-left: calc(28 * var(--u));
+  padding-left: calc(40 * var(--u));
 }
 
 .pfr-desc-label {
@@ -802,10 +813,14 @@ body {
 .pfr-desc-line {
   margin: 0;
   word-break: keep-all;
+  /* 요청 — 데스크톱에서는 줄을 접지 않는다. 폭이 넉넉해 한 줄에 다 들어간다.
+     (모바일은 아래 미디어쿼리에서 다시 접히게 되돌린다) */
+  white-space: nowrap;
 }
 
+/* 줄 사이가 4 는 너무 붙어 두 줄이 한 덩어리로 보였다 — 8 로 띄운다 */
 .pfr-desc-line + .pfr-desc-line {
-  margin-top: calc(4 * var(--u));
+  margin-top: calc(8 * var(--u));
 }
 
 .pfr-buttons {
@@ -1036,8 +1051,14 @@ body {
 
   /* 좁은 폭이라 두 칸이 답답하다 — 한 칸으로 쌓고, 칸 사이를 가르던 세로선을
      가로선으로 바꾼다. 위아래 가로선은 그대로 둔다. */
+  /* 모바일은 칸이 하나라 가운데 정렬이 의미 없고, 폭을 다 쓰는 게 낫다 */
+  .pfr-copy {
+    align-items: stretch;
+  }
+
   .pfr-desc--table {
     grid-template-columns: 1fr;
+    justify-content: stretch;
     row-gap: calc(12 * var(--u));
     padding-block: calc(12 * var(--u));
     white-space: normal;
@@ -1053,6 +1074,11 @@ body {
   .pfr-desc-label {
     font-size: calc(12.5 * var(--u));
     margin-bottom: calc(6 * var(--u));
+  }
+
+  /* 모바일은 폭이 좁아 한 줄에 못 담는다 — 데스크톱의 nowrap 을 되돌린다. */
+  .pfr-desc-line {
+    white-space: normal;
   }
 }
 
@@ -1368,12 +1394,17 @@ body {
    색만 크림슨 톤으로 바꿨다. 애니메이션 자체(hero-title-shift, 6s)는
    카피와 같은 것을 그대로 쓴다. */
 .hero-tag-letters {
+  /* 요청 — "너무 뱀파이어 같다". 어두운 쪽 정지점이 문제였다: #7A0E24 는
+     명도가 낮아 흐름의 절반이 검붉게 죽었다. 네 정지점을 전부 한 단계씩
+     밝고 진하게 올린다(어두운 쪽 #7A0E24 -> #C81436 이 가장 큰 변화다).
+     기준색 --color-tag-crimson(#D4183D)은 마퀴 태그·큐브 색으로도 쓰이므로
+     건드리지 않고, 여기서만 밝은 값을 쓴다. */
   background: linear-gradient(
     90deg,
-    var(--color-tag-crimson),
-    #ff4d6d,
-    #7a0e24,
-    var(--color-tag-crimson)
+    #ef2043,
+    #ff5c78,
+    #c81436,
+    #ef2043
   );
   background-size: 300% 100%;
   background-clip: text;

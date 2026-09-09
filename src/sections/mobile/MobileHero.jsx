@@ -98,7 +98,7 @@ export default function MobileHero() {
               </span>
               <span className="mt-8 flex items-center justify-center gap-12" data-flip-line>
                 <span className="hero-tag-frame inline-flex shrink-0 -rotate-[2.69deg] items-center px-12 py-6">
-                  <span className="hero-copy-letters font-stencil text-[calc(36*var(--u))] leading-none font-extrabold">
+                  <span className="hero-tag-letters font-stencil text-[calc(36*var(--u))] leading-none font-extrabold">
                     {HERO.greenTag}
                   </span>
                 </span>
@@ -115,7 +115,7 @@ export default function MobileHero() {
               </span>
               <span className="mt-8 flex items-center justify-center gap-12" data-flip-line>
                 <span className="hero-tag-frame inline-flex shrink-0 -rotate-[2.69deg] items-center px-12 py-6">
-                  <span className="hero-copy-letters font-stencil text-[calc(36*var(--u))] leading-none font-extrabold">
+                  <span className="hero-tag-letters font-stencil text-[calc(36*var(--u))] leading-none font-extrabold">
                     {HERO.redTag}
                   </span>
                 </span>

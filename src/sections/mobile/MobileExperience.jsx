@@ -15,24 +15,24 @@ export default function MobileExperience() {
       data-reveal id={mobileId("experience")} className="px-20 pb-60">
       <MobileSectionHeading>{EXPERIENCE.heading}</MobileSectionHeading>
 
-      <div className="mt-20 border-b border-black pt-7 pb-5">
-        <p className="font-sans text-[calc(15.5*var(--u))] leading-label tracking-wide font-medium text-black uppercase">
+      <div className="mt-20 border-b border-ink pt-7 pb-5">
+        <p className="font-sans text-[calc(15.5*var(--u))] leading-label tracking-wide font-medium text-ink uppercase">
           {EXPERIENCE.subheading}
         </p>
       </div>
 
       <ol className="mt-4">
         {EXPERIENCE.rows.map((row) => (
-          <li key={row.id} className="border-b border-black-8 pt-16 pb-12">
+          <li key={row.id} className="border-b border-ink-8 pt-16 pb-12">
             <div className="flex items-baseline justify-between">
-              <span className="font-sans text-label leading-body text-black opacity-[0.762]">
+              <span className="font-sans text-label leading-body text-ink opacity-[0.762]">
                 {row.index}
               </span>
-              <span className="font-sans text-[calc(13*var(--u))] leading-year tracking-wider font-medium text-black uppercase opacity-[0.55]">
+              <span className="font-sans text-[calc(13*var(--u))] leading-year tracking-wider font-medium text-ink uppercase opacity-[0.55]">
                 {row.year}
               </span>
             </div>
-            <p className="mt-4 font-sans text-[calc(15.5*var(--u))] leading-desc font-medium text-black opacity-[0.563]">
+            <p className="mt-4 font-sans text-[calc(15.5*var(--u))] leading-desc font-medium text-ink opacity-[0.563]">
               {row.title}
             </p>
           </li>

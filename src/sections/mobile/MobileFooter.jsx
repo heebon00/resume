@@ -22,21 +22,21 @@ export default function MobileFooter() {
       </div>
 
       <div className="px-20 pt-32">
-        <p className="font-sans text-[calc(18*var(--u))] leading-[calc(27*var(--u))] text-black">
+        <p className="font-sans text-[calc(18*var(--u))] leading-[calc(27*var(--u))] text-ink">
           {FOOTER.lead}
         </p>
 
         <div className="mt-20">
-          <p className="font-sans text-[calc(15.5*var(--u))] leading-body text-black uppercase">
+          <p className="font-sans text-[calc(15.5*var(--u))] leading-body text-ink uppercase">
             {FOOTER.name}
           </p>
           {FOOTER.phone && (
-            <p className="mt-8 font-sans text-[calc(15.5*var(--u))] leading-body text-black">
+            <p className="mt-8 font-sans text-[calc(15.5*var(--u))] leading-body text-ink">
               {FOOTER.phone}
             </p>
           )}
           {FOOTER.email && (
-            <p className="font-sans text-[calc(15.5*var(--u))] leading-body text-black uppercase">
+            <p className="font-sans text-[calc(15.5*var(--u))] leading-body text-ink uppercase">
               {FOOTER.email}
             </p>
           )}
@@ -47,7 +47,7 @@ export default function MobileFooter() {
             href={FOOTER.credits.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-24 inline-block font-sans text-[calc(13*var(--u))] leading-body text-black underline decoration-from-font underline-offset-2 opacity-60"
+            className="mt-24 inline-block font-sans text-[calc(13*var(--u))] leading-body text-ink underline decoration-from-font underline-offset-2 opacity-60"
           >
             {FOOTER.credits.label}
           </a>
@@ -60,7 +60,7 @@ export default function MobileFooter() {
           {FOOTER.socials.map((label) => (
             <li
               key={label}
-              className="font-sans text-[calc(15*var(--u))] leading-[calc(22.5*var(--u))] text-black"
+              className="font-sans text-[calc(15*var(--u))] leading-[calc(22.5*var(--u))] text-ink"
             >
               {label}
             </li>

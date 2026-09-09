@@ -40,16 +40,16 @@ export default function ExperienceRow({
 }) {
   return (
     <div
-      className={`flex items-start border-b border-black-8 pt-25 pr-100 pb-[calc(6.96*var(--u))] ${className}`}
+      className={`flex items-start border-b border-ink-8 pt-25 pr-100 pb-[calc(6.96*var(--u))] ${className}`}
       style={style}
     >
-      <span className="mt-[calc(8.13*var(--u))] w-100 shrink-0 font-sans text-label leading-body text-black opacity-[0.762]">
+      <span className="mt-[calc(8.13*var(--u))] w-100 shrink-0 font-sans text-label leading-body text-ink opacity-[0.762]">
         {index}
       </span>
-      <span className="mt-[calc(13.12*var(--u))] w-640 shrink-0 font-sans text-exp leading-exp font-medium text-black opacity-[0.563]">
+      <span className="mt-[calc(13.12*var(--u))] w-640 shrink-0 font-sans text-exp leading-exp font-medium text-ink opacity-[0.563]">
         {title}
       </span>
-      <span className="mt-[calc(24.04*var(--u))] ml-auto w-300 text-right font-sans text-body-sm leading-year font-medium tracking-wider text-black uppercase opacity-[0.55]">
+      <span className="mt-[calc(24.04*var(--u))] ml-auto w-300 text-right font-sans text-body-sm leading-year font-medium tracking-wider text-ink uppercase opacity-[0.55]">
         {year}
       </span>
     </div>

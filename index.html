@@ -5,6 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" sizes="512x512" href="/favicon-bon.png" />
     <title>이희본 포트폴리오</title>
+
+    <!-- 다크 모드 — 화면이 그려지기 "전"에 테마를 정해야 한다. React 가 뜬 뒤에
+         붙이면 밝은 화면이 한 번 번쩍인 뒤 어두워진다(FOUC).
+         고른 값이 있으면 그걸 쓰고, 없으면 PC 설정을 따른다.
+         저장은 localStorage 하나뿐이고, 실패해도(사생활 보호 모드 등) 조용히
+         PC 설정으로 넘어간다. 토글은 src/lib/theme.js 가 맡는다. -->
+    <script>
+      (function () {
+        var saved = null;
+        try {
+          saved = localStorage.getItem("theme");
+        } catch (e) {
+          /* 저장소를 못 읽는 환경 — PC 설정만 쓴다 */
+        }
+        var dark =
+          saved === "dark" ||
+          (saved !== "light" &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches);
+        document.documentElement.setAttribute(
+          "data-theme",
+          dark ? "dark" : "light",
+        );
+      })();
+    </script>
     <meta
       name="description"
       content="좋아하는 일에는 애정을, 맡은 임무에는 책임감을. 웹 퍼블리싱·인터랙티브 웹을 만드는 이희본의 포트폴리오입니다."

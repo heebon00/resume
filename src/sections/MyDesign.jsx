@@ -123,7 +123,7 @@ export default function MyDesign() {
           style={box({ left: 0, top: 0, width: 390, height: 638 })}
         >
           <div className="flex flex-col gap-[calc(14.6*var(--u))] pt-3.5 pb-[calc(81.99*var(--u))]">
-            <h2 className="pb-[calc(41.41*var(--u))] font-sans text-heading leading-[calc(33.92*var(--u))] font-semibold text-black">
+            <h2 className="pb-[calc(41.41*var(--u))] font-sans text-heading leading-[calc(33.92*var(--u))] font-semibold text-ink">
               {DESIGN.heading}
             </h2>
 
@@ -138,7 +138,7 @@ export default function MyDesign() {
                     className="relative pb-[calc(0.98*var(--u))]"
                   >
                     <span
-                      className={`block whitespace-nowrap text-black leading-desc ${
+                      className={`block whitespace-nowrap text-ink leading-desc ${
                         filter.bar ? "" : "underline decoration-solid"
                       } ${filter.uppercase ? "uppercase" : ""}`}
                       style={{ fontSize: du(filter.size) }}

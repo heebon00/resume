@@ -38,7 +38,7 @@ export default function ProjectCard({
       )}
 
       <h3
-        className="absolute font-sans text-title whitespace-nowrap text-black uppercase opacity-[0.776]"
+        className="absolute font-sans text-title whitespace-nowrap text-ink uppercase opacity-[0.776]"
         style={{ ...box(title), lineHeight: du(31) }}
       >
         {title.lines.map((line) => (

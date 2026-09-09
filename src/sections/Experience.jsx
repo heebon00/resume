@@ -35,8 +35,8 @@ export default function Experience() {
 
         {/* 20:1104 라벨 바 */}
         <div className="absolute top-94 right-0 left-0 px-15">
-          <div className="h-70 border-b border-black">
-            <p className="pt-40 font-sans text-body leading-label tracking-wide font-medium text-black uppercase">
+          <div className="h-70 border-b border-ink">
+            <p className="pt-40 font-sans text-body leading-label tracking-wide font-medium text-ink uppercase">
               {EXPERIENCE.subheading}
             </p>
           </div>
@@ -55,7 +55,7 @@ export default function Experience() {
         ))}
 
         {/* 20:1206 마감 실선 */}
-        <div className="absolute top-610 left-15 h-30 w-1264 border-b border-black" />
+        <div className="absolute top-610 left-15 h-30 w-1264 border-b border-ink" />
       </div>
     </section>
   );

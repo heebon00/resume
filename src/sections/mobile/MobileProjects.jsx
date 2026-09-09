@@ -24,7 +24,7 @@ export default function MobileProjects() {
               <SafeImage src={card.src} alt={card.alt} className="size-full" />
             </div>
 
-            <h3 className="mt-16 font-sans text-[calc(20*var(--u))] leading-[calc(26*var(--u))] text-black uppercase">
+            <h3 className="mt-16 font-sans text-[calc(20*var(--u))] leading-[calc(26*var(--u))] text-ink uppercase">
               {card.titleLines.map((line) => (
                 <span key={line} className="block">
                   {line}
