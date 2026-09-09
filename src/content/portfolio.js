@@ -368,7 +368,10 @@ export const FOOTER = {
   //   phone: "010.9272.6456"  /  email: "Heebon21@Gmail.com"
   phone: "",
   email: "",
-  socials: ["Facebook", "Linkedin", "Instagram"],
+  // 요청으로 비웠다 — 시안에서 딸려온 항목이고 이동 대상도 없었다.
+  // 데스크톱·모바일 푸터 모두 비면 목록을 통째로 감춘다(hidden 처리).
+  // 다시 넣으려면 문자열을 채우면 그대로 보인다.
+  socials: [],
   // 제3자 저작물 고지 — 내역을 화면에 늘어놓는 대신 링크 한 줄만 둔다.
   // 실제 목록(코드·폰트·상표)은 저장소의 LICENSE-THIRD-PARTY.md 에 있고,
   // 저장소가 공개라 깃허브에서 그대로 읽힌다.

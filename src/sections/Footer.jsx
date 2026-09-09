@@ -41,6 +41,12 @@ function VerticalLine({ width, size, right, top, children }) {
   );
 }
 
+// 형광 블록(20:1609) 폭 — 시안은 639.98 이었는데 "영역이 너무 크다"는
+// 요청으로 줄였다. 아래 세로 텍스트 자리가 이 값에서 계산된다.
+const PANEL_W = 540;
+const VTEXT_W = 48; // 세로 텍스트 상자 폭 (20:1616)
+const VTEXT_RIGHT_GAP = 76.8; // 시안에서 블록 오른쪽 끝과 세로 텍스트 사이 여백
+
 export default function Footer() {
   return (
     <footer
@@ -80,14 +86,22 @@ export default function Footer() {
         </a>
       )}
 
-      {/* 20:1609 형광 블록 */}
+      {/* 20:1609 형광 블록 — 요청으로 폭을 줄였다(시안 639.98 -> 540).
+          안의 세로 텍스트는 블록 오른쪽 끝에서 같은 거리(76.8)를 유지하도록
+          left 를 블록 폭에서 계산한다 — 폭만 고치면 글자도 따라 움직인다.
+          높이는 푸터 높이(586.1)와 같은 값이라 그대로 둔다. */}
       <div
         className="absolute bg-footer"
-        style={box({ left: 0, top: 0, width: 639.98, height: 586.1 })}
+        style={box({ left: 0, top: 0, width: PANEL_W, height: 586.1 })}
       >
         <div
           className="absolute"
-          style={box({ left: 515.18, top: 150.01, width: 48, height: 257.1 })}
+          style={box({
+            left: PANEL_W - VTEXT_RIGHT_GAP - VTEXT_W,
+            top: 150.01,
+            width: VTEXT_W,
+            height: 257.1,
+          })}
         >
           <div className="size-full rotate-180">
             <div className="relative size-full">
