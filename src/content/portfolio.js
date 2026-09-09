@@ -14,7 +14,7 @@ import portrait from "../assets/images/hero-portrait.webp";
 import greenhouse from "../assets/images/gallery-greenhouse.webp";
 import musicApp from "../assets/images/gallery-music-app.webp";
 import webRedesign from "../assets/images/gallery-web-redesign.webp";
-import ikeaMockup from "../assets/images/project-ikea-mockup.webp";
+import ikeaMockup from "../assets/images/project-ikea-mockup.png";
 import youtubeMusicMockup from "../assets/images/project-youtube-music-mockup.png";
 import aiVideoMockup from "../assets/images/project-ai-video-mockup.png";
 // 임시 목업 — MY DESIGN 카드에 들어갈 실제 이미지가 정해지기 전까지 쓰는 자리표시 이미지다.
@@ -155,12 +155,15 @@ export const PROJECTS = {
       id: "ikea-website-redesign",
       src: webRedesign,
       alt: "iKEA 웹사이트 리디자인 화면",
-      // 스크롤 연출 전용 이미지 — 피그마 136:282 (1200 x 800 가로형).
-      // 카드 썸네일(src)은 시안 그대로 두고 연출 화면에서만 이걸 쓴다.
+      // 스크롤 연출 전용 이미지 — 요청으로 새 목업(2133 x 1080 가로형)으로
+      // 교체했다. 왼쪽 분홍 패널에 제목과 "사이트 보기" 버튼이 그림으로
+      // 박혀 있는 시안이라, 실제 버튼 3개를 그 자리에 얹는다(panelButtons).
+      // 카드 썸네일(src)은 시안 그대로 둔다.
       reveal: {
         src: ikeaMockup,
-        alt: "iKEA 리디자인 시안 — 데스크톱 · 태블릿 · 모바일 화면",
-        frame: { w: 1200, h: 800 },
+        alt: "iKEA 리디자인 시안 — 데스크톱 · 모바일 화면",
+        frame: { w: 2133, h: 1080 },
+        panelButtons: true,
       },
       titleLines: ["iKEA Website", "Redesign"],
       descriptionLines: [

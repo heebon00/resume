@@ -378,6 +378,52 @@ export default function ProjectsReveal({ variant = "desktop", afterLead = null }
           const frame = shot.frame ?? FRAME;
           const wide = frame.w > frame.h;
 
+          // 목업 그림 안에 이미 버튼이 박혀 있는 시안(iKEA)은 그 자리에
+          // 진짜 버튼을 얹는다(요청). 데스크톱에서만 — 모바일 캔버스는
+          // 이미지가 화면 아래에 작게 깔려서 얹을 자리가 없다.
+          // 이미지를 못 받아오면 프레임 자체가 없으므로 원래 자리(설명 밑)로
+          // 되돌린다 — 그래야 버튼이 통째로 사라지지 않는다.
+          const onPanel =
+            variant === "desktop" && shot.panelButtons && !failed[card.id];
+
+          // 두 자리(설명 밑 / 목업 패널 위)가 같은 버튼을 쓴다 — 어디에
+          // 놓든 링크·문구·스와이프 효과는 같고, 모양만 클래스로 갈린다.
+          const buttonNodes = (card.buttons ?? PROJECTS.buttons).map(
+            (label, idx) => {
+              const href = card.links?.[idx];
+              const className = `pfr-swipe${onPanel ? " pfr-swipe--panel" : ""}`;
+              const body = onPanel ? (
+                <>
+                  {label}
+                  <span className="pfr-swipe-arrow" aria-hidden="true">
+                    →
+                  </span>
+                </>
+              ) : (
+                label
+              );
+
+              if (href) {
+                return (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`${className} no-underline cursor-pointer`}
+                  >
+                    {body}
+                  </a>
+                );
+              }
+              return (
+                <span key={label} className={className}>
+                  {body}
+                </span>
+              );
+            },
+          );
+
           return (
             <article key={card.id} className="pfr-item" data-pfr-item>
               <div className="pfr-stage">
@@ -403,6 +449,15 @@ export default function ProjectsReveal({ variant = "desktop", afterLead = null }
                         setFailed((prev) => ({ ...prev, [card.id]: true }))
                       }
                     />
+
+                    {onPanel && (
+                      <div
+                        className="pfr-buttons pfr-buttons--panel"
+                        data-pfr-buttons
+                      >
+                        {buttonNodes}
+                      </div>
+                    )}
                   </div>
                 )}
 
@@ -422,31 +477,16 @@ export default function ProjectsReveal({ variant = "desktop", afterLead = null }
                     {card.descriptionLines.join("\n")}
                   </p>
 
-                  {/* 카드(ProjectCard)와 같은 버튼 2개 — "10. Swipe Fill
-                      Transitions"의 Wipe Left(~/Downloads/80button) 스타일. */}
-                  <div className="pfr-buttons" data-pfr-buttons>
-                    {(card.buttons ?? PROJECTS.buttons).map((label, idx) => {
-                      const href = card.links?.[idx];
-                      if (href) {
-                        return (
-                          <a
-                            key={label}
-                            href={href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="pfr-swipe no-underline cursor-pointer"
-                          >
-                            {label}
-                          </a>
-                        );
-                      }
-                      return (
-                        <span key={label} className="pfr-swipe">
-                          {label}
-                        </span>
-                      );
-                    })}
-                  </div>
+                  {/* 카드(ProjectCard)와 같은 버튼 — "10. Swipe Fill
+                      Transitions"의 Wipe Left(~/Downloads/80button) 스타일.
+                      목업 패널 위로 옮긴 카드(onPanel)는 위 프레임 안에
+                      이미 그렸으므로 여기서는 빼둔다 — data-pfr-buttons 가
+                      한 카드에 둘이 되면 등장 애니메이션이 한쪽만 잡는다. */}
+                  {!onPanel && (
+                    <div className="pfr-buttons" data-pfr-buttons>
+                      {buttonNodes}
+                    </div>
+                  )}
                 </div>
               </div>
             </article>
