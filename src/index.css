@@ -179,10 +179,13 @@ body {
 
 .contact-form-copy h2 {
   font-family: var(--font-display);
-  font-size: clamp(2.5rem, 5vw, 5.8rem);
+  /* 요청으로 두 번 줄였다 — 원래 clamp(2.5rem, 5vw, 5.8rem),
+     한 번 (1.9rem, 3.7vw, 4.3rem) 을 거쳐 지금 값이다. */
+  font-size: clamp(1.6rem, 3vw, 3.5rem);
   line-height: 0.98;
   margin: 0;
   max-width: 9ch;
+  text-transform: uppercase;
 }
 
 .contact-form-copy > p:last-child {
@@ -191,6 +194,8 @@ body {
   line-height: 1.7;
   margin: 2rem 0 0;
   max-width: 30rem;
+  /* 한글은 글자 단위로 끊겨 어절이 갈라진다 — 어절 단위로만 접히게 한다. */
+  word-break: keep-all;
 }
 
 .contact-form {

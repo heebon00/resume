@@ -109,10 +109,14 @@ export default function ContactUs() {
       <div className="contact-form-inner">
         <div className="contact-form-copy">
           <p className="contact-form-eyebrow">GET IN TOUCH</p>
-          <h2>Let's make something meaningful.</h2>
+          <h2>Ready to be part of a great team.</h2>
           <p>
-            프로젝트, 협업 또는 새로운 기회에 대해 이야기해 주세요. 확인하는 대로
-            답변드리겠습니다.
+            저의 경험이 귀사의 목표에 좋은 시너지가 되기를 바랍니다.
+            {/* 요청 — "채용과" 부터 다음 줄로 내린다. 문장이 둘이라
+                자연스러운 줄바꿈 자리이기도 하다. */}
+            <br />
+            채용과 관련하여 궁금하신 점은 언제든 메일로 남겨주시면 빠르게
+            회신드리겠습니다.
           </p>
         </div>
 
