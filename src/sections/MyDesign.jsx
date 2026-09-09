@@ -3,7 +3,6 @@ import SafeImage from "../components/SafeImage";
 import { box, du } from "../lib/design";
 import arrowLeft from "../assets/icons/icon-arrow-left.svg";
 import arrowRight from "../assets/icons/icon-arrow-right.svg";
-import arrowRightSm from "../assets/icons/icon-arrow-right-sm.svg";
 import { DESIGN } from "../content/portfolio";
 
 /**
@@ -156,25 +155,6 @@ export default function MyDesign() {
                   </li>
                 ))}
               </ul>
-
-              <p className="flex items-center pb-7">
-                <span
-                  className="whitespace-nowrap text-black leading-desc"
-                  style={{ fontSize: du(13.7) }}
-                >
-                  {DESIGN.moreLabel}
-                </span>
-                <span className="flex pl-8">
-                  <img
-                    src={arrowRightSm}
-                    alt=""
-                    aria-hidden="true"
-                    loading="lazy"
-                    className="block -scale-y-100"
-                    style={{ width: du(14), height: du(14) }}
-                  />
-                </span>
-              </p>
             </div>
           </div>
         </div>

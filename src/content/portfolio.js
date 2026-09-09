@@ -82,16 +82,16 @@ export const ABOUT = {
   ],
   rows: [
     { label: "name", value: "이희본" },
-    { label: "Birth", value: "--" },
-    { label: "Contact", value: "--" },
-    { label: "Certificate", value: "컴퓨터활용능력2급,정보처리기사,1종보통운전면허" },
+    { label: "Birth", value: "88.02.21" },
+    { label: "Contact", value: "010.9272.6456" },
+    { label: "Certificate", value: "컴퓨터활용능력2급,정보처리기사\n1종보통운전면허" },
     // 라벨은 InfoRow 가 CSS(uppercase)로 대문자로 그린다 — 다른 행과 같은 방식이라
     // 데이터는 원래 대소문자로 둔다(스크린리더·검색엔진에는 그대로 읽힌다).
     {
       label: "Course completion",
       // 값 칸(InfoRow / MobileAbout)이 whitespace-pre-line 이라 아래 줄바꿈
       // 문자가 그대로 줄 나눔이 된다.
-      value: "MBC 아카데미 AI웹콘텐츠 (영상&코딩)\n개발기획자 교육 수료",
+      value: "MBC 아카데미 AI웹콘텐츠 (영상&코딩)\n개발·기획자 교육 수료",
     },
     { label: "Education", value: "선린대학교 경찰행정학과" },
   ],
@@ -167,8 +167,7 @@ export const PROJECTS = {
       descriptionLines: [
         "2026 _ SOLO PROJECT",
         "작업 기간: 2주 (26.06.18~26.07.01)",
-        "주요기술: Google Flow, PREMIERE PRO,",
-        "                 AFTER EFFECTS",
+        "주요 기술: Google Flow, PREMIERE PRO, AFTER EFFECTS",
         "기획 의도: League of Legends 2026 MSI in 대전 홍보영상 ",
       ],
     },
@@ -198,8 +197,8 @@ export const PROJECTS = {
       descriptionLines: [
         "2026 _ TEAM PROJECT",
         "작업 기간: 4주 (26.07.15~26.08.15)",
-        "주요 기술:  Figma, HTML,  AI CLI, Tailwind CSS,등",
-        "주역할: 팀장, 기획, 디자인, 기술 구현, 기획서 발표",
+        "주요 기술:  Figma, HTML,  AI CLI, Tailwind CSS 등",
+        "주 역할: 팀장, 기획, 디자인, 기술 구현, 기획서 발표",
       ],
       buttons: ["기획서보기", "깃허브보기", "사이트보기"],
       links: [
@@ -231,8 +230,8 @@ export const PROJECTS = {
       },
       titleLines: ["YOU TUBE MUSIC", "Redesign"],
       descriptionLines: [
-        "2026 _ SOLO PROJECT  (26.08.18~26.08.27)",
-        "작업 기간: 2주",
+        "2026 _ SOLO PROJECT",
+        "작업 기간: 2주 (26.08.18~26.08.27)",
         "주요 기술:  Figma, REACT,  AI CLI, Tailwind CSS,등",
         "기획 의도: 이용자 편리성을 극대화한 UX · UI 디자인 ",
       ],
@@ -281,8 +280,7 @@ export const KEYWORD_ROWS = [
 /* --- MY DESIGN (20:1295) ------------------------------------------------ */
 export const DESIGN = {
   heading: "— MY Design",
-  filters: ["222222", "22222", "22", "222", "22"],
-  moreLabel: "See more",
+  filters: ["222222", "22222", "22"],
   // 카드 1 위에 얹히는 제목·설명. 원래 들어 있던 문구는 테마 데모에서 딸려온
   // 것이라 지웠다(제목 "Modern Architecture", 설명은 미우치아 프라다 인용문).
   // 둘 다 비어 있으면 검정 오버레이째로 렌더링하지 않는다 — 빈 글상자가 남지
@@ -372,11 +370,9 @@ export const FOOTER = {
   verticalLines: [],
   lead: "Please contact me",
   name: "이희본 (heebon LEE)",
-  // 공개 배포에서 검색엔진에 노출되지 않도록 실제 연락처를 빼둔 상태다.
-  // 다시 넣으려면 아래 두 값을 채우면 화면에도 그대로 다시 나온다.
-  //   phone: "010.9272.6456"  /  email: "Heebon21@Gmail.com"
-  phone: "",
-  email: "",
+  // 비워 두면 그 줄은 화면에 안 나온다(Footer.jsx / MobileFooter.jsx).
+  phone: "010.9272.6456",
+  email: "Heebon21@Gmail.com",
   // 요청으로 비웠다 — 시안에서 딸려온 항목이고 이동 대상도 없었다.
   // 데스크톱·모바일 푸터 모두 비면 목록을 통째로 감춘다(hidden 처리).
   // 다시 넣으려면 문자열을 채우면 그대로 보인다.

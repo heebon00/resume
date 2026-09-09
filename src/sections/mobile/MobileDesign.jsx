@@ -1,7 +1,6 @@
 import { mobileId } from "../../lib/sectionIds";
 import SafeImage from "../../components/SafeImage";
 import { DESIGN } from "../../content/portfolio";
-import arrowRightSm from "../../assets/icons/icon-arrow-right-sm.svg";
 
 /**
  * 모바일 MY DESIGN — 데스크톱 시안(20:1295)의 왼쪽 칼럼(제목·필터·See more)과
@@ -31,19 +30,6 @@ export default function MobileDesign() {
           </li>
         ))}
       </ul>
-
-      <p className="mt-12 flex items-center">
-        <span className="font-sans text-[calc(13.7*var(--u))] leading-desc text-black">
-          {DESIGN.moreLabel}
-        </span>
-        <img
-          src={arrowRightSm}
-          alt=""
-          aria-hidden="true"
-          loading="lazy"
-          className="ml-8 block size-14 -scale-y-100"
-        />
-      </p>
 
       <ul className="mt-24 flex flex-col gap-16">
         {DESIGN.cards.map((card, i) => (
