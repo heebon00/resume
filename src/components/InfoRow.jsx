@@ -10,7 +10,10 @@ export default function InfoRow({ label, value }) {
         <span className="w-[calc(149.61*var(--u))] shrink-0 uppercase">
           {label}
         </span>
-        <span>{value}</span>
+        {/* pre-line — 값에 
+ 이 있으면 그 자리에서 줄을 나눈다(요청).
+            줄바꿈이 없는 행은 지금까지와 똑같이 그려진다. */}
+        <span className="whitespace-pre-line">{value}</span>
       </div>
     </div>
   );

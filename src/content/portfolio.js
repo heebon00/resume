@@ -85,6 +85,14 @@ export const ABOUT = {
     { label: "Birth", value: "--" },
     { label: "Contact", value: "--" },
     { label: "Certificate", value: "컴퓨터활용능력2급,정보처리기사,1종보통운전면허" },
+    // 라벨은 InfoRow 가 CSS(uppercase)로 대문자로 그린다 — 다른 행과 같은 방식이라
+    // 데이터는 원래 대소문자로 둔다(스크린리더·검색엔진에는 그대로 읽힌다).
+    {
+      label: "Course completion",
+      // 값 칸(InfoRow / MobileAbout)이 whitespace-pre-line 이라 아래 줄바꿈
+      // 문자가 그대로 줄 나눔이 된다.
+      value: "MBC 아카데미 AI웹콘텐츠 (영상&코딩)\n개발기획자 교육 수료",
+    },
     { label: "Education", value: "선린대학교 경찰행정학과" },
   ],
 };
