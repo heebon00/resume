@@ -58,19 +58,23 @@ export default function MobileHero() {
               상자가 글자보다 좁으면 앞뒤 글자가 잘려 나간다. 데스크톱 라벨도
               같은 이유로 상자(w-125 · h-30)를 명시해 뒀는데 모바일은 빠져
               있어서 글자가 잘렸다(요청). 여기도 글자보다 넉넉한 상자를 준다.
-              오른쪽 라벨은 상자가 글자보다 넓어지므로 text-right 로 붙인다. */}
+              오른쪽 라벨은 상자가 글자보다 넓어지므로 text-right 로 붙인다.
+              PORTFOLIO 에만 붙어 있던 leading-nav(0.85)는 뺐다 — 줄 높이가
+              글자 크기(14)보다 작아 글자가 줄 상자 위로 삐져나가면서 윗부분이
+              잘린 것처럼 보였다(요청). leading-none(1)으로 두면 글자가 상자
+              안에 들어오고, 높이는 22 -> 24 로 조금 더 여유를 줬다. */}
           <div className="flex items-center justify-between">
             <SlicedText
               as="span"
               data-intro-fade
-              className="h-22 w-100 font-sans text-[calc(14*var(--u))] font-extrabold text-ink uppercase"
+              className="h-24 w-100 font-sans text-[calc(14*var(--u))] leading-none font-extrabold text-ink uppercase"
             >
               {HERO.labelLeft}
             </SlicedText>
             <SlicedText
               as="span"
               data-intro-fade
-              className="h-22 w-110 text-right font-condensed text-[calc(14*var(--u))] leading-nav font-extrabold text-ink uppercase"
+              className="h-24 w-110 text-right font-condensed text-[calc(14*var(--u))] leading-none font-extrabold text-ink uppercase"
             >
               {HERO.labelRight}
             </SlicedText>
