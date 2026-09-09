@@ -81,14 +81,14 @@ export default function AboutMe() {
     <section id="about" aria-label="ABOUT ME">
       {/* 20:985 라벨 바 */}
       <div
-        className="absolute top-1299 left-263 h-30 w-1424 border-b border-black"
+        className="absolute top-1299 left-263 h-30 w-1424 border-b border-ink"
         data-reveal
       >
         <div className="flex items-start justify-between pt-7 pb-5">
-          <span className="font-sans text-[calc(11.8*var(--u))] leading-label tracking-wide font-medium text-black uppercase">
+          <span className="font-sans text-[calc(11.8*var(--u))] leading-label tracking-wide font-medium text-ink uppercase">
             {ABOUT.barLeft}
           </span>
-          <span className="font-sans text-label leading-label tracking-wide font-medium text-black uppercase">
+          <span className="font-sans text-label leading-label tracking-wide font-medium text-ink uppercase">
             {ABOUT.barRight}
           </span>
         </div>
@@ -116,9 +116,16 @@ export default function AboutMe() {
       />
 
       {/* 20:1011 제목 · 소개 · 정보표 */}
+      {/* 시안은 top 1363 · 높이 552.56 고정에 justify-center 였다. 정보표에 행이
+          늘면서(COURSE COMPLETION 추가, Certificate 두 줄) 내용이 상자를 넘었고,
+          가운데 정렬이라 위아래로 절반씩 삐져나와 바로 위 구분선(1299~1329)과
+          겹쳤다(요청으로 발견).
+          고정 높이를 풀어 위에서부터 흐르게 하고 시작점을 조금 올린다.
+          쓸 수 있는 세로 자리는 구분선 끝 1329 ~ MY WORK EXPERIENCE 시작 1968
+          사이의 639 다 — 행을 더 늘릴 때 이 한도를 확인해야 한다. */}
       <div
         ref={blockRef}
-        className="absolute top-1363 left-953.5 flex h-[calc(552.56*var(--u))] w-818 flex-col justify-center"
+        className="absolute top-1340 left-953.5 flex w-818 flex-col"
       >
         {/* 20:1019 컬럼 682.5 (pl 112.5 / pr 15) → 20:1020 555 (pl 44.391 / pr 38.844) */}
         <div className="flex w-682.5 flex-col pr-15 pl-112.5">
@@ -128,14 +135,14 @@ export default function AboutMe() {
             </div>
 
             {ABOUT.introLines.length > 0 && (
-              <div className="pb-36">
+              <div className="pb-24">
                 {ABOUT.introLines.map((line, i) => (
                   <p
                     key={line}
                     ref={(node) => {
                       lineRefs.current[i] = node;
                     }}
-                    className="intro-line font-sans text-body leading-body tracking-body whitespace-nowrap text-black"
+                    className="intro-line font-sans text-body leading-body tracking-body whitespace-nowrap text-ink"
                   >
                     {line}
                   </p>

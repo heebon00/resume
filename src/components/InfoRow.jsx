@@ -4,9 +4,12 @@
  *                 / pt 16.24px pb 16.64px / 값은 라벨 기준 149.61px 지점)
  */
 export default function InfoRow({ label, value }) {
+  // 위아래 여백은 시안이 16.24 / 16.64 였는데, 행이 늘면서 정보표가 담긴
+  // 상자를 넘쳐 위 구분선과 겹쳤다(AboutMe.jsx 주석 참조).
+  // 12 / 12 로 조여 한 행마다 8.9 씩, 여섯 행에서 53 을 줄인다.
   return (
-    <div className="w-full border-b border-line pt-[calc(16.24*var(--u))] pb-[calc(16.64*var(--u))]">
-      <div className="flex font-sans text-table leading-table text-black">
+    <div className="w-full border-b border-line pt-12 pb-12">
+      <div className="flex font-sans text-table leading-table text-ink">
         <span className="w-[calc(149.61*var(--u))] shrink-0 uppercase">
           {label}
         </span>
