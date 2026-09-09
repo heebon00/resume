@@ -25,12 +25,16 @@
 - 사용 위치: `src/index.css` 의 `.btn-cyber`
 - 사용 방식: 원본 CSS 를 옮긴 뒤 색상 2곳과 테두리만 이 사이트 값으로 바꿈
 
-### threejs-toys — particlesCursor (Kevin Levron)
-- 출처: https://github.com/klevron/threejs-toys
-- 라이선스: **ISC** (npm 패키지 메타데이터 기준)
-- 사용 위치: `src/components/HeaderParticles.jsx`
-- 사용 방식: 라이브러리를 가져다 쓰지 않고 canvas 2D 로 직접 재구현했으며,
-  원본의 파라미터 값(색·pointSize·noise 계수 등)을 참고
+### 3d-wave-grid — Wavy Cubes (franky-adl)
+- 출처: https://github.com/franky-adl/3d-wave-grid
+  (라이브 데모: https://projects.arkon.digital/threejs/wavy-cubes/)
+- 라이선스: **MIT** — Copyright (c) 2026 franky-adl
+- 사용 위치: `src/components/WavyCubes.jsx`
+  — 메인 헤더(히어로) 배경 그래픽. 데스크톱·모바일이 같은 컴포넌트를 쓴다.
+- 사용 방식: Three.js + GLSL 원본 소스를 확인해 한 컴포넌트로 옮겼다.
+  원본이 Stage·Camera·Renderer·MouseTrail 여러 클래스로 나뉜 것을 필요한
+  만큼만 합쳤고, 디버그 GUI · Stats 패널 · 후처리 비네트는 뺐다.
+  파동·조명·그림자 값은 원본 그대로이며, 색만 이 사이트 값(크림슨 #D4183D)으로 바꿨다.
 
 ---
 
