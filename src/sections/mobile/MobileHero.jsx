@@ -41,12 +41,14 @@ export default function MobileHero() {
   const root = useRef(null);
   useIntroReveal(root);
 
+  // 아래 section 에 pb-40 이 있었는데 뺐다 — 사진과 MY NAME 배너 사이에
+  // 흰 띠가 보인다는 요청이다. 이제 사진 밑단이 곧 히어로의 끝이다.
   return (
     <section
       ref={root}
       data-reveal
       id={mobileId("hero")}
-      className="relative overflow-hidden pb-40"
+      className="relative overflow-hidden"
     >
       <div className="hero-fill relative">
         <WavyCubes className="hero-scene" />
@@ -108,19 +110,23 @@ export default function MobileHero() {
             </p>
           </div>
         </div>
+
+        {/* 요청 — 사진도 헤더 그래픽(WavyCubes) 판 안에 넣는다. 예전에는 판
+            밖에 있어서 사진 둘레가 흰 종이색이었고, 큐브 배경이 카피 영역에서
+            끊겼다. 판 안으로 들어오면 카피와 사진 사이(mt-24)에도 큐브가
+            이어져 보인다. */}
+        <SafeImage
+          src={IMAGES.portrait}
+          alt={HERO.portraitAlt}
+          width={390}
+          height={264}
+          priority
+          data-intro-fade
+          className="relative mt-24 w-full"
+          imgClassName="block size-full object-cover object-top"
+        />
       </div>
 
-      {/* 사진은 판 밖에 둔다. */}
-      <SafeImage
-        src={IMAGES.portrait}
-        alt={HERO.portraitAlt}
-        width={390}
-        height={264}
-        priority
-        data-intro-fade
-        className="relative mt-24 w-full"
-        imgClassName="block size-full object-cover object-top"
-      />
     </section>
   );
 }
