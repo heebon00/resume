@@ -35,12 +35,17 @@ const PLACEMENT = {
     buttons: { left: 201.729, top: 361.36 },
   },
   "ikea-website-redesign": {
+    // 썸네일이 새 목업(가로 2133 x 1080)으로 바뀌면서, 세로 상자(141 x 259)에
+    // cover 로 넣으면 원본 가로 588px 만큼의 세로 띠만 보인다. 어디를 볼지
+    // 정해야 해서 오른쪽 끝(휴대폰 목업)에 맞췄다 — 세로 상자에는 세로로 긴
+    // 기기가 들어맞고, 같은 방식을 쓰는 YouTube Music 카드와도 결이 같다.
+    // (원본에서 잰 위치: 분홍 패널 0~30.5%, iMac 36.2~81.6%, 휴대폰 82.6~97.6%)
     image: {
       left: 655.98,
       top: 141.36,
       width: 141,
       height: 259,
-      objectClassName: "object-top",
+      objectClassName: "object-right",
     },
     title: { left: 832.98, top: 142.36 },
     description: {

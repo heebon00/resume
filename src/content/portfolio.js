@@ -14,7 +14,7 @@ import portrait from "../assets/images/hero-portrait.webp";
 import greenhouse from "../assets/images/gallery-greenhouse.webp";
 import musicApp from "../assets/images/gallery-music-app.webp";
 import webRedesign from "../assets/images/gallery-web-redesign.webp";
-import ikeaMockup from "../assets/images/project-ikea-mockup.png";
+import ikeaMockup from "../assets/images/project-ikea-mockup.webp";
 import youtubeMusicMockup from "../assets/images/project-youtube-music-mockup.png";
 import aiVideoMockup from "../assets/images/project-ai-video-mockup.png";
 // 임시 목업 — MY DESIGN 카드에 들어갈 실제 이미지가 정해지기 전까지 쓰는 자리표시 이미지다.
@@ -153,7 +153,9 @@ export const PROJECTS = {
     },
     {
       id: "ikea-website-redesign",
-      src: webRedesign,
+      // 요청으로 카드 썸네일도 스크롤 연출과 같은 새 목업으로 바꿨다.
+      // 갤러리 띠가 쓰는 webRedesign 은 그대로 둔다(YouTube Music 과 같은 방식).
+      src: ikeaMockup,
       alt: "iKEA 웹사이트 리디자인 화면",
       // 스크롤 연출 전용 이미지 — 요청으로 새 목업(2133 x 1080 가로형)으로
       // 교체했다. 왼쪽 분홍 패널에 제목과 "사이트 보기" 버튼이 그림으로
