@@ -54,18 +54,23 @@ export default function MobileHero() {
         <WavyCubes className="hero-scene" />
 
         <div className="hero-knockout px-20 pt-86 pb-24">
+          {/* SlicedText 는 조각을 clip-path 로 자르는데 그 %가 "상자 폭" 기준이라,
+              상자가 글자보다 좁으면 앞뒤 글자가 잘려 나간다. 데스크톱 라벨도
+              같은 이유로 상자(w-125 · h-30)를 명시해 뒀는데 모바일은 빠져
+              있어서 글자가 잘렸다(요청). 여기도 글자보다 넉넉한 상자를 준다.
+              오른쪽 라벨은 상자가 글자보다 넓어지므로 text-right 로 붙인다. */}
           <div className="flex items-center justify-between">
             <SlicedText
               as="span"
               data-intro-fade
-              className="font-sans text-[calc(14*var(--u))] font-extrabold text-ink uppercase"
+              className="h-22 w-100 font-sans text-[calc(14*var(--u))] font-extrabold text-ink uppercase"
             >
               {HERO.labelLeft}
             </SlicedText>
             <SlicedText
               as="span"
               data-intro-fade
-              className="font-condensed text-[calc(14*var(--u))] leading-nav font-extrabold text-ink uppercase"
+              className="h-22 w-110 text-right font-condensed text-[calc(14*var(--u))] leading-nav font-extrabold text-ink uppercase"
             >
               {HERO.labelRight}
             </SlicedText>
@@ -74,7 +79,9 @@ export default function MobileHero() {
           {/* "좋아하는 일은 200% 애정을" 이 나와 잠깐 머문 뒤, 같은 자리에서
               "맡은 임무는 300% 책임감" 으로 바뀐다 — grid 로 h1·p 를 같은 칸에
               겹쳐야 "그 자리에서" 바뀐다(요청, lib/useIntroReveal.js 참조). */}
-          <div className="mt-32 grid">
+          {/* 요청으로 가운데 정렬. 둘째 줄은 flex 라 text-center 가 안 먹어서
+              justify-center 를 따로 준다. */}
+          <div className="mt-32 grid text-center">
             <h1
               data-intro-group="1"
               className="col-start-1 row-start-1 font-display text-[calc(52*var(--u))] leading-display font-extrabold"
@@ -82,7 +89,7 @@ export default function MobileHero() {
               <span className="block" data-flip-line>
                 <Letters text={HERO.greenLines[0]} />
               </span>
-              <span className="mt-8 flex items-center gap-12" data-flip-line>
+              <span className="mt-8 flex items-center justify-center gap-12" data-flip-line>
                 <span className="hero-tag-frame inline-flex shrink-0 -rotate-[2.69deg] items-center px-12 py-6">
                   <span className="hero-copy-letters font-stencil text-[calc(36*var(--u))] leading-none font-extrabold">
                     {HERO.greenTag}
@@ -99,7 +106,7 @@ export default function MobileHero() {
               <span className="block" data-flip-line>
                 <Letters text={HERO.redLines[0]} />
               </span>
-              <span className="mt-8 flex items-center gap-12" data-flip-line>
+              <span className="mt-8 flex items-center justify-center gap-12" data-flip-line>
                 <span className="hero-tag-frame inline-flex shrink-0 -rotate-[2.69deg] items-center px-12 py-6">
                   <span className="hero-copy-letters font-stencil text-[calc(36*var(--u))] leading-none font-extrabold">
                     {HERO.redTag}
