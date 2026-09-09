@@ -886,15 +886,35 @@ body {
     --pfr-title-size: min(6.5vh, calc(46 * var(--u)));
     --pfr-desc-gap: calc(12 * var(--u));
     --pfr-lead-x: calc(20 * var(--u)); /* 모바일 거터 */
+
+    /* 요청 — 모바일은 썸네일이 먼저 나오고 그 아래로 제목·설명이 온다.
+       (데스크톱은 지금까지처럼 제목이 위, 이미지가 가운데다)
+       아래 글자들의 자리를 이미지 높이에서 계산하려고 값을 변수로 둔다.
+       지금 스크롤 컷 세 장은 전부 가로형(.pfr-svg--wide)이라 이 한 값으로
+       충분하다 — 세로형 컷이 생기면 .pfr-svg 높이와 어긋나므로 함께 손봐야 한다. */
+    --pfr-shot-top: 8vh; /* 01/03 표시(top 3vh) 아래 */
+    --pfr-shot-h: min(26vh, calc(220 * var(--u)));
+    --pfr-shot-gap: calc(20 * var(--u)); /* 이미지와 제목 사이 */
+    /* 이미지 밑단 = 글자 묶음이 시작하는 자리 */
+    --pfr-below-shot: calc(
+      var(--pfr-shot-top) + var(--pfr-shot-h) + var(--pfr-shot-gap)
+    );
   }
 
   .pfr-lead {
     padding-block: calc(24 * var(--u)) calc(40 * var(--u));
   }
 
-  /* 이미지를 화면 아래쪽에 붙인다(place-items:center 를 세로만 덮어쓴다) */
+  /* 이미지를 화면 위쪽에 붙인다(place-items:center 를 세로만 덮어쓴다).
+     띄우는 건 stage 의 padding 이 아니라 이미지 자신의 margin 으로 한다 —
+     padding 을 주면 절대배치인 제목·설명(패딩 상자 기준)까지 같이 밀린다. */
   .pfr-stage {
-    align-items: end;
+    align-items: start;
+  }
+
+  .pfr-svg,
+  .pfr-fallback {
+    margin-top: var(--pfr-shot-top);
   }
 
   .pfr-svg {
@@ -915,8 +935,16 @@ body {
     font-size: calc(13 * var(--u));
   }
 
+  /* 제목 두 줄 — 데스크톱은 윗줄이 왼쪽 위, 아랫줄이 오른쪽 아래로 갈라지는
+     대각선 배치다. 모바일에서는 이미지 아래에 두 줄을 붙여 쌓되, 좌우로
+     갈리는 배치(윗줄 왼쪽 · 아랫줄 오른쪽)는 그대로 살린다. */
+  .pfr-line--up {
+    top: var(--pfr-below-shot);
+  }
+
   .pfr-line--down {
-    bottom: 6vh;
+    bottom: auto;
+    top: calc(var(--pfr-below-shot) + var(--pfr-title-box));
   }
 
   /* 좁은 폭이라 좌우 거터까지 폭을 쓴다(데스크톱은 이미지 앞에서 끊기게 384 로 제한).
@@ -933,7 +961,9 @@ body {
   .pfr-item:nth-of-type(1) .pfr-copy,
   .pfr-item:nth-of-type(2) .pfr-copy,
   .pfr-item:nth-of-type(3) .pfr-copy {
-    top: calc(var(--pfr-title-top) + var(--pfr-title-box) + var(--pfr-desc-gap));
+    top: calc(
+      var(--pfr-below-shot) + var(--pfr-title-box) * 2 + var(--pfr-desc-gap)
+    );
   }
 
   .pfr-desc {
