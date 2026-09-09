@@ -58,14 +58,21 @@ export default function MobileMenu({ open, onClose, menuId }) {
       aria-label="주요 메뉴"
       className="fixed inset-0 z-40 bg-header xl:hidden"
     >
-      <div className="mx-auto flex h-full w-390 flex-col justify-center gap-24 px-20 pt-66">
+      {/* 항목 글자는 원래 데스크톱 섹션 제목과 같은 text-heading(40) +
+          leading-heading(15.6) 이었다. 줄 높이가 글자보다 훨씬 작아서, 폭이
+          좁은 모바일에서 "MY WORK EXPERIENCE"(18자)처럼 긴 항목이 접히는
+          순간 두 줄이 서로 포개졌다(요청 — "난리 났다").
+          글자를 26 으로 줄여 가장 긴 항목도 한 줄에 들어가게 하고(26 x 18자
+          약 281 < 쓸 수 있는 폭 350), 줄 높이도 34 로 정상화한다.
+          혹시 더 긴 항목이 생겨 접히더라도 이제는 겹치지 않는다. */}
+      <div className="mx-auto flex h-full w-390 flex-col justify-center gap-20 px-20 pt-66">
         {ITEMS.map((item, i) => (
           <a
             key={item.href}
             ref={i === 0 ? firstItemRef : undefined}
             href={item.href}
             onClick={onClose}
-            className="font-sans text-heading leading-heading font-bold tracking-heading text-black uppercase"
+            className="font-sans text-[calc(26*var(--u))] leading-[calc(34*var(--u))] font-bold tracking-heading text-ink uppercase"
           >
             {item.label}
           </a>
