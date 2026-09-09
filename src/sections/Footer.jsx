@@ -94,7 +94,10 @@ export default function Footer() {
           target="_blank"
           rel="noopener noreferrer"
           className="absolute z-10 text-[calc(12*var(--u))] leading-[calc(18*var(--u))] text-black underline decoration-from-font underline-offset-2 opacity-60 transition-opacity hover:opacity-100"
-          style={box({ left: 50, top: 200, width: 560 })}
+          /* 형광 블록 맨 아래에 붙인다(요청) — 글자 한 줄(18)에 아래 여백 12
+             를 더한 만큼만 띄운다. 높이에서 계산하므로 PANEL_H 를 다시
+             바꿔도 계속 바닥에 붙어 있는다. */
+          style={box({ left: 50, top: PANEL_H - 30, width: 400 })}
         >
           {FOOTER.credits.label}
         </a>

@@ -52,7 +52,7 @@ export default function MobileAbout() {
             <dt className="w-120 shrink-0 font-sans text-[calc(15.5*var(--u))] leading-desc text-black uppercase">
               {label}
             </dt>
-            <dd className="font-sans text-[calc(15.5*var(--u))] leading-desc text-black">
+            <dd className="font-sans text-[calc(15.5*var(--u))] leading-desc whitespace-pre-line text-black">
               {value}
             </dd>
           </div>
