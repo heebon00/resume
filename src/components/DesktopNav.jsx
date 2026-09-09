@@ -107,7 +107,7 @@ function BrandMark() {
 
   return (
     <span
-      className={`brand-mark-bg inline-flex flex-col items-center gap-4 px-24 py-14${
+      className={`brand-mark-bg inline-flex flex-col items-center gap-4 px-24 py-20${
         ready ? " brand-mark-ready" : ""
       }`}
     >
@@ -149,7 +149,7 @@ export default function DesktopNav() {
           href="#hero"
           onClick={(event) => scrollToSection(event, "#hero")}
           aria-label="맨 위로"
-          className="flex items-center py-15"
+          className="flex items-center py-20"
         >
           <BrandMark />
         </a>

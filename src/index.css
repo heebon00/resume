@@ -1083,10 +1083,10 @@ body {
   }
 }
 
-/* 앵커로 이동할 때 고정 GNB(높이 약 66) 아래로 섹션이 숨지 않게 여유를 둔다. */
+/* 앵커로 이동할 때 고정 GNB(높이 약 109) 아래로 섹션이 숨지 않게 여유를 둔다. */
 @media (min-width: 1280px) {
   html {
-    scroll-padding-top: calc(86 * var(--u));
+    scroll-padding-top: calc(108 * var(--u));
   }
 }
 
