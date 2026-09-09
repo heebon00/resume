@@ -12,8 +12,6 @@
 import aboutPortrait from "../assets/images/about-portrait.webp";
 import portrait from "../assets/images/hero-portrait.webp";
 import greenhouse from "../assets/images/gallery-greenhouse.webp";
-import musicApp from "../assets/images/gallery-music-app.webp";
-import webRedesign from "../assets/images/gallery-web-redesign.webp";
 import ikeaMockup from "../assets/images/project-ikea-mockup.webp";
 import youtubeMusicMockup from "../assets/images/project-youtube-music-mockup.png";
 import aiVideoMockup from "../assets/images/project-ai-video-mockup.png";
@@ -32,12 +30,12 @@ import premierePro from "../assets/images/skill-premiere-pro.webp";
 // MY DESIGN 용 design-*.webp 넉 장은 2026-09-08 삭제됐다 — import 만 돼 있고
 // 화면에서는 임시 목업(designMock01~04)을 쓰고 있어서 참조를 함께 걷어냈다.
 // 새 이미지를 넣을 때 여기 다시 추가하면 된다. docs/08_16_47.md 참조.
+// 갤러리 띠가 프로젝트 목업으로 바뀌면서 gallery-music-app / gallery-web-redesign
+// 참조를 걷어냈다(요청). greenhouse 는 AI Video 카드 썸네일이 아직 쓰므로
+// import 는 남기되, IMAGES.greenhouse 로 꺼내 쓴 곳은 원래 없어서 여기서는 뺐다.
 export const IMAGES = {
   aboutPortrait,
   portrait,
-  greenhouse,
-  musicApp,
-  webRedesign,
 };
 
 /* --- 이름 배너 (110:2 Header, 1920 x 186) -------------------------------- */
@@ -105,17 +103,21 @@ export const EXPERIENCE = {
 };
 
 /* --- 이미지 갤러리 (20:1207) -------------------------------------------- */
+// 요청으로 세 컷을 프로젝트 목업 3종으로 바꿨다 — 아래 스크롤 연출에 나오는
+// 것과 같은 이미지라, 흐르는 띠가 그 예고편처럼 읽힌다.
+// 셋 다 가로형(2:1 언저리)이라 Gallery.jsx 의 상자도 가로로 바꿔 크기를
+// 하나로 통일했다.
 export const GALLERY = [
   {
-    id: "greenhouse",
-    src: greenhouse,
-    alt: "유리 온실 안 붉은 꽃길을 걷는 사람",
+    id: "ai-video",
+    src: aiVideoMockup,
+    alt: "AI Video Creator 목업 화면",
   },
-  { id: "music-app", src: musicApp, alt: "음악 스트리밍 앱 화면" },
+  { id: "ikea", src: ikeaMockup, alt: "iKEA 리디자인 목업 화면" },
   {
-    id: "web-redesign",
-    src: webRedesign,
-    alt: "가구 쇼핑몰 웹사이트 리디자인 화면",
+    id: "youtube-music",
+    src: youtubeMusicMockup,
+    alt: "YouTube Music 리디자인 목업 화면",
   },
 ];
 
@@ -140,7 +142,17 @@ export const PROJECTS = {
       reveal: {
         src: aiVideoMockup,
         alt: "AI Video Creator 맥 목업 화면",
-        frame: { w: 1200, h: 588 },
+        frame: { w: 1600, h: 783 },
+        // 목업 왼쪽 패널 실측 — 패널 0~39.75%, 글자 끝 y 55.17%, 패널색 #6F0F08.
+        // 버튼이 둘이라 묶음 높이가 약 13.5% 다(iKEA·YouTube 는 셋이라 21%).
+        panelButtons: {
+          // 패널 가운데 39.75/2 에서 버튼 폭 166u 의 절반을 뺀다
+          left: "calc(19.875% - 83 * var(--u))",
+          // 글자 끝(55.17%)과 밑(100%)의 한가운데에서 묶음 높이의 절반을 뺀다.
+          // 여기는 버튼이 둘이라 묶음이 34*2 + 8 = 76u -> 절반 38u.
+          top: "calc(77.59% - 38 * var(--u))",
+          ink: "#6f0f08",
+        },
       },
       titleLines: ["AI Video Creator", "Editor & Director"],
       descriptionLines: [
@@ -154,7 +166,6 @@ export const PROJECTS = {
     {
       id: "ikea-website-redesign",
       // 요청으로 카드 썸네일도 스크롤 연출과 같은 새 목업으로 바꿨다.
-      // 갤러리 띠가 쓰는 webRedesign 은 그대로 둔다(YouTube Music 과 같은 방식).
       src: ikeaMockup,
       alt: "iKEA 웹사이트 리디자인 화면",
       // 스크롤 연출 전용 이미지 — 요청으로 새 목업(2133 x 1080 가로형)으로
@@ -165,7 +176,14 @@ export const PROJECTS = {
         src: ikeaMockup,
         alt: "iKEA 리디자인 시안 — 데스크톱 · 모바일 화면",
         frame: { w: 2133, h: 1080 },
-        panelButtons: true,
+        // 목업 왼쪽 패널 실측 — 패널 0~30.52%, 글자 끝 y 58.0%, 패널색 #770A25.
+        panelButtons: {
+          left: "calc(15.26% - 83 * var(--u))", // 패널 가운데 30.52/2
+          // 글자 끝 58% ~ 밑 100% 의 한가운데. 버튼 셋이라 묶음 34*3 + 8*2
+          // = 118u -> 절반 59u.
+          top: "calc(79% - 59 * var(--u))",
+          ink: "#770a25",
+        },
       },
       titleLines: ["iKEA Website", "Redesign"],
       descriptionLines: [
@@ -184,14 +202,23 @@ export const PROJECTS = {
     {
       id: "youtube-music-redesign",
       // 요청으로 카드 썸네일도 스크롤 연출과 같은 새 목업(피그마 6:1229)으로
-      // 바꿨다. 갤러리 띠가 쓰는 musicApp 은 그대로 둔다.
+      // 바꿨다.
       src: youtubeMusicMockup,
       alt: "YouTube Music 리디자인 화면",
-      // 스크롤 연출 전용 이미지 — 피그마 6:1229 (1200 x 800 가로형), iKEA와 같은 방식.
+      // 스크롤 연출 전용 이미지 — 피그마 6:1229, iKEA와 같은 방식.
+      // frame 은 원본 실제 크기(1555 x 1080)로 둔다 — 어림값 1200x800 이면
+      // 비율이 안 맞아 cover 가 위아래를 4% 쯤 잘라낸다.
       reveal: {
         src: youtubeMusicMockup,
         alt: "YouTube Music 리디자인 시안 — 모바일 화면",
-        frame: { w: 1200, h: 800 },
+        frame: { w: 1555, h: 1080 },
+        // 목업 왼쪽 패널 실측 — 패널 0~40.32%, 글자 끝 y 54.44%, 패널색 #460112.
+        panelButtons: {
+          left: "calc(20.16% - 83 * var(--u))", // 패널 가운데 40.32/2
+          // 글자 끝 54.44% ~ 밑 100% 의 한가운데, 버튼 셋(절반 59u).
+          top: "calc(77.22% - 59 * var(--u))",
+          ink: "#460112",
+        },
       },
       titleLines: ["YOU TUBE MUSIC", "Redesign"],
       descriptionLines: [

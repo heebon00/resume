@@ -17,11 +17,15 @@ import { GALLERY } from "../content/portfolio";
  * prefers-reduced-motion 이면 멈춘다(index.css 의 .marquee-track).
  */
 
-// 크기는 장미 온실 컷(376x670)의 1/3 로 모두 통일한다.
-// 원본 비율이 다른 컷은 object-cover 로 잘라 맞춘다.
-const ITEM_W = 376 / 3;
+// 요청 — 세 컷을 프로젝트 목업으로 바꾸면서 크기를 하나로 통일한다.
+// 예전에는 장미 온실 컷(376x670)의 1/3 인 세로 상자였는데, 목업은 셋 다
+// 가로형이라 그대로 넣으면 가운데 세로 띠만 보인다. 높이는 띠 높이(BAND_H)
+// 계산이 그대로 맞도록 예전 값을 지키고, 폭만 2배로 늘려 2:1 상자로 쓴다.
+// 원본 비율은 AI Video 2.04 · iKEA 1.98 · YouTube Music 1.44 로, 앞의 둘은
+// 거의 안 잘리고 YouTube Music 만 위아래가 조금 잘린다(가운데 기준, 글자와
+// 휴대폰은 가운데라 남는다).
 const ITEM_H = 670 / 3;
-const OBJECT_CLASS = { "web-redesign": "object-top" };
+const ITEM_W = ITEM_H * 2;
 
 const GAP = 43; // 시안 슬롯 간격(약 129)의 1/3
 const SPEED = 80; // 디자인 px / 초 — 키워드 마퀴와 같은 속도
@@ -37,10 +41,9 @@ const BAND_PAD = (BAND_H - ITEM_H) / 2;
 // 아래쪽은 첫 컷(전체 화면)과 붙지 않게 시안 값 그대로 둔다.
 const PAD_TOP = 76;
 
-const ITEMS = GALLERY.map((item) => ({
-  ...item,
-  objectClassName: OBJECT_CLASS[item.id],
-}));
+// 셋 다 같은 2:1 상자에 가운데 기준으로 잘라 넣는다 — 컷마다 다른 초점을
+// 주던 OBJECT_CLASS 는 크기가 통일되면서 필요 없어졌다.
+const ITEMS = GALLERY;
 
 // 한 묶음이 화면 폭보다 짧으면 그만큼 반복해야 빈자리가 생기지 않는다.
 const SET_W = ITEMS.length * (ITEM_W + GAP);
@@ -85,7 +88,7 @@ export default function Gallery() {
                   src={item.src}
                   alt={copy >= REPEAT ? "" : item.alt}
                   className="absolute inset-0 size-full"
-                  imgClassName={`block size-full object-cover ${item.objectClassName ?? ""}`}
+                  imgClassName="block size-full object-cover"
                 />
               </div>
             )),

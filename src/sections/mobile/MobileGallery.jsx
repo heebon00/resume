@@ -5,8 +5,9 @@ import { du } from "../../lib/design";
 
 /**
  * 모바일 이미지 갤러리 — 데스크톱과 같이 왼쪽으로 끊임없이 흐르는 띠다.
- * 컷 크기는 장미 온실 컷 비율(376:670)로 모두 통일하고, 좁은 폭에 맞춰
- * 한 화면에 세 컷 남짓 보이도록 잡았다.
+ * 컷 크기는 데스크톱(Gallery.jsx)과 같은 2:1 가로 상자로 통일한다 — 세 컷이
+ * 전부 가로형 프로젝트 목업이라 예전 세로 비율(376:670)로는 가운데 세로 띠만
+ * 보였다. 좁은 폭이라 한 화면에 한 컷 반 남짓 보인다.
  *
  * 한 묶음을 화면 폭보다 길어질 만큼 반복하고 그 전체를 두 벌 이어 붙인 뒤
  * -50% 만큼 밀면 두 번째 벌이 첫 번째 벌 자리에 정확히 들어와 이음매가 없다.
@@ -15,13 +16,11 @@ import { du } from "../../lib/design";
  * 양옆 여백 없이 화면을 가로지르고, prefers-reduced-motion 이면 멈춘다.
  */
 
-const ITEM_W = 125;
-const ITEM_H = Math.round((125 * 670) / 376); // 장미 온실 컷 비율 유지 → 223
+const ITEM_H = 125;
+const ITEM_W = ITEM_H * 2; // 데스크톱과 같은 2:1 상자
 const GAP = 12;
 const VIEW_W = 390; // 모바일 캔버스 폭
 const DURATION = "22s";
-
-const OBJECT_CLASS = { "web-redesign": "object-top" };
 
 const SET_W = GALLERY.length * (ITEM_W + GAP);
 const REPEAT = SET_W > 0 ? Math.ceil(VIEW_W / SET_W) : 1;
@@ -59,7 +58,7 @@ export default function MobileGallery() {
                 src={item.src}
                 alt={copy >= REPEAT ? "" : item.alt}
                 className="absolute inset-0 size-full"
-                imgClassName={`block size-full object-cover ${OBJECT_CLASS[item.id] ?? ""}`}
+                imgClassName="block size-full object-cover"
               />
             </div>
           )),

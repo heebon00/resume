@@ -378,13 +378,19 @@ export default function ProjectsReveal({ variant = "desktop", afterLead = null }
           const frame = shot.frame ?? FRAME;
           const wide = frame.w > frame.h;
 
-          // 목업 그림 안에 이미 버튼이 박혀 있는 시안(iKEA)은 그 자리에
-          // 진짜 버튼을 얹는다(요청). 데스크톱에서만 — 모바일 캔버스는
-          // 이미지가 화면 아래에 작게 깔려서 얹을 자리가 없다.
+          // 목업 왼쪽 패널 위에 버튼을 얹는 카드(요청) — 세 시안 모두 왼쪽에
+          // 어두운 색 패널 + 흰 글자라 같은 방식이 그대로 통한다. 자리·폭·
+          // 패널색은 시안마다 달라서 content/portfolio.js 의 panelButtons 에
+          // 실측값으로 적어 두고, 여기서 CSS 변수로 넘긴다.
+          // 데스크톱에서만 — 모바일 캔버스는 이미지가 화면 아래에 작게
+          // 깔려서 얹을 자리가 없다.
           // 이미지를 못 받아오면 프레임 자체가 없으므로 원래 자리(설명 밑)로
           // 되돌린다 — 그래야 버튼이 통째로 사라지지 않는다.
-          const onPanel =
-            variant === "desktop" && shot.panelButtons && !failed[card.id];
+          const panel =
+            variant === "desktop" && !failed[card.id]
+              ? shot.panelButtons
+              : null;
+          const onPanel = Boolean(panel);
 
           // 두 자리(설명 밑 / 목업 패널 위)가 같은 버튼을 쓴다 — 어디에
           // 놓든 링크·문구·스와이프 효과는 같고, 모양만 클래스로 갈린다.
@@ -444,6 +450,11 @@ export default function ProjectsReveal({ variant = "desktop", afterLead = null }
                       <div
                         className="pfr-buttons pfr-buttons--panel"
                         data-pfr-buttons
+                        style={{
+                          "--pfr-panel-left": panel.left,
+                          "--pfr-panel-top": panel.top,
+                          "--pfr-panel-ink": panel.ink,
+                        }}
                       >
                         {buttonNodes}
                       </div>
