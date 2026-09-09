@@ -54,27 +54,30 @@ export default function MobileHero() {
         <WavyCubes className="hero-scene" />
 
         <div className="hero-knockout px-20 pt-86 pb-24">
-          {/* SlicedText 는 조각을 clip-path 로 자르는데 그 %가 "상자 폭" 기준이라,
-              상자가 글자보다 좁으면 앞뒤 글자가 잘려 나간다. 데스크톱 라벨도
-              같은 이유로 상자(w-125 · h-30)를 명시해 뒀는데 모바일은 빠져
-              있어서 글자가 잘렸다(요청). 여기도 글자보다 넉넉한 상자를 준다.
-              오른쪽 라벨은 상자가 글자보다 넓어지므로 text-right 로 붙인다.
-              PORTFOLIO 에만 붙어 있던 leading-nav(0.85)는 뺐다 — 줄 높이가
-              글자 크기(14)보다 작아 글자가 줄 상자 위로 삐져나가면서 윗부분이
-              잘린 것처럼 보였다(요청). leading-none(1)으로 두면 글자가 상자
-              안에 들어오고, 높이는 22 -> 24 로 조금 더 여유를 줬다. */}
+          {/* [라벨에 크기를 주지 않는 이유]
+              SlicedText 는 글자를 "상자 폭" 기준 10등분해 조각내고, 각 조각을
+              조각 폭의 ±50% 만큼 흔든다. 그래서 상자가 글자보다 넓으면 조각
+              경계가 글자와 어긋나고 흔들림 폭도 커져 글자끼리 겹쳐 보인다
+              (요청 — PORTFOLIO 는 font-condensed 라 글자가 더 좁아 특히 심했다).
+              상자를 안 주면 내용 크기에 딱 맞아 조각이 글자 위에 1:1 로 얹힌다.
+              데스크톱 라벨이 상자(w-125)를 명시한 건 절대배치라 어쩔 수 없어서고,
+              거기서도 "상자가 좁으면 글자가 잘린다"는 같은 뿌리의 문제를 겪었다.
+
+              leading-none 은 남긴다 — PORTFOLIO 에 있던 leading-nav(0.85)는 줄
+              높이가 글자 크기(14)보다 작아 윗부분이 잘려 보였다(요청). 두 라벨
+              모두 1 로 통일해 폰트가 달라도 줄 높이 기준이 같게 둔다. */}
           <div className="flex items-center justify-between">
             <SlicedText
               as="span"
               data-intro-fade
-              className="h-24 w-100 font-sans text-[calc(14*var(--u))] leading-none font-extrabold text-ink uppercase"
+              className="font-sans text-[calc(14*var(--u))] leading-none font-extrabold text-ink uppercase"
             >
               {HERO.labelLeft}
             </SlicedText>
             <SlicedText
               as="span"
               data-intro-fade
-              className="h-24 w-110 text-right font-condensed text-[calc(14*var(--u))] leading-none font-extrabold text-ink uppercase"
+              className="font-condensed text-[calc(14*var(--u))] leading-none font-extrabold text-ink uppercase"
             >
               {HERO.labelRight}
             </SlicedText>
