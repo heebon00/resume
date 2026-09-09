@@ -174,6 +174,22 @@ export const PROJECTS = {
         "주요 기술: Google Flow, PREMIERE PRO, AFTER EFFECTS",
         "기획 의도: League of Legends 2026 MSI in 대전 홍보영상 ",
       ],
+      // 스크롤 연출의 설명은 위 4줄을 두 칸으로 나눠 표처럼 보여준다
+      // (요청 · 55.md 의 참고 이미지 — 위아래 가로선 + 2열 + 가운데 세로선).
+      // 2x2 카드 그리드(Projects.jsx)는 위 descriptionLines 를 그대로 쓴다.
+      descriptionGroups: [
+        {
+          label: "TYPE / TERM",
+          lines: ["2026 _ SOLO PROJECT", "작업 기간: 2주 (26.06.18~26.07.01)"],
+        },
+        {
+          label: "STACK / INTENT",
+          lines: [
+            "주요 기술: Google Flow, PREMIERE PRO, AFTER EFFECTS",
+            "기획 의도: League of Legends 2026 MSI in 대전 홍보영상",
+          ],
+        },
+      ],
     },
     {
       id: "ikea-website-redesign",
@@ -207,6 +223,19 @@ export const PROJECTS = {
         "작업 기간: 4주 (26.07.15~26.08.15)",
         "주요 기술:  Figma, HTML,  AI CLI, Tailwind CSS 등",
         "주 역할: 팀장, 기획, 디자인, 기술 구현, 기획서 발표",
+      ],
+      descriptionGroups: [
+        {
+          label: "TYPE / TERM",
+          lines: ["2026 _ TEAM PROJECT", "작업 기간: 4주 (26.07.15~26.08.15)"],
+        },
+        {
+          label: "STACK / ROLE",
+          lines: [
+            "주요 기술: Figma, HTML, AI CLI, Tailwind CSS 등",
+            "주 역할: 팀장, 기획, 디자인, 기술 구현, 기획서 발표",
+          ],
+        },
       ],
       buttons: ["기획서보기", "깃허브보기", "사이트보기"],
       links: [
@@ -242,6 +271,19 @@ export const PROJECTS = {
         "작업 기간: 2주 (26.08.18~26.08.27)",
         "주요 기술:  Figma, REACT,  AI CLI, Tailwind CSS,등",
         "기획 의도: 이용자 편리성을 극대화한 UX · UI 디자인 ",
+      ],
+      descriptionGroups: [
+        {
+          label: "TYPE / TERM",
+          lines: ["2026 _ SOLO PROJECT", "작업 기간: 2주 (26.08.18~26.08.27)"],
+        },
+        {
+          label: "STACK / INTENT",
+          lines: [
+            "주요 기술: Figma, REACT, AI CLI, Tailwind CSS 등",
+            "기획 의도: 이용자 편리성을 극대화한 UX · UI 디자인",
+          ],
+        },
       ],
       buttons: ["기획서보기", "깃허브보기", "사이트보기"],
       links: [

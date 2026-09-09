@@ -474,9 +474,28 @@ export default function ProjectsReveal({ variant = "desktop", afterLead = null }
                 </h3>
 
                 <div className="pfr-copy z-10">
-                  <p className="pfr-desc" data-pfr-desc>
-                    {card.descriptionLines.join("\n")}
-                  </p>
+                  {/* 설명 — 요청(55.md 참고 이미지)으로 위아래 가로선을 두고
+                      두 칸으로 나눠 표처럼 보여준다. 칸마다 굵은 소제목이
+                      붙는다. descriptionGroups 가 없는 카드는 예전처럼 4줄을
+                      그대로 흘린다. */}
+                  {card.descriptionGroups ? (
+                    <div className="pfr-desc pfr-desc--table" data-pfr-desc>
+                      {card.descriptionGroups.map((group) => (
+                        <div className="pfr-desc-col" key={group.label}>
+                          <p className="pfr-desc-label">{group.label}</p>
+                          {group.lines.map((line) => (
+                            <p className="pfr-desc-line" key={line}>
+                              {line}
+                            </p>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="pfr-desc" data-pfr-desc>
+                      {card.descriptionLines.join("\n")}
+                    </p>
+                  )}
 
                   {/* 카드(ProjectCard)와 같은 버튼 — "10. Swipe Fill
                       Transitions"의 Wipe Left(~/Downloads/80button) 스타일.

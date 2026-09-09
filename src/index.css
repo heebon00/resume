@@ -769,6 +769,45 @@ body {
   color: var(--color-muted);
 }
 
+/* 설명을 표처럼 — 요청(55.md 참고 이미지): 위아래 가로선 사이에 두 칸을 두고,
+   가운데 세로선으로 나눈다. 칸마다 굵은 소제목 + 그 아래 본문 줄들.
+   참고 이미지의 검정 배경은 그 이미지 사정이라 가져오지 않는다(요청).
+   .pfr-desc 의 글꼴·색은 그대로 물려받고 배치만 여기서 바꾼다. */
+.pfr-desc--table {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: calc(28 * var(--u));
+  border-top: 1px solid var(--color-line);
+  border-bottom: 1px solid var(--color-line);
+  padding-block: calc(16 * var(--u));
+  /* 표에서는 줄마다 <p> 로 나뉘므로 pre-wrap 이 필요 없다 */
+  white-space: normal;
+}
+
+/* 두 번째 칸 앞에만 세로선 — 칸이 셋 이상이 돼도 그대로 통한다 */
+.pfr-desc-col + .pfr-desc-col {
+  border-left: 1px solid var(--color-line);
+  padding-left: calc(28 * var(--u));
+}
+
+.pfr-desc-label {
+  margin: 0 0 calc(8 * var(--u));
+  font-size: calc(15 * var(--u));
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
+.pfr-desc-line {
+  margin: 0;
+  word-break: keep-all;
+}
+
+.pfr-desc-line + .pfr-desc-line {
+  margin-top: calc(4 * var(--u));
+}
+
 .pfr-buttons {
   display: flex;
   /* 깃허브보기가 붙어 버튼이 셋이 되면 상자(.pfr-copy 384)를 넘는다. 간격을
@@ -993,6 +1032,27 @@ body {
   .pfr-desc {
     white-space: pre-wrap;
     font-size: calc(13.5 * var(--u));
+  }
+
+  /* 좁은 폭이라 두 칸이 답답하다 — 한 칸으로 쌓고, 칸 사이를 가르던 세로선을
+     가로선으로 바꾼다. 위아래 가로선은 그대로 둔다. */
+  .pfr-desc--table {
+    grid-template-columns: 1fr;
+    row-gap: calc(12 * var(--u));
+    padding-block: calc(12 * var(--u));
+    white-space: normal;
+  }
+
+  .pfr-desc-col + .pfr-desc-col {
+    border-left: 0;
+    border-top: 1px solid var(--color-line);
+    padding-left: 0;
+    padding-top: calc(12 * var(--u));
+  }
+
+  .pfr-desc-label {
+    font-size: calc(12.5 * var(--u));
+    margin-bottom: calc(6 * var(--u));
   }
 }
 
