@@ -14,7 +14,7 @@ import portrait from "../assets/images/hero-portrait.webp";
 import greenhouse from "../assets/images/gallery-greenhouse.webp";
 import ikeaMockup from "../assets/images/project-ikea-mockup.webp";
 import youtubeMusicMockup from "../assets/images/project-youtube-music-mockup.png";
-import aiVideoMockup from "../assets/images/project-ai-video-mockup.png";
+import aiVideoMockup from "../assets/images/project-ai-video-mockup.webp";
 // 임시 목업 — MY DESIGN 카드에 들어갈 실제 이미지가 정해지기 전까지 쓰는 자리표시 이미지다.
 // 확정되면 아래 4개 import 와 DESIGN.cards 의 src·alt 를 실제 이미지로 되돌린다.
 import designMock01 from "../assets/images/design-mock-01.svg";
@@ -142,15 +142,14 @@ export const PROJECTS = {
       reveal: {
         src: aiVideoMockup,
         alt: "AI Video Creator 맥 목업 화면",
-        frame: { w: 1600, h: 783 },
-        // 목업 왼쪽 패널 실측 — 패널 0~39.75%, 글자 끝 y 55.17%, 패널색 #6F0F08.
-        // 버튼이 둘이라 묶음 높이가 약 13.5% 다(iKEA·YouTube 는 셋이라 21%).
+        frame: { w: 2207, h: 1080 },
+        // 목업 왼쪽 패널 실측 — 패널 0~39.74%, 글자 끝 y 55.93%, 패널색 #6F0F08.
         panelButtons: {
-          // 패널 가운데 39.75/2 에서 버튼 폭 166u 의 절반을 뺀다
-          left: "calc(19.875% - 83 * var(--u))",
-          // 글자 끝(55.17%)과 밑(100%)의 한가운데에서 묶음 높이의 절반을 뺀다.
-          // 여기는 버튼이 둘이라 묶음이 34*2 + 8 = 76u -> 절반 38u.
-          top: "calc(77.59% - 38 * var(--u))",
+          // 패널 가운데 39.74/2 에서 버튼 폭 118u 의 절반을 뺀다
+          left: "calc(19.87% - 59 * var(--u))",
+          // 글자 끝(55.93%)과 밑(100%)의 한가운데에서 묶음 높이의 절반을 뺀다.
+          // 여기는 버튼이 둘이라 묶음이 28*2 + 6 = 62u -> 절반 31u.
+          top: "calc(77.97% - 31 * var(--u))",
           ink: "#6f0f08",
         },
       },
@@ -178,10 +177,10 @@ export const PROJECTS = {
         frame: { w: 2133, h: 1080 },
         // 목업 왼쪽 패널 실측 — 패널 0~30.52%, 글자 끝 y 58.0%, 패널색 #770A25.
         panelButtons: {
-          left: "calc(15.26% - 83 * var(--u))", // 패널 가운데 30.52/2
-          // 글자 끝 58% ~ 밑 100% 의 한가운데. 버튼 셋이라 묶음 34*3 + 8*2
-          // = 118u -> 절반 59u.
-          top: "calc(79% - 59 * var(--u))",
+          left: "calc(15.26% - 59 * var(--u))", // 패널 가운데 30.52/2
+          // 글자 끝 58% ~ 밑 100% 의 한가운데. 버튼 셋이라 묶음 28*3 + 6*2
+          // = 96u -> 절반 48u.
+          top: "calc(79% - 48 * var(--u))",
           ink: "#770a25",
         },
       },
@@ -214,9 +213,9 @@ export const PROJECTS = {
         frame: { w: 1555, h: 1080 },
         // 목업 왼쪽 패널 실측 — 패널 0~40.32%, 글자 끝 y 54.44%, 패널색 #460112.
         panelButtons: {
-          left: "calc(20.16% - 83 * var(--u))", // 패널 가운데 40.32/2
-          // 글자 끝 54.44% ~ 밑 100% 의 한가운데, 버튼 셋(절반 59u).
-          top: "calc(77.22% - 59 * var(--u))",
+          left: "calc(20.16% - 59 * var(--u))", // 패널 가운데 40.32/2
+          // 글자 끝 54.44% ~ 밑 100% 의 한가운데, 버튼 셋(절반 48u).
+          top: "calc(77.22% - 48 * var(--u))",
           ink: "#460112",
         },
       },
