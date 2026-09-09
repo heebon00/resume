@@ -719,9 +719,13 @@ body {
   right: var(--pfr-gutter);
 }
 
-/* 2번째·3번째 프로젝트(iKEA·YouTube Music, .pfr-item 은 article 이라 nth-of-type
-   으로 순서를 그대로 집는다) — 요청으로 오른쪽(아랫줄) 제목이 이미지에 살짝
-   걸치게, 첫 글자 정도만(50) 더 당긴다. */
+/* 오른쪽(아랫줄) 제목을 첫 글자 정도(50) 더 왼쪽으로 당겨 이미지에 살짝
+   걸치게 한다 — 제목에는 mix-blend-mode: difference 가 걸려 있어서 사진 위에
+   얹히는 만큼 글자가 반전되며 살아난다.
+   처음엔 2·3번(iKEA·YouTube Music)에만 걸었는데, 1번만 그 반전을 덜 받아
+   "효과가 아쉽다"는 요청으로 1번도 같이 넣었다 — 이제 세 컷이 같은 처리다.
+   (.pfr-item 은 article 이라 nth-of-type 으로 순서를 그대로 집는다) */
+.pfr-item:nth-of-type(1) .pfr-line--down,
 .pfr-item:nth-of-type(2) .pfr-line--down,
 .pfr-item:nth-of-type(3) .pfr-line--down {
   right: calc(var(--pfr-gutter) + 50 * var(--u));
