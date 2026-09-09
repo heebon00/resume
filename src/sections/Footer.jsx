@@ -42,8 +42,22 @@ function VerticalLine({ width, size, right, top, children }) {
 }
 
 // 형광 블록(20:1609) 폭 — 시안은 639.98 이었는데 "영역이 너무 크다"는
-// 요청으로 줄였다. 아래 세로 텍스트 자리가 이 값에서 계산된다.
-const PANEL_W = 540;
+// 요청으로 두 번에 걸쳐 줄였다(639.98 -> 540 -> 470).
+// 아래 세로 텍스트 자리가 이 값에서 계산된다.
+const PANEL_W = 470;
+// 푸터 전체 높이 — 시안 586.1 에서 두 번에 걸쳐 낮췄다(586.1 -> 450 -> 210).
+// 두 번째는 "아주 많이 줄이고 위아래 여백도 지워 달라"는 요청이라, 높이만
+// 깎은 게 아니라 안쪽 상자들이 실제 글자보다 훨씬 크게 잡혀 있던 것을 함께
+// 정리했다 — 연락처 상자 297.5 -> 180, 세로 글자 상자 257.1 -> 120(세로 줄
+// 두 개가 빠져 title 한 줄만 남았다).
+// 그 뒤 "고지 링크를 조금 더 내리고 그 위에 이메일·연락처를 적겠다"는 요청으로
+// 210 -> 250 으로 다시 조금 올렸다 — 연락처 상자에 전화·메일 두 줄(각 24)이
+// 들어갈 자리를 비워 둔 값이다. 두 값은 content/portfolio.js 의 FOOTER.phone /
+// FOOTER.email 을 채우면 그대로 나온다.
+// 푸터 바닥(top 5947 + 이 값)이 App.jsx 의 CANVAS_H 와 같아야 캔버스 아래에
+// 빈 자리가 남지 않는다 — 그쪽도 6397 -> 6157 로 함께 줄였다.
+const PANEL_H = 250;
+const VTEXT_H = 120; // 세로 글자 상자 높이 (title 한 줄만 남아 짧아졌다)
 const VTEXT_W = 48; // 세로 텍스트 상자 폭 (20:1616)
 const VTEXT_RIGHT_GAP = 76.8; // 시안에서 블록 오른쪽 끝과 세로 텍스트 사이 여백
 
@@ -53,12 +67,12 @@ export default function Footer() {
       id="contact"
       className="absolute"
       data-reveal
-      style={box({ left: 76, top: 5947, width: 1976, height: 586.1 })}
+      style={box({ left: 76, top: 5947, width: 1976, height: PANEL_H })}
     >
       {/* 20:1595 가로 막대 */}
       <div
         className="absolute overflow-hidden"
-        style={box({ left: 747.5, top: 285.05, width: 481, height: 16 })}
+        style={box({ left: 747.5, top: 121, width: 481, height: 16 })}
       >
         <img
           src={footerLines}
@@ -80,7 +94,7 @@ export default function Footer() {
           target="_blank"
           rel="noopener noreferrer"
           className="absolute z-10 text-[calc(12*var(--u))] leading-[calc(18*var(--u))] text-black underline decoration-from-font underline-offset-2 opacity-60 transition-opacity hover:opacity-100"
-          style={box({ left: 50, top: 430, width: 560 })}
+          style={box({ left: 50, top: 200, width: 560 })}
         >
           {FOOTER.credits.label}
         </a>
@@ -92,15 +106,15 @@ export default function Footer() {
           높이는 푸터 높이(586.1)와 같은 값이라 그대로 둔다. */}
       <div
         className="absolute bg-footer"
-        style={box({ left: 0, top: 0, width: PANEL_W, height: 586.1 })}
+        style={box({ left: 0, top: 0, width: PANEL_W, height: PANEL_H })}
       >
         <div
           className="absolute"
           style={box({
             left: PANEL_W - VTEXT_RIGHT_GAP - VTEXT_W,
-            top: 150.01,
+            top: (PANEL_H - VTEXT_H) / 2,
             width: VTEXT_W,
-            height: 257.1,
+            height: VTEXT_H,
           })}
         >
           <div className="size-full rotate-180">
@@ -135,7 +149,7 @@ export default function Footer() {
       {/* 20:1622 연락처 블록 */}
       <div
         className="absolute"
-        style={box({ left: 34.99, top: 133, width: 990, height: 297.5 })}
+        style={box({ left: 34.99, top: 36, width: 990, height: 180 })}
       >
         <p
           className="absolute pb-9 text-[calc(18*var(--u))] leading-[calc(27*var(--u))] text-black"
@@ -146,7 +160,7 @@ export default function Footer() {
 
         <div
           className="absolute"
-          style={box({ left: 15, top: 113, width: 382.5 })}
+          style={box({ left: 15, top: 60, width: 382.5 })}
         >
           <p className="pb-16 text-body leading-body text-black uppercase">
             {FOOTER.name}

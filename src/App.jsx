@@ -27,7 +27,10 @@ const MENU_ID = "mobile-menu";
 const SHOW_PROJECTS_GRID = false;
 
 // 데스크톱 캔버스 높이(피그마 Main Content 20:971)
-const CANVAS_H = 6533; // 갤러리 이동(354) + 제목~카드(218) + MY DESIGN 아래(606) 를 줄인 값.
+// 갤러리 이동(354) + 제목~카드(218) + MY DESIGN 아래(606) 를 줄인 값에서,
+// 푸터 높이를 586.1 -> 250 으로 줄인 만큼 더 뺐다(Footer.jsx 의 PANEL_H 참조).
+// 이 값은 푸터 바닥(top 5947 + 높이)과 같아야 아래에 빈 자리가 안 남는다.
+const CANVAS_H = 6197;
 // 캔버스를 자르는 선. 위쪽 마지막 요소는 MY WORK EXPERIENCE(1968+557=2525),
 // 아래쪽 첫 요소는 MY PROJECTS 제목(2773.36) 이라 그 사이는 비어 있다.
 // 경력 표 바로 아래에서 자른다 — 더 내려 잡으면 연출 제목 앞에 빈 칸이 크게 생긴다.
