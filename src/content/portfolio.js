@@ -30,8 +30,8 @@ import premierePro from "../assets/images/skill-premiere-pro.webp";
 // MY DESIGN 용 design-*.webp 넉 장은 2026-09-08 삭제됐다 — import 만 돼 있고
 // 화면에서는 임시 목업(designMock01~04)을 쓰고 있어서 참조를 함께 걷어냈다.
 // 새 이미지를 넣을 때 여기 다시 추가하면 된다. docs/08_16_47.md 참조.
-// 갤러리 띠가 프로젝트 목업으로 바뀌면서 gallery-music-app / gallery-web-redesign
-// 참조를 걷어냈다(요청). greenhouse 는 AI Video 카드 썸네일이 아직 쓰므로
+// 갤러리 띠가 프로젝트 목업으로 바뀌면서 안 쓰이게 된 이미지 둘은 참조와
+// 파일을 함께 지웠다(요청). greenhouse 는 AI Video 카드 썸네일이 아직 쓰므로
 // import 는 남기되, IMAGES.greenhouse 로 꺼내 쓴 곳은 원래 없어서 여기서는 뺐다.
 export const IMAGES = {
   aboutPortrait,
@@ -145,8 +145,9 @@ export const PROJECTS = {
         frame: { w: 2207, h: 1080 },
         // 목업 왼쪽 패널 실측 — 패널 0~39.74%, 글자 끝 y 55.93%, 패널색 #6F0F08.
         panelButtons: {
-          // 목업 제목 글자 왼쪽 끝(x 199 / 2207)에 버튼 왼쪽을 맞춘다(요청)
-          left: "9.02%",
+          // 패널 가운데(39.74/2)에서 버튼 폭 118u 의 절반을 뺀다 — 요청으로
+          // 제목 왼쪽 줄맞춤에서 패널 한가운데 배치로 다시 옮겼다.
+          left: "calc(19.87% - 59 * var(--u))",
           // 글자 끝(55.93%)과 밑(100%)의 한가운데에서 묶음 높이의 절반을 뺀다.
           // 여기는 버튼이 둘이라 묶음이 28*2 + 6 = 62u -> 절반 31u.
           top: "calc(77.97% - 31 * var(--u))",
@@ -177,7 +178,7 @@ export const PROJECTS = {
         frame: { w: 2133, h: 1080 },
         // 목업 왼쪽 패널 실측 — 패널 0~30.52%, 글자 끝 y 58.0%, 패널색 #770A25.
         panelButtons: {
-          left: "4.88%", // 제목 글자 왼쪽 끝 x 104 / 2133
+          left: "calc(15.26% - 59 * var(--u))", // 패널 가운데 30.52/2
           // 글자 끝 58% ~ 밑 100% 의 한가운데. 버튼 셋이라 묶음 28*3 + 6*2
           // = 96u -> 절반 48u.
           top: "calc(79% - 48 * var(--u))",
@@ -213,7 +214,7 @@ export const PROJECTS = {
         frame: { w: 1555, h: 1080 },
         // 목업 왼쪽 패널 실측 — 패널 0~40.32%, 글자 끝 y 54.44%, 패널색 #460112.
         panelButtons: {
-          left: "5.02%", // 제목 글자 왼쪽 끝 x 78 / 1555
+          left: "calc(20.16% - 59 * var(--u))", // 패널 가운데 40.32/2
           // 글자 끝 54.44% ~ 밑 100% 의 한가운데, 버튼 셋(절반 48u).
           top: "calc(77.22% - 48 * var(--u))",
           ink: "#460112",
