@@ -317,21 +317,6 @@ export const SKILLS = {
       percent: 95,
     },
     {
-      id: "photoshop",
-      name: "PHOTOSHOP",
-      description: "Retouching • Compositing • Visual assets",
-      logo: photoshop,
-      percent: 93,
-    },
-    {
-      id: "illustrator",
-      name: "ILLUSTRATOR",
-      description: "Vector graphics • Logo design • Typography",
-      percent: 92,
-      // 25:136 — 이미지가 아니라 그라디언트 사각형 + "Ai" 글자로 그려져 있다.
-      markLabel: "Ai",
-    },
-    {
       id: "premiere-pro",
       name: "PREMIERE PRO",
       description: "Editing • Color grading • Sequencing",
@@ -360,6 +345,21 @@ export const SKILLS = {
       // 전용 로고가 없어 illustrator 와 같은 방식으로 글자만 넣는다.
       // (전에는 Blender 로고가 붙어 있었는데 AI CLI 와 무관한 3D 툴 로고였다)
       markLabel: "_",
+    },
+    {
+      id: "photoshop",
+      name: "PHOTOSHOP",
+      description: "Retouching • Compositing • Visual assets",
+      logo: photoshop,
+      percent: 93,
+    },
+    {
+      id: "illustrator",
+      name: "ILLUSTRATOR",
+      description: "Vector graphics • Logo design • Typography",
+      percent: 92,
+      // 25:136 — 이미지가 아니라 그라디언트 사각형 + "Ai" 글자로 그려져 있다.
+      markLabel: "Ai",
     },
   ],
 };

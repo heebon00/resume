@@ -67,7 +67,7 @@ export default function Footer() {
       id="contact"
       className="absolute"
       data-reveal
-      style={box({ left: 76, top: 5947, width: 1976, height: PANEL_H })}
+      style={box({ left: 76, top: 5827, width: 1976, height: PANEL_H })}
     >
       {/* 20:1595 가로 막대 */}
       <div
