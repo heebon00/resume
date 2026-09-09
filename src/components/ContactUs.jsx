@@ -109,7 +109,15 @@ export default function ContactUs() {
       <div className="contact-form-inner">
         <div className="contact-form-copy">
           <p className="contact-form-eyebrow">GET IN TOUCH</p>
-          <h2>Ready to be part of a great team.</h2>
+          {/* 줄 나눔을 max-width(9ch)에 맡겼더니 줄이 너무 잘게 쪼개졌다.
+              요청으로 세 줄이 되게 직접 끊는다 — 11 / 9 / 11 자로 고르다. */}
+          <h2>
+            Ready to be
+            <br />
+            part of a
+            <br />
+            great team.
+          </h2>
           <p>
             저의 경험이 귀사의 목표에 좋은 시너지가 되기를 바랍니다.
             {/* 요청 — "채용과" 부터 다음 줄로 내린다. 문장이 둘이라

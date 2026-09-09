@@ -184,7 +184,9 @@ body {
   font-size: clamp(1.6rem, 3vw, 3.5rem);
   line-height: 0.98;
   margin: 0;
-  max-width: 9ch;
+  /* 줄 나눔은 JSX 의 <br /> 이 맡는다(세 줄). 여기서는 좁은 화면에서만
+     넘치지 않게 막고, 그 밖에는 끊긴 대로 두도록 max-content 로 둔다. */
+  max-width: min(100%, max-content);
   text-transform: uppercase;
 }
 
