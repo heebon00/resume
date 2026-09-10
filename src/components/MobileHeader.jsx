@@ -24,8 +24,8 @@ export default function MobileHeader({ open, onToggle, menuId }) {
               자리를 임시로 채운 것이었고 데스크톱 로고는 나중에 따로 만들어져
               둘이 어긋나 있었다.
               글자·점 크기는 두 화면이 같고 안쪽 여백만 좁힌다 — 데스크톱 값
-              (px-24 py-16)을 그대로 쓰면 표식만 61 이라 바 높이 66 을 넘는다. */}
-          <BrandMark className="px-16 py-10" />
+              (py-16)을 그대로 쓰면 표식만 61 이라 바 높이 66 을 넘는다. */}
+          <BrandMark className="px-10 py-10" />
         </a>
 
         {/* 오른쪽 — 다크 모드 토글 + 햄버거.

@@ -53,10 +53,14 @@ function BrandDots() {
 }
 
 /**
- * @param className 안쪽 여백만 바꾼다. 데스크톱은 기본값(px-24 py-16),
- *                  모바일은 헤더 바 높이에 맞춰 더 좁게 넘긴다.
+ * @param className 안쪽 여백만 바꾼다. 데스크톱은 기본값, 모바일은 헤더 바
+ *                  높이에 맞춰 더 좁게 넘긴다.
+ *
+ * 좌우 여백은 요청으로 24 -> 14 로 줄였다. 글자 양옆이 허전해 보인다는
+ * 것인데, 점선이 상자 폭에 맞춰 늘어나므로(justify-between) 여백을 줄이면
+ * 점선도 함께 좁아져 표식이 글자에 붙어 보인다. 위아래 여백은 그대로다.
  */
-export default function BrandMark({ className = "px-24 py-16" }) {
+export default function BrandMark({ className = "px-14 py-16" }) {
   const [ready, setReady] = useState(false);
   useEffect(() => onIntroDone(() => setReady(true)), []);
 
