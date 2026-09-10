@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import SlicedText from "../components/SlicedText";
 import SafeImage from "../components/SafeImage";
-import WavyCubes from "../components/WavyCubes";
+import HeroScene from "../components/HeroScene";
 import { HERO, IMAGES } from "../content/portfolio";
 import { box, du } from "../lib/design";
 import useIntroReveal from "../lib/useIntroReveal";
@@ -177,7 +177,7 @@ export default function Hero() {
     >
       {/* 1 · 2겹 — 물결치는 큐브 배경과 그 위의 글자 층 */}
       <div className="hero-fill absolute inset-0">
-        <WavyCubes className="hero-scene" />
+        <HeroScene className="hero-scene" />
 
         {/* 글자 층은 늘어나기 전 자리(154 ~ 1042)에 그대로 둔다 — 안쪽
             좌표(top-51 · top-1/2 · 밑단 버튼)가 전부 이 888 상자 기준이다. */}

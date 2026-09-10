@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { mobileId } from "../../lib/sectionIds";
 import SafeImage from "../../components/SafeImage";
 import SlicedText from "../../components/SlicedText";
-import WavyCubes from "../../components/WavyCubes";
+import HeroScene from "../../components/HeroScene";
 import { HERO, IMAGES } from "../../content/portfolio";
 import useIntroReveal from "../../lib/useIntroReveal";
 
@@ -51,7 +51,7 @@ export default function MobileHero() {
       className="relative overflow-hidden"
     >
       <div className="hero-fill relative">
-        <WavyCubes className="hero-scene" />
+        <HeroScene className="hero-scene" />
 
         <div className="hero-knockout px-20 pt-86 pb-24">
           {/* [라벨에 크기를 주지 않는 이유]

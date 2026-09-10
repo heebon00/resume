@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { Suspense, lazy, useCallback, useState } from "react";
 import IntroLoader from "./components/IntroLoader";
 import DesktopNav from "./components/DesktopNav";
 import MobileHeader from "./components/MobileHeader";
@@ -17,7 +17,13 @@ import Skills from "./sections/Skills";
 import MobilePage from "./sections/mobile/MobilePage";
 import { du } from "./lib/design";
 import useScrollReveal from "./lib/useScrollReveal";
-import ContactUs from "./components/ContactUs";
+
+// 연락 폼은 페이지 맨 아래에 있고 @emailjs/browser 와 reCAPTCHA 를 끌고 온다.
+// 첫 화면을 그리는 데는 필요가 없어 따로 떼어 둔다 — 내려받기는 곧바로
+// 시작되지만(첫 렌더에서 import 가 걸린다) 첫 화면 번들에는 들어가지 않는다.
+// data-reveal 을 쓰지 않는 섹션이라 늦게 붙어도 등장 연출과 얽히지 않는다.
+const ContactUs = lazy(() => import("./components/ContactUs"));
+
 
 const MENU_ID = "mobile-menu";
 
@@ -138,7 +144,9 @@ export default function App() {
           </div>
         </div>
       </main>
-      <ContactUs />
+      <Suspense fallback={null}>
+        <ContactUs />
+      </Suspense>
     </>
   );
 }

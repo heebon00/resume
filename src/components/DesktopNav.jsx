@@ -1,11 +1,8 @@
 import { useCallback } from "react";
 import gsap from "gsap";
-import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 import { makeScramblePool } from "../lib/scramble";
 import BrandMark from "./BrandMark";
 import ThemeToggle from "./ThemeToggle";
-
-gsap.registerPlugin(ScrambleTextPlugin);
 
 /**
  * 데스크톱 GNB — 화면 맨 위에 항상 붙어 있는 전역 내비게이션.
@@ -48,9 +45,32 @@ const ITEMS = [
   { href: "#contact", label: "Contact" },
 ];
 
-function scrambleIn(event) {
+/**
+ * ScrambleTextPlugin 은 마우스를 처음 올리는 순간에 받는다.
+ *
+ * 전에는 이 파일 맨 위에서 정적으로 불러 첫 화면 번들에 함께 묶였다. 그런데
+ * 이 플러그인이 하는 일은 GNB 항목에 마우스를 올렸을 때 글자를 뒤섞는 것뿐이라,
+ * 첫 화면을 그리는 데는 필요가 없다. 마우스가 없는 기기(모바일·터치)에서는
+ * 끝까지 한 번도 안 받는다.
+ *
+ * 약속을 변수에 담아 두므로 몇 번을 올려도 내려받기는 한 번뿐이다.
+ */
+let scramblePlugin = null;
+
+function loadScramblePlugin() {
+  scramblePlugin ??= import("gsap/ScrambleTextPlugin").then(
+    ({ ScrambleTextPlugin }) => gsap.registerPlugin(ScrambleTextPlugin),
+  );
+  return scramblePlugin;
+}
+
+async function scrambleIn(event) {
+  // currentTarget 은 이 함수가 한 번 반환되면 null 이 된다 — await 앞에서 꺼내 둔다.
   const el = event.currentTarget;
   const text = el.textContent;
+
+  await loadScramblePlugin();
+
   gsap.to(el, {
     duration: 1,
     ease: "expo.out",
