@@ -331,6 +331,9 @@ a {
   grid-template-columns: 4.5rem 1fr;
   gap: 0.15rem 0.75rem;
   margin: 0.6rem 0 0;
+  /* 경력·학력 표의 첫 칸과 같은 값으로 들여놓는다 — 그러지 않으면 라벨
+     시작선이 위 두 표보다 왼쪽으로 튀어나와 어긋나 보인다. */
+  padding-left: 1.5rem;
   font-size: 0.88rem;
 }
 
@@ -348,9 +351,13 @@ a {
   list-style: none;
   display: flex;
   flex-wrap: wrap;
+  /* 링크 알약은 오른쪽으로 모은다(요청). 오른쪽 끝에서 1.5rem 들여놓는
+     것은 위 두 표의 마지막 칸과 같은 값이라, 표와 버튼의 오른쪽 선이
+     한 줄로 선다. */
+  justify-content: flex-end;
   gap: 0.4rem;
-  margin: 0.7rem 0 0;
-  padding: 0;
+  margin: 0.9rem 0 0;
+  padding: 0 1.5rem 0 0;
 }
 
 .project__links a {
@@ -403,8 +410,11 @@ a {
 
 /* 기간 칸. 글자("2023 ~ 2025")보다 넉넉하게 잡아 소속 칸과 사이를 벌린다
    (요청으로 7 -> 8.75rem). */
-.table__year {
+.table .table__year {
   width: 8.75rem;
+  /* 왼쪽 끝선에서 조금 들여놓는다(요청). 오른쪽 끝의 담당업무 칸과 같은
+     값이라 표가 좌우 대칭으로 들어앉는다. 구분선은 그대로 끝까지 긋는다. */
+  padding-left: 1.5rem;
   font-variant-numeric: tabular-nums;
   color: var(--ink-soft);
   white-space: nowrap;
