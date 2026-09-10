@@ -94,16 +94,17 @@ a {
   padding-bottom: 1.5rem;
 }
 
-/* 원본은 413x531(7:9)인데 증명사진 관례인 3:4 로 잘라 쓴다.
-   object-position 을 위쪽(30%)에 두어 턱이 잘리지 않게 한다. */
+/* 원본(890x1186)이 이미 증명사진 규격인 3:4 라 잘리는 곳이 없다.
+   그래도 aspect-ratio 를 못 박아 둔다 — 나중에 비율이 다른 사진으로 바꿔도
+   칸 크기가 흔들리지 않고 가운데를 기준으로 잘린다. */
 .masthead__photo {
   width: 7rem;
-  /* height:auto 가 없으면 <img height="531"> 속성이 그대로 높이가 되어
+  /* height:auto 가 없으면 <img height="1186"> 속성이 그대로 높이가 되어
      aspect-ratio 가 무시된다(세로로 길쭉하게 늘어난다). */
   height: auto;
   aspect-ratio: 3 / 4;
   object-fit: cover;
-  object-position: 50% 30%;
+  object-position: 50% 40%;
   border: 1px solid var(--line-soft);
   display: block;
 }
@@ -454,6 +455,29 @@ a {
   background: var(--ink);
   color: var(--paper);
   border-color: var(--ink);
+}
+
+/* 아이콘만 들어가는 동그란 버튼(테마 토글). 옆 알약 버튼들과 높이를 맞춘다. */
+.toolbar__btn--icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  padding: 0;
+}
+
+.toolbar__icon {
+  display: block;
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+/* 지금 테마에 맞는 그림 하나만 남긴다 — 사이트 본체와 같은 규칙으로,
+   어두우면 달을, 밝으면 해를 보여준다. */
+:root[data-theme="dark"] .toolbar__icon--sun,
+:root:not([data-theme="dark"]) .toolbar__icon--moon {
+  display: none;
 }
 
 .toolbar__btn--home {

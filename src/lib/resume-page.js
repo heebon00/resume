@@ -7,10 +7,33 @@
  * src/lib/theme.js 를 그대로 쓴다(저장 키가 같아서 사이트에서 고른 테마가
  * 이 페이지에도 이어진다).
  */
-import { followSystemTheme, toggleTheme } from "./theme.js";
+import {
+  followSystemTheme,
+  getTheme,
+  onThemeChange,
+  toggleTheme,
+} from "./theme.js";
 
 const button = document.querySelector("[data-theme-toggle]");
-if (button) button.addEventListener("click", toggleTheme);
+
+if (button) {
+  button.addEventListener("click", toggleTheme);
+
+  // 아이콘(해·달)은 CSS 가 알아서 바꾼다. 여기서는 눈에 안 보이는 설명만
+  // 맞춘다 — 화면 낭독기와 마우스를 올렸을 때 나오는 안내다.
+  const describe = (theme) => {
+    const dark = theme === "dark";
+    button.setAttribute("aria-pressed", String(dark));
+    button.setAttribute(
+      "aria-label",
+      dark ? "밝은 모드로 바꾸기" : "어두운 모드로 바꾸기",
+    );
+    button.title = dark ? "밝은 모드" : "어두운 모드";
+  };
+
+  describe(getTheme());
+  onThemeChange(describe);
+}
 
 // 사용자가 테마를 고른 적이 없을 때만 PC 설정을 따라간다.
 followSystemTheme();

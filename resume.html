@@ -46,15 +46,53 @@
       <a class="toolbar__btn" href="/resume.pdf" download="이희본_이력서.pdf">
         PDF 다운로드
       </a>
-      <button class="toolbar__btn" type="button" data-theme-toggle>
-        Theme
+      <!-- 테마 토글 — 사이트 본체(src/components/ThemeToggle.jsx)와 같은
+           해·달 아이콘이다. 그림 둘을 다 넣어두고 어느 쪽을 보일지는 CSS 가
+           <html data-theme> 를 보고 정한다. 그래야 화면이 그려지는 첫 순간부터
+           맞는 아이콘이 나온다(자바스크립트로 바꾸면 한 번 번쩍인다).
+           설명 문구(aria-label·title)만 resume-page.js 가 갱신한다. -->
+      <button
+        class="toolbar__btn toolbar__btn--icon"
+        type="button"
+        data-theme-toggle
+        aria-label="테마 바꾸기"
+        title="테마 바꾸기"
+      >
+        <svg
+          class="toolbar__icon toolbar__icon--sun"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="12" r="4.2" />
+          <path
+            d="M12 2.6v2.2M12 19.2v2.2M4.3 4.3l1.6 1.6M18.1 18.1l1.6 1.6M2.6 12h2.2M19.2 12h2.2M4.3 19.7l1.6-1.6M18.1 5.9l1.6-1.6"
+          />
+        </svg>
+        <svg
+          class="toolbar__icon toolbar__icon--moon"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M20 14.2A8.2 8.2 0 0 1 9.8 4 8.2 8.2 0 1 0 20 14.2Z" />
+        </svg>
       </button>
     </nav>
 
     <main class="sheet">
       <header class="masthead">
         <div>
-          <p class="masthead__role">Web Publishing · UI/UX · AI</p>
+          <!-- 라벨은 CSS(text-transform: uppercase)가 대문자로 그린다. -->
+          <p class="masthead__role">Web Publishing · UI/UX · AI Creator</p>
           <h1 class="masthead__name">이<em>희본</em></h1>
           <p class="masthead__latin">Heebon Lee</p>
           <p class="masthead__tagline">
@@ -63,6 +101,9 @@
 
           <dl class="masthead__contact">
             <div><dt>Birth</dt><dd>1988.02.21</dd></div>
+            <!-- 라벨은 CSS(text-transform: uppercase)가 대문자로 그린다 —
+                 다른 항목과 같은 방식이라 여기서는 원래 표기로 둔다. -->
+            <div><dt>Address</dt><dd>서울시 동작구 거주</dd></div>
             <div><dt>Tel</dt><dd>010.9272.6456</dd></div>
             <div>
               <dt>Email</dt>
@@ -82,15 +123,90 @@
         <img
           class="masthead__photo"
           src="/src/assets/images/id-photo.webp"
-          width="413"
-          height="531"
+          width="890"
+          height="1186"
           alt="이희본 증명사진"
         />
       </header>
 
-      <!-- 01 자기소개 -->
+      <!-- 01 경력 -->
       <section class="section">
-        <h2 class="section__title" data-no="01">About</h2>
+        <h2 class="section__title" data-no="01">Experience</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th class="table__year">기간</th>
+              <th>소속</th>
+              <th class="table__role">담당</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="table__year">2023 ~ 2025</td>
+              <td>메가스터디 잇츠 리얼타임 스터디카페</td>
+              <td class="table__role">선임 서포터즈</td>
+            </tr>
+            <tr>
+              <td class="table__year">2017 ~ 2021</td>
+              <td>경주시청(민원실)</td>
+              <td class="table__role">기간제</td>
+            </tr>
+            <tr>
+              <td class="table__year">2015 ~ 2016</td>
+              <td>재능교육 경주지국</td>
+              <td class="table__role">CS</td>
+            </tr>
+            <tr>
+              <td class="table__year">2011 ~ 2012</td>
+              <td>국민연금공단</td>
+              <td class="table__role">청년인턴</td>
+            </tr>
+            <tr>
+              <td class="table__year">2009 ~ 2009</td>
+              <td>경주시청 기획예산과</td>
+              <td class="table__role">청년인턴</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- 02 학력 · 교육 · 자격 -->
+      <section class="section">
+        <h2 class="section__title" data-no="02">Education &amp; Certificates</h2>
+        <table class="table">
+          <tbody>
+            <tr>
+              <td class="table__year">교육</td>
+              <td>MBC 아카데미 AI웹콘텐츠(영상 &amp; 코딩) 개발·기획자 과정</td>
+              <td class="table__role">수료</td>
+            </tr>
+            <tr>
+              <td class="table__year">학력</td>
+              <td>선린대학교 경찰행정학과</td>
+              <td class="table__role"></td>
+            </tr>
+            <tr>
+              <td class="table__year">자격</td>
+              <td>정보처리기사</td>
+              <td class="table__role"></td>
+            </tr>
+            <tr>
+              <td class="table__year">자격</td>
+              <td>컴퓨터활용능력 2급</td>
+              <td class="table__role"></td>
+            </tr>
+            <tr>
+              <td class="table__year">자격</td>
+              <td>제1종 보통 운전면허</td>
+              <td class="table__role"></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- 03 자기소개 -->
+      <section class="section">
+        <h2 class="section__title" data-no="03">About</h2>
         <p class="summary">
           <strong>맡은 일은 끝까지 해내는 사람입니다.</strong> 5명이 25종의
           페이지를 만든 첫 팀 프로젝트에서 팀장을 맡았습니다. 디자인 규칙을
@@ -108,9 +224,9 @@
         </p>
       </section>
 
-      <!-- 02 강점 -->
+      <!-- 04 강점 -->
       <section class="section">
-        <h2 class="section__title" data-no="02">Strengths</h2>
+        <h2 class="section__title" data-no="04">Strengths</h2>
         <ul class="strengths">
           <li>
             <strong>책임감</strong> — 하겠다고 한 일은 1인분 이상 해냅니다.
@@ -139,55 +255,9 @@
         </ul>
       </section>
 
-      <!-- 03 기술 -->
+      <!-- 05 프로젝트 -->
       <section class="section">
-        <h2 class="section__title" data-no="03">Skills</h2>
-        <div class="skills">
-          <div class="skill">
-            <span class="skill__name">Figma</span>
-            <span class="skill__pct">95</span>
-            <span class="skill__bar"><span style="width: 95%"></span></span>
-          </div>
-          <div class="skill">
-            <span class="skill__name">AI CLI</span>
-            <span class="skill__pct">94</span>
-            <span class="skill__bar"><span style="width: 94%"></span></span>
-          </div>
-          <div class="skill">
-            <span class="skill__name">Photoshop</span>
-            <span class="skill__pct">93</span>
-            <span class="skill__bar"><span style="width: 93%"></span></span>
-          </div>
-          <div class="skill">
-            <span class="skill__name">GitHub</span>
-            <span class="skill__pct">92</span>
-            <span class="skill__bar"><span style="width: 92%"></span></span>
-          </div>
-          <div class="skill">
-            <span class="skill__name">Illustrator</span>
-            <span class="skill__pct">92</span>
-            <span class="skill__bar"><span style="width: 92%"></span></span>
-          </div>
-          <div class="skill">
-            <span class="skill__name">After Effects</span>
-            <span class="skill__pct">91</span>
-            <span class="skill__bar"><span style="width: 91%"></span></span>
-          </div>
-          <div class="skill">
-            <span class="skill__name">Premiere Pro</span>
-            <span class="skill__pct">90</span>
-            <span class="skill__bar"><span style="width: 90%"></span></span>
-          </div>
-        </div>
-        <p class="skills__note">
-          프로젝트에서 실제로 쓴 언어·프레임워크: HTML, CSS, JavaScript, React,
-          Tailwind CSS, GSAP, Git / GitHub.
-        </p>
-      </section>
-
-      <!-- 04 프로젝트 -->
-      <section class="section">
-        <h2 class="section__title" data-no="04">Projects</h2>
+        <h2 class="section__title" data-no="05">Projects</h2>
 
         <article class="project">
           <div class="project__head">
@@ -302,79 +372,50 @@
         </article>
       </section>
 
-      <!-- 05 경력 -->
+      <!-- 06 기술 -->
       <section class="section">
-        <h2 class="section__title" data-no="05">Experience</h2>
-        <table class="table">
-          <thead>
-            <tr>
-              <th class="table__year">기간</th>
-              <th>소속</th>
-              <th class="table__role">담당</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="table__year">2023 ~ 2025</td>
-              <td>메가스터디 잇츠 리얼타임 스터디카페</td>
-              <td class="table__role">선임 서포터즈</td>
-            </tr>
-            <tr>
-              <td class="table__year">2017 ~ 2021</td>
-              <td>경주시청</td>
-              <td class="table__role">기간제</td>
-            </tr>
-            <tr>
-              <td class="table__year">2015 ~ 2016</td>
-              <td>재능교육 경주지국</td>
-              <td class="table__role">CS</td>
-            </tr>
-            <tr>
-              <td class="table__year">2011 ~ 2012</td>
-              <td>국민연금공단</td>
-              <td class="table__role">청년인턴</td>
-            </tr>
-            <tr>
-              <td class="table__year">2009</td>
-              <td>경주시청 기획예산과</td>
-              <td class="table__role">청년인턴</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-
-      <!-- 06 학력 · 교육 · 자격 -->
-      <section class="section">
-        <h2 class="section__title" data-no="06">Education &amp; Certificates</h2>
-        <table class="table">
-          <tbody>
-            <tr>
-              <td class="table__year">교육</td>
-              <td>MBC 아카데미 AI웹콘텐츠(영상 &amp; 코딩) 개발·기획자 과정</td>
-              <td class="table__role">수료</td>
-            </tr>
-            <tr>
-              <td class="table__year">학력</td>
-              <td>선린대학교 경찰행정학과</td>
-              <td class="table__role"></td>
-            </tr>
-            <tr>
-              <td class="table__year">자격</td>
-              <td>정보처리기사</td>
-              <td class="table__role"></td>
-            </tr>
-            <tr>
-              <td class="table__year">자격</td>
-              <td>컴퓨터활용능력 2급</td>
-              <td class="table__role"></td>
-            </tr>
-            <tr>
-              <td class="table__year">자격</td>
-              <td>제1종 보통 운전면허</td>
-              <td class="table__role"></td>
-            </tr>
-          </tbody>
-        </table>
+        <h2 class="section__title" data-no="06">Skills</h2>
+        <div class="skills">
+          <div class="skill">
+            <span class="skill__name">Figma</span>
+            <span class="skill__pct">95</span>
+            <span class="skill__bar"><span style="width: 95%"></span></span>
+          </div>
+          <div class="skill">
+            <span class="skill__name">AI CLI</span>
+            <span class="skill__pct">94</span>
+            <span class="skill__bar"><span style="width: 94%"></span></span>
+          </div>
+          <div class="skill">
+            <span class="skill__name">Photoshop</span>
+            <span class="skill__pct">93</span>
+            <span class="skill__bar"><span style="width: 93%"></span></span>
+          </div>
+          <div class="skill">
+            <span class="skill__name">GitHub</span>
+            <span class="skill__pct">92</span>
+            <span class="skill__bar"><span style="width: 92%"></span></span>
+          </div>
+          <div class="skill">
+            <span class="skill__name">Illustrator</span>
+            <span class="skill__pct">92</span>
+            <span class="skill__bar"><span style="width: 92%"></span></span>
+          </div>
+          <div class="skill">
+            <span class="skill__name">After Effects</span>
+            <span class="skill__pct">91</span>
+            <span class="skill__bar"><span style="width: 91%"></span></span>
+          </div>
+          <div class="skill">
+            <span class="skill__name">Premiere Pro</span>
+            <span class="skill__pct">90</span>
+            <span class="skill__bar"><span style="width: 90%"></span></span>
+          </div>
+        </div>
+        <p class="skills__note">
+          프로젝트에서 실제로 쓴 언어·프레임워크: HTML, CSS, JavaScript, React,
+          Tailwind CSS, GSAP, Git / GitHub.
+        </p>
       </section>
 
       <footer class="colophon">
