@@ -109,11 +109,10 @@ a {
   display: block;
 }
 
-.masthead__tagline {
-  margin: 0.7rem 0 0;
-  font-size: 0.92rem;
-  color: var(--ink-soft);
-}
+/* 이름 밑 한 줄 태그라인("좋아하는 일은 애정을 …")은 요청으로 뺐다.
+   사이트 히어로에 같은 문구가 크게 걸려 있어 이력서에서는 겹쳤다.
+   다시 넣으려면 .masthead__latin 아래에 <p class="masthead__tagline"> 을
+   두고 이 자리에 규칙을 되살리면 된다. */
 
 .masthead__role {
   font-family: var(--font-condensed);
@@ -370,8 +369,12 @@ a {
 }
 
 /* --- 표 (경력 · 학력 · 자격) ------------------------------------------------ */
+/* 칸 너비를 내용이 아니라 아래 지정값으로 정한다(table-layout: fixed).
+   그러지 않으면 경력 표와 학력 표의 칸이 각자 내용대로 벌어져 두 표의
+   세로선이 서로 어긋난다. */
 .table {
   width: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
   font-size: 0.9rem;
 }
@@ -398,16 +401,25 @@ a {
   border-bottom: 0;
 }
 
+/* 기간 칸. 글자("2023 ~ 2025")보다 넉넉하게 잡아 소속 칸과 사이를 벌린다
+   (요청으로 7 -> 8.75rem). */
 .table__year {
-  width: 7rem;
+  width: 8.75rem;
   font-variant-numeric: tabular-nums;
   color: var(--ink-soft);
   white-space: nowrap;
 }
 
-.table__role {
-  width: 9rem;
+/* 마지막 칸은 오른쪽 끝선에 붙인다. 왼쪽 정렬로 두면 글자가 칸 앞머리에
+   몰리고 뒤가 통째로 비어 표가 왼쪽으로 쏠려 보인다(요청).
+   `.table th` 보다 클래스를 하나 더 써서 머리글 행까지 함께 적용한다. */
+.table .table__role {
+  width: 10rem;
   color: var(--ink-soft);
+  text-align: right;
+  /* 오른쪽 끝선에 딱 붙으니 답답해 보인다는 요청으로 안쪽으로 조금 들여
+     놓는다. 오른쪽 정렬은 그대로라 값들끼리는 여전히 한 선에 선다. */
+  padding-right: 1.5rem;
 }
 
 /* --- 꼬리말 --------------------------------------------------------------- */
@@ -480,8 +492,13 @@ a {
   display: none;
 }
 
+/* 돌아가기 버튼은 한때 margin-right:auto 로 왼쪽 끝에 혼자 떨어뜨려 뒀는데,
+   종이 폭이 좁아서 가운데가 텅 비고 자리가 어정쩡해 보였다(요청).
+   지금은 세 버튼을 한 덩어리로 오른쪽에 모은다 — 오른쪽 정렬선이 아래
+   본문과 그대로 맞는다. */
 .toolbar__btn--home {
-  margin-right: auto;
+  /* 나머지 둘과 성격이 다른 버튼이라 사이를 조금 더 띄운다. */
+  margin-right: 0.35rem;
 }
 
 /* --- 좁은 화면 ------------------------------------------------------------ */
