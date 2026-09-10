@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 import gsap from "gsap";
 import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
-import { onIntroDone } from "../lib/intro";
 import { makeScramblePool } from "../lib/scramble";
+import BrandMark from "./BrandMark";
 import ThemeToggle from "./ThemeToggle";
 
 gsap.registerPlugin(ScrambleTextPlugin);
@@ -15,24 +15,9 @@ gsap.registerPlugin(ScrambleTextPlugin);
  * 요청으로 새로 만들되 없던 스타일을 지어내지 않고, 모바일 헤더 바의 규격을
  * 그대로 가져왔다 — 배경 #F6F6F6, 상하 여백 22.
  * 좌우 여백 75 는 히어로 상단 라벨(CREATIVE, 캔버스 left 75)에 맞춘 값이다.
- * 왼쪽 로고는 한 번 뺐다가, 요청으로 새 로고("HEEBON" 글자 위아래에 점선이
- * 있는 이미지, 직접 확인)를 대신 넣었다. 이미지 그대로 쓰면 점이 낱개
- * 요소가 아니라서 "가운데부터 하나씩 퍼지며 나타나는" 효과(요청)를 걸 수
- * 없다 — 그래서 이미지를 참고만 하고, 점을 실제 DOM 요소(BrandDots)로
- * 다시 만들었다. 각 점의 등장 지연을 가운데 점에서부터의 거리에 비례하게
- * 줘서(아래 BrandDots), 가운데→양옆 순서로 점이 채워진다. 색은 이미지의
- * 크림슨(#D4183D, --color-tag-crimson)을 그대로 썼다. 뒤 배경(#505050)도
- * 요청으로 이미지에서 스포이트로 따서 brand-mark-bg 에 그대로 넣었다
- * (index.css).
- *
- * [애니메이션이 "안 되는" 것처럼 보였던 이유]
- * 처음엔 마운트되자마자 CSS 애니메이션(brand-dot-in)이 바로 돌게 해뒀다.
- * 그런데 이 컴포넌트는 인트로 로딩 화면(IntroLoader)이 화면을 덮고 있는
- * 동안에도 이미 마운트돼 있어서, 0.35초짜리 애니메이션이 로딩 화면 뒤에서
- * 이미 다 끝나버린다 — 로딩이 걷히고 나면 언제나 "이미 완성된" 정지 상태만
- * 보였다(요청으로 발견). 그래서 히어로(useIntroReveal)와 같은 방식으로,
- * lib/intro.js 의 INTRO_DONE 신호를 받은 뒤에야 brand-mark-ready 클래스를
- * 붙여 애니메이션을 시작한다.
+ * 왼쪽 로고는 한 번 뺐다가, 요청으로 새 로고를 대신 넣었다. 그 로고는
+ * 모바일 헤더와 함께 쓰므로 components/BrandMark.jsx 로 따로 나가 있다
+ * (만든 방식·애니메이션 시점에 대한 설명도 그 파일에 있다).
  *
  * 캔버스 0 ~ 154 구간은 비어 있어서(히어로가 154 에서 시작한다) 바가 히어로의
  * CREATIVE / PORTFOLIO 라벨을 가리지 않는다.
@@ -76,49 +61,6 @@ function scrambleIn(event) {
       speed: 1,
     },
   });
-}
-
-// 로고 위아래에 붙는 점선 한 줄 — 가운데 점이 가장 먼저, 바깥쪽으로
-// 갈수록 늦게 나타난다(요청). 지연 시간을 가운데로부터의 거리에 정비례로
-// 주는 것만으로 이 순서가 나온다 — 별도 타임라인·JS 라이브러리 없이
-// CSS 애니메이션(brand-dot-in, index.css 참조)의 delay 만으로 처리한다.
-const DOT_COUNT = 22;
-const DOT_STEP = 0.025; // 점 하나당 지연 차이(초)
-
-function BrandDots() {
-  const mid = (DOT_COUNT - 1) / 2;
-  return (
-    <span className="brand-dots flex w-full justify-between" aria-hidden="true">
-      {Array.from({ length: DOT_COUNT }, (_, i) => (
-        <span
-          key={i}
-          className="brand-dot"
-          style={{ animationDelay: `${Math.abs(i - mid) * DOT_STEP}s` }}
-        />
-      ))}
-    </span>
-  );
-}
-
-function BrandMark() {
-  // 로딩 화면이 끝난 뒤에야 점 애니메이션을 시작한다 — 이유는 위 파일
-  // 상단 코멘트 참조.
-  const [ready, setReady] = useState(false);
-  useEffect(() => onIntroDone(() => setReady(true)), []);
-
-  return (
-    <span
-      className={`brand-mark-bg inline-flex flex-col items-center gap-4 px-24 py-16${
-        ready ? " brand-mark-ready" : ""
-      }`}
-    >
-      <BrandDots />
-      <span className="brand-mark-text font-condensed font-extrabold tracking-wide uppercase">
-        Heebon
-      </span>
-      <BrandDots />
-    </span>
-  );
 }
 
 export default function DesktopNav() {

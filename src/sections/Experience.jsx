@@ -35,10 +35,17 @@ export default function Experience() {
 
         {/* 20:1104 라벨 바 */}
         <div className="absolute top-94 right-0 left-0 px-15">
-          <div className="h-70 border-b border-ink">
+          {/* 왼쪽은 부제, 오른쪽은 섹션 번호 — ABOUT 의 구분선 칸과 같은 짜임이다
+              (요청). 번호가 비면 그 자리는 아예 그리지 않는다. */}
+          <div className="flex h-70 items-start justify-between border-b border-ink">
             <p className="pt-40 font-sans text-body leading-label tracking-wide font-medium text-ink uppercase">
               {EXPERIENCE.subheading}
             </p>
+            {EXPERIENCE.barRight ? (
+              <p className="pt-40 font-sans text-body leading-label tracking-wide font-medium text-ink uppercase">
+                {EXPERIENCE.barRight}
+              </p>
+            ) : null}
           </div>
         </div>
 

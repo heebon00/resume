@@ -97,8 +97,14 @@ export const ABOUT = {
       // 값 칸(InfoRow / MobileAbout)이 whitespace-pre-line 이라 아래 줄바꿈
       // 문자가 그대로 줄 나눔이 된다.
       value: "MBC 아카데미 AI웹콘텐츠 (영상&코딩)\n개발·기획자 교육 수료",
+      // 모바일 전용 값(요청) — 칸 폭이 1920 의 3분의 1도 안 돼서 위 줄바꿈
+      // 자리("(영상&코딩)" 뒤)가 엉뚱해진다. 여기서는 한 문장으로 두고 칸
+      // 폭에 맞춰 저절로 접히게 한다. mobileValue 가 있는 행만 이렇게 되고,
+      // 없는 행은 위 value 의 줄바꿈을 모바일에서도 그대로 지킨다
+      // (예: Certificate 의 "1종보통운전면허"는 줄을 내려야 한다).
+      mobileValue: "MBC 아카데미 AI웹콘텐츠 (영상&코딩) 개발·기획자 교육 수료",
     },
-    { label: "Education", value: "선린대학교 경찰행정학과" },
+    { label: "Education", value: "선린대학교 경찰행정학과 (졸업)" },
   ],
 };
 
@@ -106,6 +112,9 @@ export const ABOUT = {
 export const EXPERIENCE = {
   heading: "MY Work Experience",
   subheading: "Work Experience",
+  // 구분선 오른쪽 끝의 섹션 번호 — ABOUT 의 barLeft/barRight 와 같은 방식이다
+  // (요청 "어바웃 칸처럼"). 비우면 그 자리는 렌더링하지 않는다.
+  barRight: "02",
   rows: [
     { id: "exp-1", index: "", title: "경주시청 기획예산과(청년인턴)", year: "2009~2009" },
     { id: "exp-2", index: "", title: "국민연금(청년인턴)", year: "2011~2012" },

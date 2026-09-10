@@ -142,12 +142,12 @@ export default function MobileHero() {
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="pfr-swipe hero-cta cursor-pointer no-underline"
+                  className="pfr-swipe hero-cta-m cursor-pointer no-underline"
                 >
                   {label}
                 </a>
               ) : (
-                <span key={label} className="pfr-swipe hero-cta">
+                <span key={label} className="pfr-swipe hero-cta-m">
                   {label}
                 </span>
               ),

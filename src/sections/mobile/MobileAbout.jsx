@@ -47,18 +47,16 @@ export default function MobileAbout() {
       </div>
 
       <dl className="mt-28" hidden={ABOUT.rows.length === 0}>
-        {ABOUT.rows.map(({ label, value }) => (
+        {ABOUT.rows.map(({ label, value, mobileValue }) => (
           <div key={label} className="flex border-b border-line pt-14 pb-14">
             <dt className="w-120 shrink-0 font-sans text-[calc(15.5*var(--u))] leading-desc text-ink uppercase">
               {label}
             </dt>
-            {/* 데스크톱과 달리 줄바꿈 문자를 그대로 쓰지 않는다(요청 —
-                "(영상&코딩)" 뒤에서 끊지 말 것). 데이터의 \n 은 1920 폭에서
-                보기 좋으라고 넣은 것이라, 폭이 3분의 1도 안 되는 모바일에서는
-                끊는 자리가 엉뚱해진다. 여기서는 공백으로 바꿔 칸 폭에 맞춰
-                저절로 접히게 둔다. */}
-            <dd className="font-sans text-[calc(15.5*var(--u))] leading-desc text-ink">
-              {value.replace(/\n/g, " ")}
+            {/* 줄바꿈은 데스크톱과 같이 그대로 지킨다(whitespace-pre-line).
+                다만 모바일에서 끊는 자리가 엉뚱해지는 행은 데이터에
+                mobileValue 를 따로 두고 그 값을 쓴다(요청). */}
+            <dd className="font-sans text-[calc(15.5*var(--u))] leading-desc whitespace-pre-line text-ink">
+              {mobileValue ?? value}
             </dd>
           </div>
         ))}
