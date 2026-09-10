@@ -1,0 +1,561 @@
+/* =============================================================================
+   이력서 페이지 (resume.html) 전용 스타일
+   -----------------------------------------------------------------------------
+   본 사이트(index.html)와 다른 점이 하나 있다. 본 사이트는 피그마 1920 캔버스를
+   비율 그대로 축소해 그리려고 --u(캔버스 폭의 1/1920)라는 유동 단위를 쓴다.
+   이력서는 "읽는 문서"이지 시안 재현이 아니라서 그 방식을 쓰지 않는다.
+   폭이 넓어져도 글자가 같이 커지면 안 되고, 인쇄했을 때 A4 에 맞아야 하기
+   때문이다. 그래서 여기서는 rem 고정 크기를 쓴다.
+
+   색과 서체는 사이트 토큰(src/index.css)에서 값을 가져와 맞췄다. 사이트가
+   Tailwind @theme 안에 두는 값이라 이 파일에서 참조할 수 없어 값으로 옮겨
+   적었다. 사이트 색을 바꾸면 여기도 같이 바꿔야 한다.
+   ============================================================================= */
+
+/* 서체는 사이트와 같은 자체 호스팅 파일을 그대로 쓴다(추가 내려받기 없음). */
+@import "./fonts.css";
+
+:root {
+  color-scheme: light;
+
+  --paper: #f8f8f8;
+  --paper-alt: #f2f2f2;
+  --ink: #16171e;
+  --ink-soft: #4b4b4b;
+  --line: #b9b9b9;
+  --line-soft: #dfe1e5;
+  --accent: #d4183d; /* 크림슨 — 섹션 번호·강조 */
+  --highlight: #efff58; /* 형광 — 이름 밑줄 */
+  --track: #e4e4e4; /* 숙련도 막대 바탕 */
+
+  --font-sans:
+    "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+    system-ui, sans-serif;
+  --font-condensed: "Big Shoulders Display", sans-serif;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --paper: #101114;
+  --paper-alt: #17181d;
+  --ink: #f1f1f4;
+  --ink-soft: #a6a6ad;
+  --line: #3a3b42;
+  --line-soft: #2a2b31;
+  --track: #2a2b31;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+
+body {
+  margin: 0;
+  background: var(--paper-alt);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+}
+
+/* --- 종이 ----------------------------------------------------------------
+   A4 폭(210mm)에서 좌우 여백 15mm 를 뺀 180mm 가 글이 앉는 폭이다.
+   화면에서는 그 폭에 가까운 43rem 을 쓰고, 인쇄할 때는 @page 가 여백을
+   잡으므로 이 상자의 여백을 0 으로 되돌린다. */
+.sheet {
+  max-width: 43rem;
+  margin: 0 auto;
+  padding: 2rem 3rem 4rem;
+  background: var(--paper);
+  min-height: 100vh;
+}
+
+/* --- 머리말 ---------------------------------------------------------------
+   왼쪽은 글(이름·연락처), 오른쪽은 증명사진. 사진 칸은 고정 폭이라 글이
+   길어져도 사진 크기가 흔들리지 않는다. */
+.masthead {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1.5rem;
+  align-items: start;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 1.5rem;
+}
+
+/* 원본은 413x531(7:9)인데 증명사진 관례인 3:4 로 잘라 쓴다.
+   object-position 을 위쪽(30%)에 두어 턱이 잘리지 않게 한다. */
+.masthead__photo {
+  width: 7rem;
+  /* height:auto 가 없으면 <img height="531"> 속성이 그대로 높이가 되어
+     aspect-ratio 가 무시된다(세로로 길쭉하게 늘어난다). */
+  height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: 50% 30%;
+  border: 1px solid var(--line-soft);
+  display: block;
+}
+
+.masthead__tagline {
+  margin: 0.7rem 0 0;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+}
+
+.masthead__role {
+  font-family: var(--font-condensed);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 0.35rem;
+}
+
+.masthead__name {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 0;
+}
+
+/* 이름 뒤에 형광 밑줄 — 사이트 푸터 블록과 같은 색이다. */
+.masthead__name em {
+  font-style: normal;
+  background:
+    linear-gradient(var(--highlight), var(--highlight)) 0 88% / 100% 0.35em
+      no-repeat;
+  padding: 0 0.1em;
+}
+
+.masthead__latin {
+  font-family: var(--font-condensed);
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0.4rem 0 0;
+}
+
+.masthead__contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.5rem;
+  margin: 1.15rem 0 0;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.masthead__contact div {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+}
+
+.masthead__contact dt {
+  font-family: var(--font-condensed);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  color: var(--accent);
+}
+
+.masthead__contact dd {
+  margin: 0;
+}
+
+/* --- 섹션 ---------------------------------------------------------------- */
+.section {
+  margin-top: 2.25rem;
+}
+
+.section__title {
+  font-family: var(--font-condensed);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin: 0 0 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  /* 제목만 남고 내용이 다음 장으로 넘어가는 일을 막는다. */
+  break-after: avoid;
+}
+
+.section__title::before {
+  content: attr(data-no);
+  color: var(--accent);
+  font-size: 0.85rem;
+}
+
+/* --- 자기소개 ------------------------------------------------------------- */
+.summary {
+  margin: 0;
+  font-size: 0.97rem;
+  line-height: 1.8;
+}
+
+.summary + .summary {
+  margin-top: 0.8rem;
+}
+
+/* --- 강점 ---------------------------------------------------------------- */
+.strengths {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.strengths li {
+  background: var(--paper-alt);
+  border-left: 3px solid var(--accent);
+  padding: 0.7rem 0.9rem;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  break-inside: avoid;
+}
+
+/* --- 기술 ---------------------------------------------------------------- */
+.skills {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem 2rem;
+  margin: 0;
+}
+
+.skill {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 0 0.5rem;
+  break-inside: avoid;
+}
+
+.skill__name {
+  font-family: var(--font-condensed);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.95rem;
+}
+
+.skill__pct {
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+}
+
+.skill__bar {
+  grid-column: 1 / -1;
+  height: 4px;
+  background: var(--track);
+  margin-top: 0.15rem;
+}
+
+.skill__bar span {
+  display: block;
+  height: 100%;
+  background: var(--ink);
+}
+
+.skills__note {
+  margin: 1rem 0 0;
+  font-size: 0.84rem;
+  color: var(--ink-soft);
+}
+
+/* --- 프로젝트 ------------------------------------------------------------- */
+.project {
+  break-inside: avoid;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.project:first-of-type {
+  padding-top: 0;
+}
+
+.project:last-of-type {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.project__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.project__name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.project__meta {
+  font-family: var(--font-condensed);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+.project__facts {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr;
+  gap: 0.15rem 0.75rem;
+  margin: 0.6rem 0 0;
+  font-size: 0.88rem;
+}
+
+.project__facts dt {
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.82rem;
+}
+
+.project__facts dd {
+  margin: 0;
+}
+
+.project__links {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.7rem 0 0;
+  padding: 0;
+}
+
+.project__links a {
+  display: inline-block;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  padding: 0.18rem 0.75rem;
+  font-size: 0.78rem;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+
+.project__links a:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* --- 표 (경력 · 학력 · 자격) ------------------------------------------------ */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.table th {
+  text-align: left;
+  font-family: var(--font-condensed);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.table td {
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--line-soft);
+  vertical-align: top;
+}
+
+.table tr:last-child td {
+  border-bottom: 0;
+}
+
+.table__year {
+  width: 7rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+.table__role {
+  width: 9rem;
+  color: var(--ink-soft);
+}
+
+/* --- 꼬리말 --------------------------------------------------------------- */
+.colophon {
+  margin-top: 2.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* --- 화면 전용 도구 막대 ---------------------------------------------------
+   인쇄물에는 나오면 안 되는 것들(사이트로 돌아가기 · PDF 저장 · 테마)이다. */
+.toolbar {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: flex-end;
+  max-width: 43rem;
+  margin: 0 auto;
+  padding: 0.75rem 3rem 0;
+}
+
+.toolbar__btn {
+  font-family: var(--font-condensed);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.3rem 0.85rem;
+  cursor: pointer;
+  text-decoration: none;
+  line-height: 1.6;
+}
+
+.toolbar__btn:hover {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+.toolbar__btn--home {
+  margin-right: auto;
+}
+
+/* --- 좁은 화면 ------------------------------------------------------------ */
+@media (width < 40rem) {
+  .sheet {
+    padding: 1.5rem 1.25rem 3rem;
+  }
+
+  .toolbar {
+    padding: 0.75rem 1.25rem 0;
+  }
+
+  .masthead__name {
+    font-size: 2rem;
+  }
+
+  .strengths,
+  .skills {
+    grid-template-columns: 1fr;
+  }
+
+  .project__facts {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .project__facts dt {
+    margin-top: 0.4rem;
+  }
+
+  .table__role {
+    width: auto;
+  }
+}
+
+/* --- 인쇄 (A4) -------------------------------------------------------------
+   Ctrl+P 로 그대로 PDF 가 되게 한다. 화면용 도구 막대는 빼고, 다크 모드로
+   보고 있더라도 종이에는 항상 밝은 색으로 나가게 색을 되돌린다. */
+@page {
+  size: A4;
+  margin: 15mm;
+}
+
+@media print {
+  :root,
+  :root[data-theme="dark"] {
+    color-scheme: light;
+    --paper: #ffffff;
+    --paper-alt: #f2f2f2;
+    --ink: #16171e;
+    --ink-soft: #4b4b4b;
+    --line: #b9b9b9;
+    --line-soft: #dfe1e5;
+    --track: #e4e4e4;
+  }
+
+  body {
+    background: #ffffff;
+    font-size: 10.5pt;
+    line-height: 1.55;
+  }
+
+  .toolbar {
+    display: none;
+  }
+
+  .sheet {
+    max-width: none;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    background: none;
+  }
+
+  .section {
+    margin-top: 1.5rem;
+  }
+
+  /* 링크 알약은 종이에서 누를 수 없으니 주소를 옆에 적어 준다. */
+  .project__links a {
+    border: 0;
+    padding: 0;
+    text-decoration: underline;
+  }
+
+  .project__links a::after {
+    content: " (" attr(href) ")";
+    font-size: 0.72em;
+    color: var(--ink-soft);
+    word-break: break-all;
+  }
+
+  /* 배경색·막대가 인쇄에서 사라지지 않게 한다(기본값은 배경 제거다). */
+  .strengths li,
+  .skill__bar,
+  .skill__bar span,
+  .masthead__name em {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

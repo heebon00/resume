@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon-bon.png" />
+    <title>이희본 이력서</title>
+    <meta
+      name="description"
+      content="웹 퍼블리싱 · UI/UX · AI 활용 신입 이희본의 이력서입니다."
+    />
+
+    <!-- 다크 모드 — 본 사이트(index.html)와 같은 방식이다. 화면이 그려지기
+         "전"에 테마를 정해야 밝은 화면이 한 번 번쩍이지 않는다(FOUC).
+         저장 키도 "theme" 로 같아서, 사이트에서 고른 테마가 이 페이지에도
+         그대로 이어진다. -->
+    <script>
+      (function () {
+        var saved = null;
+        try {
+          saved = localStorage.getItem("theme");
+        } catch (e) {
+          /* 저장소를 못 읽는 환경 — PC 설정만 쓴다 */
+        }
+        var dark =
+          saved === "dark" ||
+          (saved !== "light" &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches);
+        document.documentElement.setAttribute(
+          "data-theme",
+          dark ? "dark" : "light",
+        );
+      })();
+    </script>
+
+    <link rel="stylesheet" href="/src/styles/resume.css" />
+  </head>
+
+  <body>
+    <!-- 화면에서만 보이는 도구 막대. 인쇄하면 사라진다(resume.css @media print).
+         "PDF 다운로드"는 미리 만들어 둔 파일(public/resume.pdf)을 바로 받게
+         한다 — 채용 담당자가 인쇄 대화상자를 거치지 않게 하려는 것이다.
+         그 파일은 이 페이지에서 뽑는다: npm run resume:pdf -->
+    <nav class="toolbar">
+      <a class="toolbar__btn toolbar__btn--home" href="/">← Portfolio</a>
+      <a class="toolbar__btn" href="/resume.pdf" download="이희본_이력서.pdf">
+        PDF 다운로드
+      </a>
+      <button class="toolbar__btn" type="button" data-theme-toggle>
+        Theme
+      </button>
+    </nav>
+
+    <main class="sheet">
+      <header class="masthead">
+        <div>
+          <p class="masthead__role">Web Publishing · UI/UX · AI</p>
+          <h1 class="masthead__name">이<em>희본</em></h1>
+          <p class="masthead__latin">Heebon Lee</p>
+          <p class="masthead__tagline">
+            좋아하는 일은 애정을, 맡은 임무는 책임감을.
+          </p>
+
+          <dl class="masthead__contact">
+            <div><dt>Birth</dt><dd>1988.02.21</dd></div>
+            <div><dt>Tel</dt><dd>010.9272.6456</dd></div>
+            <div>
+              <dt>Email</dt>
+              <dd><a href="mailto:heebon21@gmail.com">heebon21@gmail.com</a></dd>
+            </div>
+            <div>
+              <dt>GitHub</dt>
+              <dd>
+                <a href="https://github.com/heebon00" target="_blank" rel="noopener noreferrer">
+                  github.com/heebon00
+                </a>
+              </dd>
+            </div>
+          </dl>
+        </div>
+
+        <img
+          class="masthead__photo"
+          src="/src/assets/images/id-photo.webp"
+          width="413"
+          height="531"
+          alt="이희본 증명사진"
+        />
+      </header>
+
+      <!-- 01 자기소개 -->
+      <section class="section">
+        <h2 class="section__title" data-no="01">About</h2>
+        <p class="summary">
+          <strong>맡은 일은 끝까지 해내는 사람입니다.</strong> 5명이 25종의
+          페이지를 만든 첫 팀 프로젝트에서 팀장을 맡았습니다. 디자인 규칙을
+          문서로 적어두는 것만으로는 지켜지지 않는다는 걸 초반에 확인하고,
+          어긋난 값이 저장 시점에 자동으로 막히는 구조로 바꿨습니다. 그 결과
+          하드코딩 값 0건으로 25종의 페이지를 일관되게 유지했습니다.
+        </p>
+        <p class="summary">
+          비전공자로 시작했지만 <strong>코드의 흐름을 읽는 감각</strong>과
+          <strong>처음 다루는 도구를 빠르게 손에 익히는 흡수력</strong>이 제
+          무기입니다. Figma도, React도, AI CLI도 필요한 시점에 익혀 결과물까지
+          냈습니다. 여러 조직에서 쌓은 사회생활 경험이 있어 어떤 분위기에도
+          빠르게 섞이고, 좋아하는 일은 더 파고들고 그렇지 않은 일도 책임감으로
+          끝냅니다.
+        </p>
+      </section>
+
+      <!-- 02 강점 -->
+      <section class="section">
+        <h2 class="section__title" data-no="02">Strengths</h2>
+        <ul class="strengths">
+          <li>
+            <strong>책임감</strong> — 하겠다고 한 일은 1인분 이상 해냅니다.
+            내키지 않는 일도 맡은 몫이면 끝까지 마칩니다.
+          </li>
+          <li>
+            <strong>흡수력</strong> — 비전공자의 무기는 편견 없는 흡수력입니다.
+            처음 만지는 프로그램도 짧은 시간 안에 능숙하게 씁니다.
+          </li>
+          <li>
+            <strong>코드를 읽는 감각</strong> — 문법을 외우기 전에 흐름부터
+            읽습니다. 남이 짠 코드에서도 고칠 지점을 먼저 찾습니다.
+          </li>
+          <li>
+            <strong>회복 속도</strong> — 잘 안 될 때 오래 붙들지 않습니다.
+            원인을 찾아 정리하고 다음 일로 바로 넘어갑니다.
+          </li>
+          <li>
+            <strong>조직 적응력</strong> — 공공기관·교육·서비스 현장을 거치며
+            어떤 팀 분위기에도 빠르게 섞이는 법을 익혔습니다.
+          </li>
+          <li>
+            <strong>먼저 처리하는 습관</strong> — 비어 있는 일을 미루지 않고
+            먼저 손대는 편입니다. 일 못한다는 말은 들어본 적이 없습니다.
+          </li>
+        </ul>
+      </section>
+
+      <!-- 03 기술 -->
+      <section class="section">
+        <h2 class="section__title" data-no="03">Skills</h2>
+        <div class="skills">
+          <div class="skill">
+            <span class="skill__name">Figma</span>
+            <span class="skill__pct">95</span>
+            <span class="skill__bar"><span style="width: 95%"></span></span>
+          </div>
+          <div class="skill">
+            <span class="skill__name">AI CLI</span>
+            <span class="skill__pct">94</span>
+            <span class="skill__bar"><span style="width: 94%"></span></span>
+          </div>
+          <div class="skill">
+            <span class="skill__name">Photoshop</span>
+            <span class="skill__pct">93</span>
+            <span class="skill__bar"><span style="width: 93%"></span></span>
+          </div>
+          <div class="skill">
+            <span class="skill__name">GitHub</span>
+            <span class="skill__pct">92</span>
+            <span class="skill__bar"><span style="width: 92%"></span></span>
+          </div>
+          <div class="skill">
+            <span class="skill__name">Illustrator</span>
+            <span class="skill__pct">92</span>
+            <span class="skill__bar"><span style="width: 92%"></span></span>
+          </div>
+          <div class="skill">
+            <span class="skill__name">After Effects</span>
+            <span class="skill__pct">91</span>
+            <span class="skill__bar"><span style="width: 91%"></span></span>
+          </div>
+          <div class="skill">
+            <span class="skill__name">Premiere Pro</span>
+            <span class="skill__pct">90</span>
+            <span class="skill__bar"><span style="width: 90%"></span></span>
+          </div>
+        </div>
+        <p class="skills__note">
+          프로젝트에서 실제로 쓴 언어·프레임워크: HTML, CSS, JavaScript, React,
+          Tailwind CSS, GSAP, Git / GitHub.
+        </p>
+      </section>
+
+      <!-- 04 프로젝트 -->
+      <section class="section">
+        <h2 class="section__title" data-no="04">Projects</h2>
+
+        <article class="project">
+          <div class="project__head">
+            <h3 class="project__name">iKEA Website Redesign</h3>
+            <span class="project__meta">2026 · Team · 4주</span>
+          </div>
+          <dl class="project__facts">
+            <dt>기간</dt>
+            <dd>2026.07.15 ~ 2026.08.15</dd>
+            <dt>역할</dt>
+            <dd>팀장 · 기획 · 디자인 · 기술 구현 · 기획서 발표 (5인 팀)</dd>
+            <dt>기술</dt>
+            <dd>Figma, HTML, CSS, JavaScript, Tailwind CSS, GSAP, AI CLI</dd>
+            <dt>성과</dt>
+            <dd>
+              시안 19종을 실제로 동작하는 25종 페이지로 구현. 디자인 토큰
+              규칙을 저장 시점에 검사하는 구조로 만들어 하드코딩 값 0건 유지.
+              배포본 PageSpeed 성능 98 · 접근성 96 · 권장사항 100 · SEO 100.
+            </dd>
+          </dl>
+          <ul class="project__links">
+            <li>
+              <a href="https://heebon00.github.io/Team_Synergos_esg/" target="_blank" rel="noopener noreferrer">사이트</a>
+            </li>
+            <li>
+              <a href="https://github.com/heebon00/Team_Synergos_esg" target="_blank" rel="noopener noreferrer">GitHub</a>
+            </li>
+            <li>
+              <a href="https://drive.google.com/file/d/15sw527-_DG9N2a7QjPQ7kDxKGT97i8DN/view?usp=sharing" target="_blank" rel="noopener noreferrer">기획서</a>
+            </li>
+          </ul>
+        </article>
+
+        <article class="project">
+          <div class="project__head">
+            <h3 class="project__name">YouTube Music Redesign</h3>
+            <span class="project__meta">2026 · Solo · 2주</span>
+          </div>
+          <dl class="project__facts">
+            <dt>기간</dt>
+            <dd>2026.08.18 ~ 2026.08.27</dd>
+            <dt>역할</dt>
+            <dd>기획 · UX/UI 디자인 · 프론트엔드 구현 (단독)</dd>
+            <dt>기술</dt>
+            <dd>Figma, React, Tailwind CSS, AI CLI</dd>
+            <dt>의도</dt>
+            <dd>
+              기존 서비스의 탐색 동선을 다시 짜 이용자 편리성을 높이는 데
+              초점을 둔 UX · UI 리디자인.
+            </dd>
+          </dl>
+          <ul class="project__links">
+            <li>
+              <a href="https://heebon00.github.io/yt_music/" target="_blank" rel="noopener noreferrer">사이트</a>
+            </li>
+            <li>
+              <a href="https://github.com/heebon00/yt_music" target="_blank" rel="noopener noreferrer">GitHub</a>
+            </li>
+            <li>
+              <a href="https://www.figma.com/proto/u6TqUveQz3qthryUClDCPY/youtube-music?node-id=48-512&amp;p=f&amp;viewport=271%2C348%2C0.03&amp;t=QYlt75s80T8WN0PJ-1&amp;scaling=min-zoom&amp;content-scaling=fixed&amp;starting-point-node-id=48%3A512&amp;page-id=0%3A1" target="_blank" rel="noopener noreferrer">프로토타입</a>
+            </li>
+          </ul>
+        </article>
+
+        <article class="project">
+          <div class="project__head">
+            <h3 class="project__name">포트폴리오 사이트</h3>
+            <span class="project__meta">2026 · Solo</span>
+          </div>
+          <dl class="project__facts">
+            <dt>역할</dt>
+            <dd>기획 · 디자인 · 프론트엔드 구현 (단독)</dd>
+            <dt>기술</dt>
+            <dd>React 19, Vite, Tailwind CSS v4, GSAP, Three.js</dd>
+            <dt>내용</dt>
+            <dd>
+              피그마 시안을 유동 단위로 환산해 화면 폭이 바뀌어도 비율이
+              유지되도록 구현. 외부 폰트 CDN을 걷어내고 자체 호스팅으로 옮겨
+              첫 화면 렌더링을 막던 요청을 제거. 다크 모드 지원.
+            </dd>
+          </dl>
+          <ul class="project__links">
+            <li>
+              <a href="https://github.com/heebon00/resume" target="_blank" rel="noopener noreferrer">GitHub</a>
+            </li>
+          </ul>
+        </article>
+
+        <article class="project">
+          <div class="project__head">
+            <h3 class="project__name">AI Video Creator</h3>
+            <span class="project__meta">2026 · Solo · 2주</span>
+          </div>
+          <dl class="project__facts">
+            <dt>기간</dt>
+            <dd>2026.06.18 ~ 2026.07.01</dd>
+            <dt>역할</dt>
+            <dd>기획 · 편집 · 연출 (단독)</dd>
+            <dt>기술</dt>
+            <dd>Google Flow, Premiere Pro, After Effects</dd>
+            <dt>의도</dt>
+            <dd>League of Legends 2026 MSI in 대전 홍보 영상 제작.</dd>
+          </dl>
+          <ul class="project__links">
+            <li>
+              <a href="https://drive.google.com/file/d/1FREewdt85zi60U4JFw8Cmyz6jBn3MmJF/view?usp=sharing" target="_blank" rel="noopener noreferrer">영상</a>
+            </li>
+            <li>
+              <a href="https://drive.google.com/file/d/1lOaXJQSm5BFnryZTViqTN7kZ4bjPCQTH/view?usp=sharing" target="_blank" rel="noopener noreferrer">기획서</a>
+            </li>
+          </ul>
+        </article>
+      </section>
+
+      <!-- 05 경력 -->
+      <section class="section">
+        <h2 class="section__title" data-no="05">Experience</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th class="table__year">기간</th>
+              <th>소속</th>
+              <th class="table__role">담당</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="table__year">2023 ~ 2025</td>
+              <td>메가스터디 잇츠 리얼타임 스터디카페</td>
+              <td class="table__role">선임 서포터즈</td>
+            </tr>
+            <tr>
+              <td class="table__year">2017 ~ 2021</td>
+              <td>경주시청</td>
+              <td class="table__role">기간제</td>
+            </tr>
+            <tr>
+              <td class="table__year">2015 ~ 2016</td>
+              <td>재능교육 경주지국</td>
+              <td class="table__role">CS</td>
+            </tr>
+            <tr>
+              <td class="table__year">2011 ~ 2012</td>
+              <td>국민연금공단</td>
+              <td class="table__role">청년인턴</td>
+            </tr>
+            <tr>
+              <td class="table__year">2009</td>
+              <td>경주시청 기획예산과</td>
+              <td class="table__role">청년인턴</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- 06 학력 · 교육 · 자격 -->
+      <section class="section">
+        <h2 class="section__title" data-no="06">Education &amp; Certificates</h2>
+        <table class="table">
+          <tbody>
+            <tr>
+              <td class="table__year">교육</td>
+              <td>MBC 아카데미 AI웹콘텐츠(영상 &amp; 코딩) 개발·기획자 과정</td>
+              <td class="table__role">수료</td>
+            </tr>
+            <tr>
+              <td class="table__year">학력</td>
+              <td>선린대학교 경찰행정학과</td>
+              <td class="table__role"></td>
+            </tr>
+            <tr>
+              <td class="table__year">자격</td>
+              <td>정보처리기사</td>
+              <td class="table__role"></td>
+            </tr>
+            <tr>
+              <td class="table__year">자격</td>
+              <td>컴퓨터활용능력 2급</td>
+              <td class="table__role"></td>
+            </tr>
+            <tr>
+              <td class="table__year">자격</td>
+              <td>제1종 보통 운전면허</td>
+              <td class="table__role"></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <footer class="colophon">
+        <span>이희본 · Heebon Lee</span>
+        <span>heebon21@gmail.com · 010.9272.6456</span>
+      </footer>
+    </main>
+
+    <script type="module" src="/src/lib/resume-page.js"></script>
+  </body>
+</html>

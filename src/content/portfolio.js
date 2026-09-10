@@ -65,7 +65,8 @@ export const HERO = {
   // 히어로 밑단 버튼(요청) — 스크롤 연출에 나오는 것과 같은 .pfr-swipe 버튼이다.
   // href 가 비면 ProjectCard 와 같은 규칙으로 링크 없이 모양만 나온다.
   buttons: [
-    { label: "RESUME", href: "" },
+    // 이력서는 같은 저장소의 두 번째 페이지다(resume.html · vite.config.js 참조).
+    { label: "RESUME", href: "/resume.html" },
     { label: "GITHUB", href: "https://github.com/heebon00" },
   ],
   script: "creative",
