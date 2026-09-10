@@ -52,8 +52,13 @@ export default function MobileAbout() {
             <dt className="w-120 shrink-0 font-sans text-[calc(15.5*var(--u))] leading-desc text-ink uppercase">
               {label}
             </dt>
-            <dd className="font-sans text-[calc(15.5*var(--u))] leading-desc whitespace-pre-line text-ink">
-              {value}
+            {/* 데스크톱과 달리 줄바꿈 문자를 그대로 쓰지 않는다(요청 —
+                "(영상&코딩)" 뒤에서 끊지 말 것). 데이터의 \n 은 1920 폭에서
+                보기 좋으라고 넣은 것이라, 폭이 3분의 1도 안 되는 모바일에서는
+                끊는 자리가 엉뚱해진다. 여기서는 공백으로 바꿔 칸 폭에 맞춰
+                저절로 접히게 둔다. */}
+            <dd className="font-sans text-[calc(15.5*var(--u))] leading-desc text-ink">
+              {value.replace(/\n/g, " ")}
             </dd>
           </div>
         ))}

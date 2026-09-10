@@ -123,6 +123,36 @@ export default function MobileHero() {
               </span>
             </p>
           </div>
+
+          {/* 밑단 버튼 — 데스크톱 히어로(sections/Hero.jsx)에 있는 것과 같은
+              버튼이고 같은 데이터(HERO.buttons)를 쓴다. 모바일에는 빠져 있어서
+              이력서·깃허브로 갈 길이 아예 없었다(요청).
+              데스크톱은 사진 오른쪽 바깥에 절대배치하지만 모바일은 1단 스택이라
+              카피 바로 밑에 가운데로 놓는다. 간격도 데스크톱(24)보다 좁은 16 —
+              390 폭에서 두 버튼이 한 줄에 들어가야 한다.
+              href 가 비면 데스크톱과 같은 규칙으로 링크 없이 모양만 나온다. */}
+          <div
+            data-intro-fade
+            className="mt-32 flex flex-wrap justify-center gap-16"
+          >
+            {HERO.buttons.map(({ label, href }) =>
+              href ? (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="pfr-swipe hero-cta cursor-pointer no-underline"
+                >
+                  {label}
+                </a>
+              ) : (
+                <span key={label} className="pfr-swipe hero-cta">
+                  {label}
+                </span>
+              ),
+            )}
+          </div>
         </div>
 
         {/* 요청 — 사진도 헤더 그래픽(WavyCubes) 판 안에 넣는다. 예전에는 판
