@@ -16,9 +16,11 @@ export default function MobileAbout() {
         <span className="font-sans text-label leading-label tracking-wide font-medium text-ink uppercase">
           {ABOUT.barLeft}
         </span>
-        <span className="font-sans text-label leading-label tracking-wide font-medium text-ink uppercase">
-          {ABOUT.barRight}
-        </span>
+        {ABOUT.barRight ? (
+          <span className="font-sans text-label leading-label tracking-wide font-medium text-ink uppercase">
+            {ABOUT.barRight}
+          </span>
+        ) : null}
       </div>
 
 

@@ -76,7 +76,8 @@ export const HERO = {
 /* --- ABOUT ME (20:985 / 20:1010) ---------------------------------------- */
 export const ABOUT = {
   barLeft: "About",
-  barRight: "01",
+  // 섹션 번호는 요청으로 뺐다. 비우면 그 자리는 아예 그리지 않는다.
+  barRight: "",
   heading: "ABOUT ME",
   portraitAlt: "img_heebon",
   introLines: [
@@ -112,9 +113,9 @@ export const ABOUT = {
 export const EXPERIENCE = {
   heading: "MY Work Experience",
   subheading: "Work Experience",
-  // 구분선 오른쪽 끝의 섹션 번호 — ABOUT 의 barLeft/barRight 와 같은 방식이다
-  // (요청 "어바웃 칸처럼"). 비우면 그 자리는 렌더링하지 않는다.
-  barRight: "02",
+  // 구분선 오른쪽 끝의 섹션 번호 — ABOUT 과 같은 방식이다. 한때 "02" 를 넣었다가
+  // 요청으로 다시 뺐다. 비우면 그 자리는 아예 그리지 않는다.
+  barRight: "",
   rows: [
     { id: "exp-1", index: "", title: "경주시청 기획예산과(청년인턴)", year: "2009~2009" },
     { id: "exp-2", index: "", title: "국민연금(청년인턴)", year: "2011~2012" },

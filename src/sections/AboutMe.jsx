@@ -88,9 +88,11 @@ export default function AboutMe() {
           <span className="font-sans text-[max(16px,calc(16*var(--u)))] leading-label tracking-wide font-medium text-ink uppercase">
             {ABOUT.barLeft}
           </span>
-          <span className="font-sans text-label leading-label tracking-wide font-medium text-ink uppercase">
-            {ABOUT.barRight}
-          </span>
+          {ABOUT.barRight ? (
+            <span className="font-sans text-label leading-label tracking-wide font-medium text-ink uppercase">
+              {ABOUT.barRight}
+            </span>
+          ) : null}
         </div>
       </div>
 
