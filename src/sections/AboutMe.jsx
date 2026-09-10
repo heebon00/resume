@@ -146,7 +146,10 @@ export default function AboutMe() {
                     // 18px 이라 이 자리에는 크다. whitespace-nowrap 이라 줄이
                     // 안 접히는데, 가장 긴 줄이 16px 에서 약 336px 이고 이 칸의
                     // 가장 좁은 폭(1280 화면)이 약 400px 이라 넘치지 않는다.
-                    className="intro-line font-sans text-[16px] leading-body tracking-body whitespace-nowrap text-ink"
+                    // 줄 간격은 배수로 준다(요청). leading-body 는 24u 라 1440
+                    // 화면에서 17.8px 인데 글자는 16px 고정이라 줄이 거의 붙어
+                    // 보였다. 배수로 두면 글자 크기를 따라가므로 어긋나지 않는다.
+                    className="intro-line font-sans text-[16px] leading-[1.9] tracking-body whitespace-nowrap text-ink"
                   >
                     {line}
                   </p>
