@@ -52,7 +52,7 @@ export default function MobileMarquee() {
                 <span
                   key={`${copy}-${tag.label}-${i}`}
                   aria-hidden={copy === 1 ? "true" : undefined}
-                  className={`inline-flex shrink-0 items-center rounded-pill px-16 py-8 font-sans text-[calc(15*var(--u))] leading-none font-medium whitespace-nowrap uppercase shadow-[0_0_0_calc(1.5*var(--u))_var(--color-ring)] ${
+                  className={`inline-flex shrink-0 items-center rounded-pill px-16 py-8 font-sans text-[max(16px,calc(16*var(--u)))] leading-none font-medium whitespace-nowrap uppercase shadow-[0_0_0_calc(1.5*var(--u))_var(--color-ring)] ${
                     tag.fill ? FILL_CLASS[tag.fill] : "text-ink"
                   }`}
                 >

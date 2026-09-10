@@ -13,7 +13,7 @@ import { DONUT_TRACK } from "../lib/donuts";
 const RADIUS = 27.52;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS; // 172.92
 
-export default function SkillDonut({ percent, size = 64, fontSize = 16 }) {
+export default function SkillDonut({ percent, size = 64, fontSize = 18 }) {
   const offset = CIRCUMFERENCE * (1 - percent / 100);
 
   return (
@@ -55,7 +55,8 @@ export default function SkillDonut({ percent, size = 64, fontSize = 16 }) {
       </svg>
       <span
         className="absolute inset-0 flex items-center justify-center font-sans font-bold text-white"
-        style={{ fontSize: `calc(${fontSize} * var(--u))` }}
+        // 16px 바닥(요청) — 1440 화면에서 18u 는 13px 까지 내려간다.
+        style={{ fontSize: `max(16px, calc(${fontSize} * var(--u)))` }}
       >
         {percent}%
       </span>

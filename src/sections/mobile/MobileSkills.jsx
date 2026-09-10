@@ -24,7 +24,7 @@ export default function MobileSkills() {
         <h2 className="font-sans text-[calc(24*var(--u))] leading-[calc(33.92*var(--u))] font-bold text-white">
           {SKILLS.heading}
         </h2>
-        <p className="mt-8 font-sans text-[calc(14*var(--u))] leading-desc text-skills-sub">
+        <p className="mt-8 font-sans text-[max(18px,calc(18*var(--u)))] leading-desc text-skills-sub">
           {SKILLS.subtitle}
         </p>
       </div>
@@ -37,7 +37,7 @@ export default function MobileSkills() {
           >
             <span className="flex size-40 items-center justify-center rounded-card bg-card-icon">
               {card.markLabel ? (
-                <span className="flex size-28 items-center justify-center overflow-hidden rounded-mark bg-gradient-to-r from-[#300] to-[#ff9a00] font-mark text-[calc(13*var(--u))] font-black text-white">
+                <span className="flex size-28 items-center justify-center overflow-hidden rounded-mark bg-gradient-to-r from-[#300] to-[#ff9a00] font-mark text-[max(16px,calc(16*var(--u)))] font-black text-white">
                   {card.markLabel}
                 </span>
               ) : (
@@ -50,17 +50,17 @@ export default function MobileSkills() {
             </span>
 
             <div className="flex w-full flex-col gap-6">
-              <p className="font-sans text-[calc(14*var(--u))] font-bold text-white">
+              <p className="font-sans text-[max(16px,calc(16*var(--u)))] font-bold text-white">
                 {card.name}
               </p>
-              <p className="font-sans text-[calc(12*var(--u))] leading-[calc(17*var(--u))] text-card-text">
+              <p className="font-sans text-[max(16px,calc(16*var(--u)))] leading-[calc(17*var(--u))] text-card-text">
                 {card.description}
               </p>
             </div>
 
             <div className="flex w-full items-center gap-8">
-              <SkillDonut percent={card.percent} size={44} fontSize={11} />
-              <span className="flex flex-1 flex-col gap-2 font-sans text-[calc(11.5*var(--u))]">
+              <SkillDonut percent={card.percent} size={44} fontSize={16} />
+              <span className="flex flex-1 flex-col gap-2 font-sans text-[max(16px,calc(16*var(--u)))]">
                 <span className="text-card-text">
                   {SKILLS.proficiencyLabel}
                 </span>

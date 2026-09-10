@@ -12,8 +12,10 @@ import { GALLERY } from "../content/portfolio";
  * 키워드 마퀴와 같은 방식이다. 한 묶음을 화면 폭보다 길어질 만큼 반복하고,
  * 그 전체를 두 벌 이어 붙인 뒤 -50% 만큼 밀면 두 번째 벌이 첫 번째 벌 자리에
  * 정확히 들어와 이음매가 보이지 않는다.
- * 마지막 이미지 뒤에도 간격 하나를 padding 으로 더 줘야 전체 폭이
- * (한 벌 + 간격)의 정확히 두 배가 된다(없으면 간격 절반만큼 어긋난다).
+ * 컷 사이 간격은 요청으로 없앴다(모바일 MobileGallery 도 같다) — 컷들이
+ * 서로 맞붙어 한 줄 띠처럼 흐른다. 간격이 없으니 마지막 컷 뒤에 간격 하나를
+ * padding 으로 더 주던 보정도 필요 없다(간격이 있을 때는 그게 없으면 전체 폭이
+ * 한 벌의 정확히 두 배가 안 돼 이음매가 어긋났다).
  * prefers-reduced-motion 이면 멈춘다(index.css 의 .marquee-track).
  */
 
@@ -27,7 +29,6 @@ import { GALLERY } from "../content/portfolio";
 const ITEM_H = 670 / 3;
 const ITEM_W = ITEM_H * 2;
 
-const GAP = 43; // 시안 슬롯 간격(약 129)의 1/3
 const SPEED = 80; // 디자인 px / 초 — 키워드 마퀴와 같은 속도
 const VIEW_W = 1920;
 
@@ -46,7 +47,7 @@ const PAD_TOP = 76;
 const ITEMS = GALLERY;
 
 // 한 묶음이 화면 폭보다 짧으면 그만큼 반복해야 빈자리가 생기지 않는다.
-const SET_W = ITEMS.length * (ITEM_W + GAP);
+const SET_W = ITEMS.length * ITEM_W;
 const REPEAT = SET_W > 0 ? Math.ceil(VIEW_W / SET_W) : 1;
 const LOOP_W = SET_W * REPEAT; // 한 주기(= 트랙 폭의 절반)
 
@@ -69,8 +70,6 @@ export default function Gallery() {
         <div
           className="marquee-track flex w-max items-center"
           style={{
-            gap: du(GAP),
-            paddingRight: du(GAP),
             "--marquee-period": "50%",
             "--marquee-duration": `${(LOOP_W / SPEED).toFixed(2)}s`,
           }}

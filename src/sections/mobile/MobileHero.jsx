@@ -70,14 +70,14 @@ export default function MobileHero() {
             <SlicedText
               as="span"
               data-intro-fade
-              className="font-sans text-[calc(14*var(--u))] leading-none font-extrabold text-ink uppercase"
+              className="font-sans text-[max(16px,calc(16*var(--u)))] leading-none font-extrabold text-ink uppercase"
             >
               {HERO.labelLeft}
             </SlicedText>
             <SlicedText
               as="span"
               data-intro-fade
-              className="font-condensed text-[calc(14*var(--u))] leading-none font-extrabold text-ink uppercase"
+              className="font-condensed text-[max(16px,calc(16*var(--u)))] leading-none font-extrabold text-ink uppercase"
             >
               {HERO.labelRight}
             </SlicedText>

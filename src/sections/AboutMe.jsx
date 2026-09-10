@@ -85,7 +85,7 @@ export default function AboutMe() {
         data-reveal
       >
         <div className="flex items-start justify-between pt-7 pb-5">
-          <span className="font-sans text-[calc(11.8*var(--u))] leading-label tracking-wide font-medium text-ink uppercase">
+          <span className="font-sans text-[max(16px,calc(16*var(--u)))] leading-label tracking-wide font-medium text-ink uppercase">
             {ABOUT.barLeft}
           </span>
           <span className="font-sans text-label leading-label tracking-wide font-medium text-ink uppercase">
@@ -142,7 +142,11 @@ export default function AboutMe() {
                     ref={(node) => {
                       lineRefs.current[i] = node;
                     }}
-                    className="intro-line font-sans text-body leading-body tracking-body whitespace-nowrap text-ink"
+                    // 크기는 16px 고정이다(요청). 본문 토큰(--text-body)은 지금
+                    // 18px 이라 이 자리에는 크다. whitespace-nowrap 이라 줄이
+                    // 안 접히는데, 가장 긴 줄이 16px 에서 약 336px 이고 이 칸의
+                    // 가장 좁은 폭(1280 화면)이 약 400px 이라 넘치지 않는다.
+                    className="intro-line font-sans text-[16px] leading-body tracking-body whitespace-nowrap text-ink"
                   >
                     {line}
                   </p>

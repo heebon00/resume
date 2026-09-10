@@ -66,7 +66,7 @@ export default function Skills() {
               mark={
                 card.markLabel ? (
                   <span className="flex size-40 items-center justify-center overflow-hidden rounded-mark bg-gradient-to-r from-[#300] to-[#ff9a00]">
-                    <span className="font-mark text-[calc(18*var(--u))] font-black text-white">
+                    <span className="font-mark text-[max(16px,calc(18*var(--u)))] font-black text-white">
                       {card.markLabel}
                     </span>
                   </span>

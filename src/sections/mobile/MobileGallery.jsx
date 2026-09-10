@@ -18,11 +18,10 @@ import { du } from "../../lib/design";
 
 const ITEM_H = 125;
 const ITEM_W = ITEM_H * 2; // 데스크톱과 같은 2:1 상자
-const GAP = 12;
 const VIEW_W = 390; // 모바일 캔버스 폭
 const DURATION = "22s";
 
-const SET_W = GALLERY.length * (ITEM_W + GAP);
+const SET_W = GALLERY.length * ITEM_W;
 const REPEAT = SET_W > 0 ? Math.ceil(VIEW_W / SET_W) : 1;
 
 export default function MobileGallery() {
@@ -39,8 +38,6 @@ export default function MobileGallery() {
       <div
         className="marquee-track flex w-max items-center"
         style={{
-          gap: du(GAP),
-          paddingRight: du(GAP),
           "--marquee-period": "50%",
           "--marquee-duration": DURATION,
         }}

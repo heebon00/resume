@@ -51,10 +51,6 @@
   --color-skills-sub: #fffefeb3; /* MY SKILLS 부제 (rgba(255,254,254,0.7)) */
   --color-ring: #1f1f1f; /* 키워드 태그 외곽선 */
   --color-tag-crimson: #d4183d; /* 키워드 태그 채움(자주) */
-  /* 헤더 로고 전용 크림슨 — 위 크림슨을 밝힌 값이다. 로고 상자(#2A2A2A)
-     위에서 명암비 4.77 로 기준(4.5)을 넘긴다. 자세한 경위는 아래
-     .brand-mark-bg 주석 참조. 다른 곳에는 쓰지 않는다. */
-  --color-brand-mark: #ff5a78;
   --color-tag-lime: #efff58; /* 키워드 태그 채움(라임) — 요청으로 변경 */
   --color-muted: #353535;
   /* 어두운 띠로 쓰는 두 구간(연락 폼 · 이름 배너)은 따로 토큰을 둔다.
@@ -78,22 +74,22 @@
     "Liberation Mono", monospace;
 
   /* --- 글자 크기 (디자인에서 확인된 값 · 단위는 --u) --------------------- */
-  --text-label: calc(12 * var(--u));
-  --text-body-sm: calc(14 * var(--u));
-  --text-body: calc(16 * var(--u));
-  --text-table: calc(17.4 * var(--u)); /* ABOUT ME 표 행 */
-  --text-lead: calc(19 * var(--u));
-  --text-nav: calc(24 * var(--u)); /* 히어로 상단 라벨 (요청으로 21→24, 시안 값 아님) */
-  --text-title-sm: calc(22 * var(--u));
-  --text-title: calc(31 * var(--u)); /* 프로젝트 카드 제목 */
-  --text-exp: calc(14.7 * var(--u)); /* 경력 행 제목 */
-  --text-marquee: calc(74.9 * var(--u)); /* 키워드 태그 (항목별 73.1~76.4px) */
-  --text-heading: calc(40 * var(--u)); /* — ABOUT ME 등 섹션 제목 */
-  --text-tag-sm: calc(78 * var(--u)); /* 200% */
-  --text-tag: calc(88 * var(--u)); /* 300% */
-  --text-display-sm: calc(100 * var(--u)); /* 좋아하는 일은 / 애정을, */
-  --text-display: calc(110 * var(--u)); /* 맡은 임무는 / 책임감을 */
-  --text-script: calc(186 * var(--u)); /* creative */
+  --text-label: max(16px, calc(16 * var(--u))); /* 원래 12u (< 16px) -> 16px */
+  --text-body-sm: max(16px, calc(16 * var(--u))); /* 원래 14u (< 16px) -> 16px */
+  --text-body: max(18px, calc(18 * var(--u))); /* 원래 16u (== 16px) -> 18px */
+  --text-table: max(16px, calc(17.4 * var(--u))); /* ABOUT ME 표 행 (17.4 > 16) */
+  --text-lead: max(16px, calc(19 * var(--u))); /* 19 > 16 */
+  --text-nav: max(16px, calc(24 * var(--u))); /* 24 > 16 */
+  --text-title-sm: max(16px, calc(22 * var(--u))); /* 22 > 16 */
+  --text-title: max(16px, calc(31 * var(--u))); /* 프로젝트 카드 제목 (31 > 16) */
+  --text-exp: max(16px, calc(16 * var(--u))); /* 경력 행 제목: 원래 14.7u (< 16px) -> 16px */
+  --text-marquee: max(16px, calc(74.9 * var(--u))); /* 키워드 태그 */
+  --text-heading: max(16px, calc(40 * var(--u))); /* 섹션 제목 */
+  --text-tag-sm: max(16px, calc(78 * var(--u))); /* 200% */
+  --text-tag: max(16px, calc(88 * var(--u))); /* 300% */
+  --text-display-sm: max(16px, calc(100 * var(--u))); /* 좋아하는 일은 / 애정을, */
+  --text-display: max(16px, calc(110 * var(--u))); /* 맡은 임무는 / 책임감을 */
+  --text-script: max(16px, calc(186 * var(--u))); /* creative */
 
   /* --- 행간 ------------------------------------------------------------- */
   --leading-label: calc(12 * var(--u)); /* 얇은 라벨 바 */
@@ -224,7 +220,7 @@ body {
   /* 요청 — 푸터 형광 블록과 같은 색(#EFFF58). 이 섹션의 다른 라임
      (--color-accent-lime #BBFF00, 입력 포커스 선·상태 문구)은 그대로 둔다. */
   color: var(--color-footer);
-  font-size: 0.75rem;
+  font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   margin: 0 0 1.25rem;
@@ -245,7 +241,7 @@ body {
 
 .contact-form-copy > p:last-child {
   color: var(--color-white-70);
-  font-size: clamp(0.95rem, 1.2vw, 1.15rem);
+  font-size: clamp(1rem, 1.2vw, 1.15rem);
   line-height: 1.7;
   margin: 2rem 0 0;
   max-width: 30rem;
@@ -262,7 +258,7 @@ body {
 .contact-form label {
   color: var(--color-white-70);
   display: grid;
-  font-size: 0.8rem;
+  font-size: 1rem;
   gap: 0.55rem;
   letter-spacing: 0.06em;
 }
@@ -322,7 +318,7 @@ body {
 
 .contact-form-status {
   color: var(--color-accent-lime);
-  font-size: 0.85rem;
+  font-size: 1rem;
   grid-column: 1 / -1;
   margin: 0;
 }
@@ -771,7 +767,7 @@ body {
   font-family: var(--font-sans);
   /* 요청으로 --text-body(16)보다 4 키움. 다른 곳에서 쓰는 --text-body는
      그대로 두고 여기만 올린다. */
-  font-size: calc(20 * var(--u));
+  font-size: max(16px, calc(20 * var(--u)));
   font-weight: 500;
   line-height: var(--leading-desc);
   color: var(--color-muted);
@@ -807,7 +803,7 @@ body {
 
 .pfr-desc-label {
   margin: 0 0 calc(8 * var(--u));
-  font-size: calc(15 * var(--u));
+  font-size: max(16px, calc(16 * var(--u)));
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -858,7 +854,12 @@ body {
   border: calc(2 * var(--u)) solid var(--color-ink);
   border-radius: var(--radius-button);
   font-family: var(--font-sans);
-  font-size: var(--text-body);
+  /* 글자 크기는 --text-body 를 쓰다가 요청으로 예전 값(16u)으로 되돌렸다.
+     --text-body 에 16px 바닥이 걸리면서(요청 "16px 미만 금지") 글자만 안 줄고
+     상자(height 40u · padding 16u)는 --u 따라 줄어, 1440 화면에서 30px 짜리
+     알약에 18px 글자가 들어가 꽉 차 보였다.
+     이 버튼은 글자와 상자가 같은 --u 로 함께 줄어야 모양이 유지된다. */
+  font-size: calc(16 * var(--u));
   font-weight: 600;
   letter-spacing: 0.02em;
   text-transform: uppercase;
@@ -995,11 +996,26 @@ body {
   }
 
   .pfr-svg {
+    max-width: 100%;
     height: min(54svh, calc(470 * var(--u)));
   }
 
+  /* 가로형 프로젝트 목업 — 프로젝트 3(1555x1080)은 세로 비율이 높아 너비 316.7u에서
+     높이 220u(최대 높이)에 도달하며 자연스럽게 좌우 여백이 남는다.
+     반면 1번(2207x1080)·2번(2133x1080)은 2:1에 가까운 파노라마 비율이라,
+     316.7u로 제한하면 높이가 155·160u로 작아 보인다(요청).
+     화면을 꽉 채우지 않으면서(좌우 22.5u 여백) 시각적 균형이 맞도록
+     1·2번은 최대 너비를 345u로 키운다. */
   .pfr-svg--wide {
-    height: min(26svh, calc(220 * var(--u)));
+    width: 100%;
+    max-width: min(calc(316.7 * var(--u)), 100%);
+    height: auto;
+    max-height: min(26svh, calc(220 * var(--u)));
+  }
+
+  .pfr-item:nth-of-type(1) .pfr-svg--wide,
+  .pfr-item:nth-of-type(2) .pfr-svg--wide {
+    max-width: min(calc(345 * var(--u)), 100%);
   }
 
   .pfr-fallback {
@@ -1015,7 +1031,7 @@ body {
 
   .pfr-index {
     top: 3svh;
-    font-size: calc(13 * var(--u));
+    font-size: max(16px, calc(16 * var(--u)));
   }
 
   /* 제목 두 줄 — 데스크톱은 윗줄이 왼쪽 위, 아랫줄이 오른쪽 아래로 갈라지는
@@ -1050,7 +1066,7 @@ body {
 
   .pfr-desc {
     white-space: pre-wrap;
-    font-size: calc(13.5 * var(--u));
+    font-size: max(16px, calc(16 * var(--u)));
   }
 
   /* 좁은 폭이라 두 칸이 답답하다 — 한 칸으로 쌓고, 칸 사이를 가르던 세로선을
@@ -1076,13 +1092,23 @@ body {
   }
 
   .pfr-desc-label {
-    font-size: calc(12.5 * var(--u));
+    font-size: max(16px, calc(16 * var(--u)));
     margin-bottom: calc(6 * var(--u));
   }
 
   /* 모바일은 폭이 좁아 한 줄에 못 담는다 — 데스크톱의 nowrap 을 되돌린다. */
   .pfr-desc-line {
     white-space: normal;
+  }
+
+  /* 모바일 프로젝트 버튼 — 프로젝트 1(2개 버튼) 및 전체 버튼들을 가운데 정렬한다(요청) */
+  .pfr-buttons {
+    justify-content: center;
+  }
+
+  /* 모바일 프로젝트 버튼 글자 크기 16px (요청) */
+  .pfr-swipe {
+    font-size: max(16px, calc(16 * var(--u)));
   }
 }
 
@@ -1147,7 +1173,7 @@ body {
   position: relative;
   overflow: hidden;
   font-family: "VT323", monospace;
-  font-size: calc(20 * var(--u));
+  font-size: max(16px, calc(20 * var(--u)));
   letter-spacing: 0.05em;
   background: var(--color-footer);
   color: #000;
@@ -1233,41 +1259,38 @@ body {
    요청으로 준 이미지를 참고해 점을 실제 요소로 다시 만들었다(이미지 그대로면
    점 하나하나를 따로 애니메이션할 수 없어서).
 
-   [색을 참고 이미지 값에서 바꾼 이유 — 2026-09-10]
-   원래는 이미지에서 스포이트로 딴 값을 그대로 썼다. 배경 #505050 에 글자
-   #D4183D(크림슨). 그런데 이 조합은 명암비가 1.53 밖에 안 돼 글자가 거의
-   읽히지 않는다 — 15px bold 는 WCAG 의 "큰 글씨"(14pt bold = 18.66px)에
-   못 미치므로 4.5 가 필요하다. Lighthouse 접근성 검사에 잡혔다
-   (docs/web-check-2026-09-10.md 5-1장).
+   [색 — 참고 이미지 값 그대로 둔다]
+   배경 #505050 · 글자 #D4183D(크림슨) 는 참고 이미지에서 스포이트로 딴 값이다.
 
-   데스크톱에는 원래 있던 문제인데, 모바일 헤더 로고를 이것으로 통일하면서
-   검사에 드러났다(그 전 모바일 로고는 글자가 없는 파비콘 이미지였다).
+   이 조합은 명암비가 1.53 이라 Lighthouse 접근성 검사에 걸린다(필요 4.5 —
+   15px bold 는 WCAG 의 "큰 글씨" 14pt bold = 18.66px 에 못 미친다).
+   docs/web-check-2026-09-10.md 5-1장 참조.
 
-   고르는 과정에서 잰 값 — 필요 4.5:
-     #D4183D 위 #505050 = 1.53   원래 조합
+   2026-09-10 에 기준을 넘기려고 글자 #FF5A78 · 배경 #2A2A2A(4.77)로 한 번
+   바꿨다가, "색이 완전히 달라졌다"는 요청으로 원래 값으로 되돌렸다.
+   즉 명암비 지적은 알면서 남겨 둔 것이다 — 브랜드 색을 지키는 쪽을 골랐다.
+
+   되돌릴 일이 생기면 참고할 실측값(필요 4.5):
+     #D4183D 위 #505050 = 1.53   지금 값
      #FF5A78 위 #505050 = 2.68   글자만 밝혀서는 모자란다
      #FFB3C1 위 #505050 = 4.79   통과하지만 크림슨이 아니라 연분홍이 된다
-     #FF5A78 위 #2A2A2A = 4.77   통과하면서 크림슨을 지킨다  <- 이걸 쓴다
-   글자를 한 단계 밝히고 배경을 한 단계 어둡게 해서, 어두운 상자에 크림슨
-   글자라는 인상은 그대로 두고 기준만 넘겼다. */
+     #FF5A78 위 #2A2A2A = 4.77   통과하면서 크림슨에 가장 가깝다 */
 .brand-mark-bg {
-  background: #2a2a2a;
+  background: #505050;
 }
 
 .brand-mark-text {
   font-size: 15px;
   line-height: 1;
   letter-spacing: 0.04em;
-  color: var(--color-brand-mark);
+  color: var(--color-tag-crimson);
 }
 
-/* 점은 aria-hidden 인 장식이라 명암비 기준의 대상은 아니지만, 글자와 같은
-   색이어야 한 덩어리로 보인다. */
 .brand-dot {
   width: 3px;
   height: 3px;
   border-radius: 9999px;
-  background: var(--color-brand-mark);
+  background: var(--color-tag-crimson);
   opacity: 0;
   transform: scale(0);
 }
@@ -1448,7 +1471,9 @@ body {
 .hero-cta {
   height: calc(56 * var(--u));
   padding-inline: calc(24 * var(--u));
-  font-size: var(--text-nav);
+  /* 버튼은 16px 바닥에서 제외한다(요청). 토큰(--text-nav)에는 바닥이 걸려
+     있어 그대로 쓰면 글자만 안 줄고 상자(height 56u)는 줄어 어긋난다. */
+  font-size: calc(24 * var(--u));
 }
 
 /* 모바일 히어로의 같은 버튼 — 데스크톱보다 한 치수 작다(요청).
@@ -1458,7 +1483,8 @@ body {
 .hero-cta-m {
   height: calc(46 * var(--u));
   padding-inline: calc(18 * var(--u));
-  font-size: var(--text-lead);
+  /* 위 .hero-cta 와 같은 이유로 토큰(--text-lead) 대신 값으로 쓴다. */
+  font-size: calc(19 * var(--u));
 }
 
 /* 200% · 300% 태그 상자 — 요청으로 그라디언트 테두리를 없앴다(예전엔

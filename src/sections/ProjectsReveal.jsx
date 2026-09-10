@@ -1,11 +1,35 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SectionHeading from "../components/SectionHeading";
 import MobileSectionHeading from "./mobile/MobileSectionHeading";
 import { PROJECTS } from "../content/portfolio";
 
-gsap.registerPlugin(ScrollTrigger);
+/**
+ * ScrollTrigger 는 이 연출에서만 쓴다 — 첫 화면 번들에서 떼어내 여기서 받는다.
+ *
+ * 전에는 이 파일 맨 위에서 정적으로 불러 첫 화면 번들(main-*.js)에 함께 묶였다.
+ * 48 kB 짜리인데 정작 하는 일은 사용자가 MY PROJECTS 까지 스크롤을 내렸을 때
+ * 화면을 붙박아 두는 것이라, 첫 화면을 그리는 데는 쓰이지 않는다.
+ *
+ * 컴포넌트 자체는 처음부터 그린다(늦게 붙이면 이 섹션이 일반 흐름에 있고
+ * 화면 높이가 커서 페이지가 통째로 밀린다 — CLS 가 나빠진다). 받아오는 것은
+ * 연출을 거는 코드뿐이라, 스크롤을 여기까지 내리기 훨씬 전에 도착한다.
+ *
+ * 데스크톱·모바일 두 벌이 각각 이 컴포넌트를 쓰므로 약속을 변수에 담아 둔다 —
+ * 몇 번을 부르든 내려받기는 한 번뿐이고, 등록도 한 번만 된다.
+ */
+let ScrollTrigger = null;
+let scrollTriggerReady = null;
+
+function loadScrollTrigger() {
+  scrollTriggerReady ??= import("gsap/ScrollTrigger").then((module) => {
+    // 연출 본문이 ScrollTrigger.create(...) 를 그대로 쓰므로 모듈 수준에 담아
+    // 둔다. 본문은 이 약속이 끝난 뒤에만 돌아서 null 을 볼 일이 없다.
+    ScrollTrigger = module.ScrollTrigger;
+    gsap.registerPlugin(ScrollTrigger);
+  });
+  return scrollTriggerReady;
+}
 
 /**
  * MY PROJECTS 도입부 — 스크롤로 다음 프로젝트가 나타나는 핀 연출.
@@ -87,258 +111,271 @@ export default function ProjectsReveal({ variant = "desktop", afterLead = null }
     const root = rootRef.current;
     if (!root) return undefined;
 
-    const mm = gsap.matchMedia();
+    let mm = null;
+    let cancelled = false;
 
     // 자기 캔버스가 실제로 보이는 폭에서만, 그리고 움직임 줄이기가 아닐 때만
     // 연출을 건다(반대쪽 캔버스는 display:none 이라 측정이 무의미하다).
-    mm.add(
-      `${MEDIA[variant]} and (prefers-reduced-motion: no-preference)`,
-      () => {
-        const track = root.querySelector("[data-pfr-track]");
-        const items = [...root.querySelectorAll("[data-pfr-item]")];
-        const count = items.length;
-        if (!track || count < 1) return undefined;
+    function buildScene() {
+      const track = root.querySelector("[data-pfr-track]");
+      const items = [...root.querySelectorAll("[data-pfr-item]")];
+      const count = items.length;
+      if (!track || count < 1) return undefined;
 
-        // 프로젝트마다 손댈 부분을 미리 모아 둔다 — 인덱스가 바뀔 때마다
-        // querySelector 를 새로 하지 않는다. 제목 두 줄은 나오는/들어가는
-        // 쪽(왼쪽·오른쪽)이 서로 반대라 글자 목록을 따로 모은다.
-        const parts = items.map((item, index) => ({
-          el: item,
-          index,
-          image: item.querySelector("[data-pfr-image]"),
-          // 프레임(.pfr-svg, overflow:hidden) — 1번 카드는 요청으로 이
-          // 박스 자체를 키웠다 줄인다(아래 buildEnterTimeline 참조). 안의
-          // <img> 만 키우면 프레임 밖으로 나온 부분이 잘려서 "이미지 안에서
-          // 확대"로 보인다 — 참고 사이트(treethemes brave 메인 사진)처럼
-          // 사진 자체가 커 보이려면 프레임째로 키워야 한다.
-          imageWrap: item.querySelector("[data-pfr-svg]"),
-          upChars: [...item.querySelectorAll("[data-pfr-up] [data-pfr-char]")],
-          downChars: [
-            ...item.querySelectorAll("[data-pfr-down] [data-pfr-char]"),
-          ],
-          desc: item.querySelector("[data-pfr-desc]"),
-          buttons: item.querySelector("[data-pfr-buttons]"),
-        }));
+      // 프로젝트마다 손댈 부분을 미리 모아 둔다 — 인덱스가 바뀔 때마다
+      // querySelector 를 새로 하지 않는다. 제목 두 줄은 나오는/들어가는
+      // 쪽(왼쪽·오른쪽)이 서로 반대라 글자 목록을 따로 모은다.
+      const parts = items.map((item, index) => ({
+        el: item,
+        index,
+        image: item.querySelector("[data-pfr-image]"),
+        // 프레임(.pfr-svg, overflow:hidden) — 1번 카드는 요청으로 이
+        // 박스 자체를 키웠다 줄인다(아래 buildEnterTimeline 참조). 안의
+        // <img> 만 키우면 프레임 밖으로 나온 부분이 잘려서 "이미지 안에서
+        // 확대"로 보인다 — 참고 사이트(treethemes brave 메인 사진)처럼
+        // 사진 자체가 커 보이려면 프레임째로 키워야 한다.
+        imageWrap: item.querySelector("[data-pfr-svg]"),
+        upChars: [...item.querySelectorAll("[data-pfr-up] [data-pfr-char]")],
+        downChars: [
+          ...item.querySelectorAll("[data-pfr-down] [data-pfr-char]"),
+        ],
+        desc: item.querySelector("[data-pfr-desc]"),
+        buttons: item.querySelector("[data-pfr-buttons]"),
+      }));
 
-        // 프레임째로 확대됐다 돌아오는 효과(아래 buildEnterTimeline 참조)를
-        // 쓰는 카드 — 처음엔 1번만이었는데 요청으로 3번도 추가했다("이거
-        // 너무 좋다"). 2번(iKEA)은 기존 그대로(단순 확대) 둔다.
-        const ZOOM_FRAME_INDEXES = new Set([0, 2]);
+      // 프레임째로 확대됐다 돌아오는 효과(아래 buildEnterTimeline 참조)를
+      // 쓰는 카드 — 처음엔 1번만이었는데 요청으로 3번도 추가했다("이거
+      // 너무 좋다"). 2번(iKEA)은 기존 그대로(단순 확대) 둔다.
+      const ZOOM_FRAME_INDEXES = new Set([0, 2]);
 
-        // 시작은 전부 숨겨 둔다 — enter() 가 자기 차례에 연다. 이미지·글자의
-        // "닫힌" 모습(아래 buildEnterTimeline 의 fromTo 시작값과 같다)도
-        // 여기서 한 번에 못박아 둔다 — 이유는 buildEnterTimeline 의
-        // fromTo → to 전환 주석 참조(요청으로 발견한 "두 번째 이미지가
-        // 튀는" 버그).
-        for (const part of parts) {
-          gsap.set(part.el, { autoAlpha: 0 });
-          if (ZOOM_FRAME_INDEXES.has(part.index)) {
-            // 프레임(imageWrap)이 스케일을 맡으므로 <img> 자신은 스케일
-            // 없이 슬라이드·페이드만 가진다.
-            gsap.set(part.image, { yPercent: -12, opacity: 0 });
-            gsap.set(part.imageWrap, { scale: 0.92 });
-          } else {
-            gsap.set(part.image, { yPercent: -12, scale: 0.92, opacity: 0 });
-          }
-          gsap.set(part.upChars, { rotateY: 80, xPercent: -70, opacity: 0 });
-          gsap.set(part.downChars, { rotateY: -80, xPercent: 70, opacity: 0 });
-          gsap.set(part.desc, { y: 24, opacity: 0 });
-          gsap.set(part.buttons, { y: 24, opacity: 0 });
+      // 시작은 전부 숨겨 둔다 — enter() 가 자기 차례에 연다. 이미지·글자의
+      // "닫힌" 모습(아래 buildEnterTimeline 의 fromTo 시작값과 같다)도
+      // 여기서 한 번에 못박아 둔다 — 이유는 buildEnterTimeline 의
+      // fromTo → to 전환 주석 참조(요청으로 발견한 "두 번째 이미지가
+      // 튀는" 버그).
+      for (const part of parts) {
+        gsap.set(part.el, { autoAlpha: 0 });
+        if (ZOOM_FRAME_INDEXES.has(part.index)) {
+          // 프레임(imageWrap)이 스케일을 맡으므로 <img> 자신은 스케일
+          // 없이 슬라이드·페이드만 가진다.
+          gsap.set(part.image, { yPercent: -12, opacity: 0 });
+          gsap.set(part.imageWrap, { scale: 0.92 });
+        } else {
+          gsap.set(part.image, { yPercent: -12, scale: 0.92, opacity: 0 });
         }
+        gsap.set(part.upChars, { rotateY: 80, xPercent: -70, opacity: 0 });
+        gsap.set(part.downChars, { rotateY: -80, xPercent: 70, opacity: 0 });
+        gsap.set(part.desc, { y: 24, opacity: 0 });
+        gsap.set(part.buttons, { y: 24, opacity: 0 });
+      }
 
-        let activeIndex = -1;
+      let activeIndex = -1;
 
-        // 글자가 하나씩 시차를 두고 Y축으로 접히며 나타난다 — 왼쪽 줄(up)은
-        // 왼쪽에서, 오른쪽 줄(down)은 오른쪽에서 온다("양옆에서 생기고
-        // 사라진다", 요청 확인). 썸네일은 위에서 살짝 내려오며 커진다.
-        // paused 로 만들어 둔다 — enter() 는 이걸 그대로 재생시키고, 첫
-        // 컷은 아래 firstReveal 이 스크롤 진행도에 맞춰 이 타임라인의
-        // progress() 를 직접 문지른다(scrub).
-        function buildEnterTimeline(part) {
-          const tl = gsap.timeline({
-            paused: true,
-            defaults: { ease: "power3.out" },
-          });
+      // 글자가 하나씩 시차를 두고 Y축으로 접히며 나타난다 — 왼쪽 줄(up)은
+      // 왼쪽에서, 오른쪽 줄(down)은 오른쪽에서 온다("양옆에서 생기고
+      // 사라진다", 요청 확인). 썸네일은 위에서 살짝 내려오며 커진다.
+      // paused 로 만들어 둔다 — enter() 는 이걸 그대로 재생시키고, 첫
+      // 컷은 아래 firstReveal 이 스크롤 진행도에 맞춰 이 타임라인의
+      // progress() 를 직접 문지른다(scrub).
+      function buildEnterTimeline(part) {
+        const tl = gsap.timeline({
+          paused: true,
+          defaults: { ease: "power3.out" },
+        });
 
-          // fromTo 였다가 to 로 바꿨다 — 이유(요청으로 찾은 버그):
-          // fromTo 는 시작값을 강제로 못박아서, 직전 트윈이 자연스러운
-          // 끝(leave 의 0.94/0, 혹은 다음 enter 의 1/1)까지 못 가고
-          // 중간값에서 kill() 로 끊긴 채였다면(빠른 스크롤로 연달아
-          // 지나칠 때 실제로 그랬다) 그 중간값에서 fromTo 의 고정
-          // 시작값(scale 0.92 등)으로 "튕겨" 돌아간 뒤에야 다시 앞으로
-          // 나아갔다 — 이게 "두 번째로 넘어갈 때 이미지가 튄다"던
-          // 정체였다(계측: scale 이 0.9262 → 0.9124 → 0.9311 처럼 한
-          // 프레임 역행했다 되돌아옴). to 는 "지금 값이 뭐든 거기서부터"
-          // 목표로만 가므로 이런 역행이 없다. 대신 맨 처음(한 번도 연 적
-          // 없는 최초 상태)의 시작 모습은 위 mount 시점 gsap.set 이
-          // 대신 맡는다 — 여기 목표값과 그 set 값이 서로 짝이다.
-          // 1·3번(AI Video Creator·YouTube Music, ZOOM_FRAME_INDEXES) 만
-          // 요청으로 "이미지만 확대됐다 다시 돌아오는" 효과를 쓴다 — 참고:
-          // treethemes brave 메인 사진처럼 사진 자체가 커 보여야 한다
-          // (요청으로 정정 — 처음엔 <img> 만 키웠더니 프레임(.pfr-svg,
-          // overflow:hidden)에 잘려 "이미지 안에서" 확대되는 걸로 보였다).
-          // 그래서 스케일을 <img> 가 아니라 프레임(imageWrap)에 건다 —
-          // 프레임째로 커지니 잘리지 않고 화면에서 실제로 사진이 커
-          // 보인다. <img> 자신은 슬라이드·페이드(yPercent·opacity)만
-          // 맡는다.
-          // 처음 400%까지 키웠더니 너무 과했다(요청) — 참고 사이트의 실제
-          // 폭은 은은한 정도라, 1.12배(12%)까지만 커졌다가(0~0.45) 원래
-          // 크기로 돌아온다(0.45~0.95). 3번도 같은 효과가 좋다는 요청으로
-          // 그대로 재사용한다. 2번(iKEA)은 기존 그대로(단순 확대).
-          if (ZOOM_FRAME_INDEXES.has(part.index)) {
-            tl.to(part.image, { yPercent: 0, opacity: 1, duration: 0.45, ease: "power2.out" }, 0);
-            tl.to(part.imageWrap, { scale: 1.12, duration: 0.45, ease: "power2.out" }, 0);
-            tl.to(part.imageWrap, { scale: 1, duration: 0.5, ease: "power3.inOut" }, 0.45);
-          } else {
-            tl.to(part.image, { yPercent: 0, scale: 1, opacity: 1, duration: 0.9 }, 0);
-          }
-          tl.to(
+        // fromTo 였다가 to 로 바꿨다 — 이유(요청으로 찾은 버그):
+        // fromTo 는 시작값을 강제로 못박아서, 직전 트윈이 자연스러운
+        // 끝(leave 의 0.94/0, 혹은 다음 enter 의 1/1)까지 못 가고
+        // 중간값에서 kill() 로 끊긴 채였다면(빠른 스크롤로 연달아
+        // 지나칠 때 실제로 그랬다) 그 중간값에서 fromTo 의 고정
+        // 시작값(scale 0.92 등)으로 "튕겨" 돌아간 뒤에야 다시 앞으로
+        // 나아갔다 — 이게 "두 번째로 넘어갈 때 이미지가 튄다"던
+        // 정체였다(계측: scale 이 0.9262 → 0.9124 → 0.9311 처럼 한
+        // 프레임 역행했다 되돌아옴). to 는 "지금 값이 뭐든 거기서부터"
+        // 목표로만 가므로 이런 역행이 없다. 대신 맨 처음(한 번도 연 적
+        // 없는 최초 상태)의 시작 모습은 위 mount 시점 gsap.set 이
+        // 대신 맡는다 — 여기 목표값과 그 set 값이 서로 짝이다.
+        // 1·3번(AI Video Creator·YouTube Music, ZOOM_FRAME_INDEXES) 만
+        // 요청으로 "이미지만 확대됐다 다시 돌아오는" 효과를 쓴다 — 참고:
+        // treethemes brave 메인 사진처럼 사진 자체가 커 보여야 한다
+        // (요청으로 정정 — 처음엔 <img> 만 키웠더니 프레임(.pfr-svg,
+        // overflow:hidden)에 잘려 "이미지 안에서" 확대되는 걸로 보였다).
+        // 그래서 스케일을 <img> 가 아니라 프레임(imageWrap)에 건다 —
+        // 프레임째로 커지니 잘리지 않고 화면에서 실제로 사진이 커
+        // 보인다. <img> 자신은 슬라이드·페이드(yPercent·opacity)만
+        // 맡는다.
+        // 처음 400%까지 키웠더니 너무 과했다(요청) — 참고 사이트의 실제
+        // 폭은 은은한 정도라, 1.12배(12%)까지만 커졌다가(0~0.45) 원래
+        // 크기로 돌아온다(0.45~0.95). 3번도 같은 효과가 좋다는 요청으로
+        // 그대로 재사용한다. 2번(iKEA)은 기존 그대로(단순 확대).
+        if (ZOOM_FRAME_INDEXES.has(part.index)) {
+          tl.to(part.image, { yPercent: 0, opacity: 1, duration: 0.45, ease: "power2.out" }, 0);
+          tl.to(part.imageWrap, { scale: 1.12, duration: 0.45, ease: "power2.out" }, 0);
+          tl.to(part.imageWrap, { scale: 1, duration: 0.5, ease: "power3.inOut" }, 0.45);
+        } else {
+          tl.to(part.image, { yPercent: 0, scale: 1, opacity: 1, duration: 0.9 }, 0);
+        }
+        tl.to(
+          part.upChars,
+          {
+            rotateY: 0,
+            xPercent: 0,
+            opacity: 1,
+            duration: 0.5,
+            stagger: 0.025,
+          },
+          0.05,
+        );
+        tl.to(
+          part.downChars,
+          {
+            rotateY: 0,
+            xPercent: 0,
+            opacity: 1,
+            duration: 0.5,
+            stagger: 0.025,
+          },
+          0.05,
+        );
+
+        // 부연설명 — 스크램블 효과를 시도했다가(gabrielcontassot.com 참고)
+        // 요청으로 뺐다. 다른 큰 텍스트(제목·버튼)와 같은 방식, 살짝
+        // 아래에서 올라오며 옅게 나타나는 것으로 통일한다.
+        tl.to(part.desc, { y: 0, opacity: 1, duration: 0.3 }, 0.4);
+
+        tl.to(part.buttons, { y: 0, opacity: 1, duration: 0.3 }, 0.5);
+
+        return tl;
+      }
+
+      // 빠르게 스크롤하면(예: 1번 → 2번 → 3번을 순식간에 지나칠 때)
+      // 앞선 enter() 의 0.9초짜리 이미지 트윈이 채 안 끝났는데 곧바로
+      // leave() 가 같은 이미지의 scale·opacity 를 다른 값으로 트윈하려
+      // 든다 — 서로 다른 타임라인 인스턴스라 GSAP 이 자동으로 덮어쓰지
+      // 않고 둘 다 매 프레임 값을 써서 이미지가 튀어 보였다(요청으로
+      // 발견: "첫 번째에서 두 번째로 넘어갈 때 이미지가 튄다"). 그래서
+      // part 마다 지금 돌고 있는 트윈을 기억해 두고, enter()·leave() 는
+      // 항상 "이 part 를 마지막으로 건드린 트윈"부터 죽이고 시작한다 —
+      // 어느 쪽이 먼저든 같은 part 에는 한 번에 트윈이 하나만 있다.
+      function enter(part) {
+        gsap.set(part.el, { autoAlpha: 1 });
+        part.tween?.kill();
+        part.tween = buildEnterTimeline(part).play();
+      }
+
+      // 자리를 넘겨준 프로젝트는 들어온 쪽으로 그대로 되접혀 빠진다
+      // (up 은 왼쪽으로, down 은 오른쪽으로).
+      function leave(part) {
+        part.tween?.kill();
+        part.tween = gsap
+          .timeline({
+            defaults: { ease: "power2.in" },
+            onComplete: () => gsap.set(part.el, { autoAlpha: 0 }),
+          })
+          .to(
             part.upChars,
-            {
-              rotateY: 0,
-              xPercent: 0,
-              opacity: 1,
-              duration: 0.5,
-              stagger: 0.025,
-            },
-            0.05,
-          );
-          tl.to(
+            { rotateY: 80, xPercent: -70, opacity: 0, duration: 0.3, stagger: 0.015 },
+            0,
+          )
+          .to(
             part.downChars,
-            {
-              rotateY: 0,
-              xPercent: 0,
-              opacity: 1,
-              duration: 0.5,
-              stagger: 0.025,
-            },
-            0.05,
-          );
+            { rotateY: -80, xPercent: 70, opacity: 0, duration: 0.3, stagger: 0.015 },
+            0,
+          )
+          .to(part.image, { scale: 0.94, opacity: 0, duration: 0.3 }, 0)
+          .to(part.desc, { opacity: 0, duration: 0.2 }, 0)
+          .to(part.buttons, { opacity: 0, duration: 0.2 }, 0);
+      }
 
-          // 부연설명 — 스크램블 효과를 시도했다가(gabrielcontassot.com 참고)
-          // 요청으로 뺐다. 다른 큰 텍스트(제목·버튼)와 같은 방식, 살짝
-          // 아래에서 올라오며 옅게 나타나는 것으로 통일한다.
-          tl.to(part.desc, { y: 0, opacity: 1, duration: 0.3 }, 0.4);
+      function goTo(index) {
+        // 방어 — progress 가 0 미만/1 초과로 튀는 순간(레이아웃이 아직
+        // 자리잡는 중일 때 등) index 가 범위를 벗어나면 parts[index] 가
+        // undefined 라 여기서 조용히 죽는다. 그러면 activeIndex 가
+        // 갱신되기 전에 멈춰서 화면 전체가 빈 채로 남는다 — 실제로 겪은
+        // 버그라 범위를 여기서 한 번 더 못박는다.
+        index = Math.max(0, Math.min(parts.length - 1, index));
+        if (index === activeIndex) return;
+        if (activeIndex >= 0) leave(parts[activeIndex]);
+        enter(parts[index]);
+        activeIndex = index;
+      }
 
-          tl.to(part.buttons, { y: 0, opacity: 1, duration: 0.3 }, 0.5);
+      // goTo(0) 을 마운트하자마자, 혹은 핀이 걸리자마자 부르지 않는다.
+      // 전자는 사용자가 스크롤로 실제 들어오기도 전에 첫 컷이 이미 다
+      // 열린 "정적인" 모습으로 기다리고 있게 되고, 후자는 트랙이 화면
+      // 아래에서 올라오는 동안 안의 카드가 전부 숨은 채라 흰 배경만
+      // 한참 보인다(둘 다 요청으로 확인된 문제).
+      //
+      // 첫 컷만은 고정 시간 애니메이션이 아니라 "이전 화면에서 스크롤
+      // 내리는 동작 자체"에 반응해 열린다(요청) — 트랙이 화면 아래에서
+      // 올라오기 시작하는 순간(top bottom)부터 화면 맨 위에 닿아 핀이
+      // 걸리는 순간(top top)까지를 스크롤 진행도에 그대로 물려서
+      // (scrub) buildEnterTimeline 을 문지른다. 빨리 내리면 빨리, 천천히
+      // 내리면 천천히 열린다 — 나머지 컷의 "정해진 시간 동안 재생" 방식과
+      // 다르다.
+      const firstTl = buildEnterTimeline(parts[0]);
+      // enter()/leave() 의 "part 마다 트윈 하나" 규칙에 이것도 포함시킨다
+      // — 안 그러면 나중에 뒤로 스크롤해 0번으로 돌아왔을 때 enter(parts[0])
+      // 가 이 firstTl 을 모르고 그냥 새 트윈을 얹어, 둘이 같은 이미지를
+      // 동시에 건드리는 같은 문제가 재발한다.
+      parts[0].tween = firstTl;
+      gsap.set(parts[0].el, { autoAlpha: 1 });
+      const firstReveal = ScrollTrigger.create({
+        trigger: track,
+        start: "top bottom",
+        end: "top top",
+        scrub: true,
+        onUpdate: (self) => firstTl.progress(self.progress),
+        // 핀이 걸리는 시점(=이 구간의 끝)에 다다르면 첫 컷은 이미 다
+        // 열려 있는 상태다 — activeIndex 를 미리 0으로 못박아 둬서, 핀
+        // 트리거의 onUpdate 가 다시 goTo(0) 을 불러 처음부터 재생하는
+        // 일이 없게 한다(이미 열려 있는 걸 다시 접었다 펴는 게 됨).
+        onLeave: () => {
+          activeIndex = 0;
+        },
+      });
 
-          return tl;
-        }
+      const trigger = ScrollTrigger.create({
+        trigger: track,
+        start: "top top",
+        // 프로젝트 하나당 화면 높이(100vh)만큼 스크롤한다.
+        end: () => `+=${count * window.innerHeight}`,
+        pin: true,
+        anticipatePin: 1,
+        // snap 을 걸었더니 스크롤을 멈추자마자 GSAP 이 스스로 다음/이전
+        // 자리로 스크롤을 더 이어가서, 사용자가 손을 뗐는데도 화면이 저절로
+        // 넘어가는 것처럼 보였다(요청으로 확인) — 자동 보정 없이 스크롤한
+        // 만큼만 넘어가도록 뺐다.
+        onUpdate(self) {
+          if (!self.isActive) return;
+          goTo(Math.floor(self.progress * count));
+        },
+      });
 
-        // 빠르게 스크롤하면(예: 1번 → 2번 → 3번을 순식간에 지나칠 때)
-        // 앞선 enter() 의 0.9초짜리 이미지 트윈이 채 안 끝났는데 곧바로
-        // leave() 가 같은 이미지의 scale·opacity 를 다른 값으로 트윈하려
-        // 든다 — 서로 다른 타임라인 인스턴스라 GSAP 이 자동으로 덮어쓰지
-        // 않고 둘 다 매 프레임 값을 써서 이미지가 튀어 보였다(요청으로
-        // 발견: "첫 번째에서 두 번째로 넘어갈 때 이미지가 튄다"). 그래서
-        // part 마다 지금 돌고 있는 트윈을 기억해 두고, enter()·leave() 는
-        // 항상 "이 part 를 마지막으로 건드린 트윈"부터 죽이고 시작한다 —
-        // 어느 쪽이 먼저든 같은 part 에는 한 번에 트윈이 하나만 있다.
-        function enter(part) {
-          gsap.set(part.el, { autoAlpha: 1 });
-          part.tween?.kill();
-          part.tween = buildEnterTimeline(part).play();
-        }
+      return () => {
+        firstReveal.kill();
+        firstTl.kill();
+        trigger.kill();
+        for (const part of parts) part.tween?.kill();
+      };
+    }
 
-        // 자리를 넘겨준 프로젝트는 들어온 쪽으로 그대로 되접혀 빠진다
-        // (up 은 왼쪽으로, down 은 오른쪽으로).
-        function leave(part) {
-          part.tween?.kill();
-          part.tween = gsap
-            .timeline({
-              defaults: { ease: "power2.in" },
-              onComplete: () => gsap.set(part.el, { autoAlpha: 0 }),
-            })
-            .to(
-              part.upChars,
-              { rotateY: 80, xPercent: -70, opacity: 0, duration: 0.3, stagger: 0.015 },
-              0,
-            )
-            .to(
-              part.downChars,
-              { rotateY: -80, xPercent: 70, opacity: 0, duration: 0.3, stagger: 0.015 },
-              0,
-            )
-            .to(part.image, { scale: 0.94, opacity: 0, duration: 0.3 }, 0)
-            .to(part.desc, { opacity: 0, duration: 0.2 }, 0)
-            .to(part.buttons, { opacity: 0, duration: 0.2 }, 0);
-        }
+    // ScrollTrigger 를 받은 뒤에 연출을 건다. 이 컴포넌트 자체는 처음부터
+    // 그려지므로(늦게 붙이면 페이지 높이가 밀려 CLS 가 나빠진다) 화면에
+    // 보이는 것은 달라지지 않는다 — 스크롤을 여기까지 내리기 전에 도착한다.
+    loadScrollTrigger().then(() => {
+      if (cancelled) return;
+      mm = gsap.matchMedia();
+      mm.add(
+        `${MEDIA[variant]} and (prefers-reduced-motion: no-preference)`,
+        buildScene,
+      );
+    });
 
-        function goTo(index) {
-          // 방어 — progress 가 0 미만/1 초과로 튀는 순간(레이아웃이 아직
-          // 자리잡는 중일 때 등) index 가 범위를 벗어나면 parts[index] 가
-          // undefined 라 여기서 조용히 죽는다. 그러면 activeIndex 가
-          // 갱신되기 전에 멈춰서 화면 전체가 빈 채로 남는다 — 실제로 겪은
-          // 버그라 범위를 여기서 한 번 더 못박는다.
-          index = Math.max(0, Math.min(parts.length - 1, index));
-          if (index === activeIndex) return;
-          if (activeIndex >= 0) leave(parts[activeIndex]);
-          enter(parts[index]);
-          activeIndex = index;
-        }
-
-        // goTo(0) 을 마운트하자마자, 혹은 핀이 걸리자마자 부르지 않는다.
-        // 전자는 사용자가 스크롤로 실제 들어오기도 전에 첫 컷이 이미 다
-        // 열린 "정적인" 모습으로 기다리고 있게 되고, 후자는 트랙이 화면
-        // 아래에서 올라오는 동안 안의 카드가 전부 숨은 채라 흰 배경만
-        // 한참 보인다(둘 다 요청으로 확인된 문제).
-        //
-        // 첫 컷만은 고정 시간 애니메이션이 아니라 "이전 화면에서 스크롤
-        // 내리는 동작 자체"에 반응해 열린다(요청) — 트랙이 화면 아래에서
-        // 올라오기 시작하는 순간(top bottom)부터 화면 맨 위에 닿아 핀이
-        // 걸리는 순간(top top)까지를 스크롤 진행도에 그대로 물려서
-        // (scrub) buildEnterTimeline 을 문지른다. 빨리 내리면 빨리, 천천히
-        // 내리면 천천히 열린다 — 나머지 컷의 "정해진 시간 동안 재생" 방식과
-        // 다르다.
-        const firstTl = buildEnterTimeline(parts[0]);
-        // enter()/leave() 의 "part 마다 트윈 하나" 규칙에 이것도 포함시킨다
-        // — 안 그러면 나중에 뒤로 스크롤해 0번으로 돌아왔을 때 enter(parts[0])
-        // 가 이 firstTl 을 모르고 그냥 새 트윈을 얹어, 둘이 같은 이미지를
-        // 동시에 건드리는 같은 문제가 재발한다.
-        parts[0].tween = firstTl;
-        gsap.set(parts[0].el, { autoAlpha: 1 });
-        const firstReveal = ScrollTrigger.create({
-          trigger: track,
-          start: "top bottom",
-          end: "top top",
-          scrub: true,
-          onUpdate: (self) => firstTl.progress(self.progress),
-          // 핀이 걸리는 시점(=이 구간의 끝)에 다다르면 첫 컷은 이미 다
-          // 열려 있는 상태다 — activeIndex 를 미리 0으로 못박아 둬서, 핀
-          // 트리거의 onUpdate 가 다시 goTo(0) 을 불러 처음부터 재생하는
-          // 일이 없게 한다(이미 열려 있는 걸 다시 접었다 펴는 게 됨).
-          onLeave: () => {
-            activeIndex = 0;
-          },
-        });
-
-        const trigger = ScrollTrigger.create({
-          trigger: track,
-          start: "top top",
-          // 프로젝트 하나당 화면 높이(100vh)만큼 스크롤한다.
-          end: () => `+=${count * window.innerHeight}`,
-          pin: true,
-          anticipatePin: 1,
-          // snap 을 걸었더니 스크롤을 멈추자마자 GSAP 이 스스로 다음/이전
-          // 자리로 스크롤을 더 이어가서, 사용자가 손을 뗐는데도 화면이 저절로
-          // 넘어가는 것처럼 보였다(요청으로 확인) — 자동 보정 없이 스크롤한
-          // 만큼만 넘어가도록 뺐다.
-          onUpdate(self) {
-            if (!self.isActive) return;
-            goTo(Math.floor(self.progress * count));
-          },
-        });
-
-        return () => {
-          firstReveal.kill();
-          firstTl.kill();
-          trigger.kill();
-          for (const part of parts) part.tween?.kill();
-        };
-      },
-    );
-
-    return () => mm.revert();
+    return () => {
+      cancelled = true;
+      mm?.revert();
+    };
   }, [variant]);
 
   // 요청으로 스크롤 컷의 4번째(ai-video-creator-2, 1번째와 같은 "AI Video

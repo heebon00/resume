@@ -15,7 +15,7 @@ export default function MobileFooter() {
           {FOOTER.verticalTitle}
         </p>
         {FOOTER.verticalLines.length > 0 && (
-          <p className="mt-8 font-sans text-[calc(14*var(--u))] leading-desc text-black">
+          <p className="mt-8 font-sans text-[max(16px,calc(16*var(--u)))] leading-desc text-black">
             {[...FOOTER.verticalLines].reverse().join("")}
           </p>
         )}
@@ -27,16 +27,16 @@ export default function MobileFooter() {
         </p>
 
         <div className="mt-20">
-          <p className="font-sans text-[calc(15.5*var(--u))] leading-body text-ink uppercase">
+          <p className="font-sans text-[max(18px,calc(18*var(--u)))] leading-body text-ink uppercase">
             {FOOTER.name}
           </p>
           {FOOTER.phone && (
-            <p className="mt-8 font-sans text-[calc(15.5*var(--u))] leading-body text-ink">
+            <p className="mt-8 font-sans text-[max(18px,calc(18*var(--u)))] leading-body text-ink">
               {FOOTER.phone}
             </p>
           )}
           {FOOTER.email && (
-            <p className="font-sans text-[calc(15.5*var(--u))] leading-body text-ink uppercase">
+            <p className="font-sans text-[max(18px,calc(18*var(--u)))] leading-body text-ink uppercase">
               {FOOTER.email}
             </p>
           )}
@@ -47,7 +47,7 @@ export default function MobileFooter() {
             href={FOOTER.credits.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-24 inline-block font-sans text-[calc(13*var(--u))] leading-body text-ink underline decoration-from-font underline-offset-2 opacity-60"
+            className="mt-24 inline-block font-sans text-[max(16px,calc(16*var(--u)))] leading-body text-ink underline decoration-from-font underline-offset-2 opacity-60"
           >
             {FOOTER.credits.label}
           </a>
@@ -60,7 +60,7 @@ export default function MobileFooter() {
           {FOOTER.socials.map((label) => (
             <li
               key={label}
-              className="font-sans text-[calc(15*var(--u))] leading-[calc(22.5*var(--u))] text-ink"
+              className="font-sans text-[max(16px,calc(16*var(--u)))] leading-[calc(22.5*var(--u))] text-ink"
             >
               {label}
             </li>

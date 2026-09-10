@@ -47,11 +47,11 @@ const STEP = 730;
 
 // 필터 목록의 글자 크기·밑줄 형태(20:1310 / 20:1313 …)
 const FILTER_STYLE = [
-  { size: 14.8, bar: true },
-  { size: 15 },
-  { size: 15, uppercase: true },
-  { size: 15, uppercase: true },
-  { size: 15 },
+  { size: 16, bar: true },
+  { size: 16 },
+  { size: 16, uppercase: true },
+  { size: 16, uppercase: true },
+  { size: 16 },
 ];
 
 const FILTERS = DESIGN.filters.map((label, i) => ({
@@ -69,7 +69,7 @@ function VerticalLine({ height, size, z, children }) {
       <div className="rotate-90">
         <p
           className="leading-desc whitespace-nowrap text-white-70"
-          style={{ fontSize: du(size) }}
+          style={{ fontSize: `max(16px, ${du(size)})` }}
         >
           {children}
         </p>
@@ -141,7 +141,7 @@ export default function MyDesign() {
                       className={`block whitespace-nowrap text-ink leading-desc ${
                         filter.bar ? "" : "underline decoration-solid"
                       } ${filter.uppercase ? "uppercase" : ""}`}
-                      style={{ fontSize: du(filter.size) }}
+                      style={{ fontSize: `max(16px, ${du(filter.size)})` }}
                     >
                       {filter.label}
                     </span>
@@ -199,13 +199,13 @@ export default function MyDesign() {
                       <div className="rotate-180">
                         <div className="flex h-525 items-start py-40 pr-40 pl-[calc(37.98*var(--u))]">
                           <div className="relative flex items-start pr-2">
-                            <VerticalLine height={62} size={14} z={3}>
+                            <VerticalLine height={62} size={16} z={3}>
                               {DESIGN.cardLines[2]}
                             </VerticalLine>
-                            <VerticalLine height={341} size={13.3} z={2}>
+                            <VerticalLine height={341} size={16} z={2}>
                               {DESIGN.cardLines[1]}
                             </VerticalLine>
-                            <VerticalLine height={396} size={13.3} z={1}>
+                            <VerticalLine height={396} size={16} z={1}>
                               {DESIGN.cardLines[0]}
                             </VerticalLine>
                           </div>

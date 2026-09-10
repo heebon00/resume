@@ -32,7 +32,9 @@ function VerticalLine({ width, size, right, top, children }) {
       <div className="rotate-90">
         <p
           className="text-right leading-body text-black"
-          style={{ width: du(width), fontSize: du(size) }}
+          // 세로로 세운 글자 — 16px 바닥(요청). 버튼이 아니고 상자 크기가
+          // 글자에 묶여 있지도 않아서 바닥을 걸어도 어긋나지 않는다.
+          style={{ width: du(width), fontSize: `max(16px, ${du(size)})` }}
         >
           {children}
         </p>
@@ -93,7 +95,7 @@ export default function Footer() {
           href={FOOTER.credits.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="absolute z-10 text-[calc(12*var(--u))] leading-[calc(18*var(--u))] text-black underline decoration-from-font underline-offset-2 opacity-60 transition-opacity hover:opacity-100"
+          className="absolute z-10 text-[max(16px,calc(16*var(--u)))] leading-[calc(18*var(--u))] text-black underline decoration-from-font underline-offset-2 opacity-60 transition-opacity hover:opacity-100"
           /* 형광 블록 맨 아래에 붙인다(요청) — 글자 한 줄(18)에 아래 여백 12
              를 더한 만큼만 띄운다. 높이에서 계산하므로 PANEL_H 를 다시
              바꿔도 계속 바닥에 붙어 있는다. */
@@ -126,7 +128,7 @@ export default function Footer() {
                 {FOOTER.verticalTitle}
               </VerticalLine>
               {FOOTER.verticalLines[1] && (
-                <VerticalLine width={164.197} size={14} right={3} top={157.6}>
+                <VerticalLine width={164.197} size={16} right={3} top={157.6}>
                   {FOOTER.verticalLines[1]}
                 </VerticalLine>
               )}
@@ -155,7 +157,7 @@ export default function Footer() {
         style={box({ left: 34.99, top: 36, width: 990, height: 180 })}
       >
         <p
-          className="absolute pb-9 text-[calc(18*var(--u))] leading-[calc(27*var(--u))] text-black"
+          className="absolute pb-9 text-[max(16px,calc(18*var(--u)))] leading-[calc(27*var(--u))] text-black"
           style={box({ left: 15, top: 0, width: 465 })}
         >
           {FOOTER.lead}
@@ -186,7 +188,7 @@ export default function Footer() {
           {FOOTER.socials.map((label) => (
             <li
               key={label}
-              className="text-[calc(15*var(--u))] leading-[calc(22.5*var(--u))] text-black"
+              className="text-[max(16px,calc(16*var(--u)))] leading-[calc(22.5*var(--u))] text-black"
             >
               {label}
             </li>

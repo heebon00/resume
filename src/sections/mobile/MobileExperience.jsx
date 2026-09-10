@@ -22,11 +22,11 @@ export default function MobileExperience() {
       {/* 왼쪽은 부제, 오른쪽은 섹션 번호 — 위쪽 ABOUT 의 구분선 칸과 같은
           짜임이다(요청). 번호가 비면 그 자리는 아예 그리지 않는다. */}
       <div className="mt-20 flex items-center justify-between border-b border-ink pt-7 pb-5">
-        <p className="font-sans text-[calc(15.5*var(--u))] leading-label tracking-wide font-medium text-ink uppercase">
+        <p className="font-sans text-[max(18px,calc(18*var(--u)))] leading-label tracking-wide font-medium text-ink uppercase">
           {EXPERIENCE.subheading}
         </p>
         {EXPERIENCE.barRight ? (
-          <p className="font-sans text-[calc(15.5*var(--u))] leading-label tracking-wide font-medium text-ink uppercase">
+          <p className="font-sans text-[max(18px,calc(18*var(--u)))] leading-label tracking-wide font-medium text-ink uppercase">
             {EXPERIENCE.barRight}
           </p>
         ) : null}
@@ -35,14 +35,14 @@ export default function MobileExperience() {
       <ol className="mt-4">
         {EXPERIENCE.rows.map((row) => (
           <li key={row.id} className="border-b border-ink-8 pt-16 pb-12">
-            <p className="font-sans text-[calc(15.5*var(--u))] leading-desc font-medium text-ink opacity-[0.563]">
+            <p className="font-sans text-[max(16px,calc(16*var(--u)))] leading-desc font-medium text-ink opacity-[0.563]">
               {row.title}
             </p>
             <div className="mt-4 flex items-baseline justify-between">
               <span className="font-sans text-label leading-body text-ink opacity-[0.762]">
                 {row.index}
               </span>
-              <span className="font-sans text-[calc(13*var(--u))] leading-year tracking-wider font-medium text-ink uppercase opacity-[0.55]">
+              <span className="font-sans text-[max(16px,calc(16*var(--u)))] leading-year tracking-wider font-medium text-ink uppercase opacity-[0.55]">
                 {row.year}
               </span>
             </div>

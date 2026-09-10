@@ -22,7 +22,7 @@ export default function MobileDesign() {
         {DESIGN.filters.map((label, i) => (
           <li
             key={`${label}-${i}`}
-            className={`font-sans text-[calc(15*var(--u))] leading-desc text-ink ${
+            className={`font-sans text-[max(16px,calc(16*var(--u)))] leading-desc text-ink ${
               i === 0 ? "border-b border-ink" : "underline decoration-solid"
             }`}
           >
@@ -48,7 +48,7 @@ export default function MobileDesign() {
                   <p className="font-sans text-[calc(18*var(--u))] leading-[calc(26*var(--u))] text-white">
                     — {DESIGN.cardTitle}
                   </p>
-                  <p className="mt-8 font-sans text-[calc(12*var(--u))] leading-[calc(18*var(--u))] text-white-70">
+                  <p className="mt-8 font-sans text-[max(16px,calc(16*var(--u)))] leading-[calc(18*var(--u))] text-white-70">
                     {DESIGN.cardLines.join(" ")}
                   </p>
                 </div>

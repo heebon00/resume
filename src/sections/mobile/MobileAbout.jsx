@@ -39,7 +39,7 @@ export default function MobileAbout() {
           <p
             key={line}
             style={{ transitionDelay: `${i * 0.12}s` }}
-            className="intro-line-m font-sans text-[calc(15.5*var(--u))] leading-desc tracking-body text-ink"
+            className="intro-line-m font-sans text-[max(16px,calc(16*var(--u)))] leading-desc tracking-body text-ink"
           >
             {line}
           </p>
@@ -49,13 +49,13 @@ export default function MobileAbout() {
       <dl className="mt-28" hidden={ABOUT.rows.length === 0}>
         {ABOUT.rows.map(({ label, value, mobileValue }) => (
           <div key={label} className="flex border-b border-line pt-14 pb-14">
-            <dt className="w-120 shrink-0 font-sans text-[calc(15.5*var(--u))] leading-desc text-ink uppercase">
+            <dt className="w-120 shrink-0 font-sans text-[max(16px,calc(16*var(--u)))] leading-desc text-ink uppercase">
               {label}
             </dt>
             {/* 줄바꿈은 데스크톱과 같이 그대로 지킨다(whitespace-pre-line).
                 다만 모바일에서 끊는 자리가 엉뚱해지는 행은 데이터에
                 mobileValue 를 따로 두고 그 값을 쓴다(요청). */}
-            <dd className="font-sans text-[calc(15.5*var(--u))] leading-desc whitespace-pre-line text-ink">
+            <dd className="font-sans text-[max(16px,calc(16*var(--u)))] leading-desc whitespace-pre-line text-ink">
               {mobileValue ?? value}
             </dd>
           </div>
