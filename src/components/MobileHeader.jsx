@@ -17,7 +17,7 @@ export default function MobileHeader({ open, onToggle, menuId }) {
         <a
           href={mobileHref("hero")}
           className="flex items-center py-9"
-          aria-label="맨 위로"
+          aria-label="HEEBON — 맨 위로"
         >
           {/* 데스크톱 GNB 와 같은 로고를 쓴다(요청). 예전에는 여기만 파비콘
               이미지(favicon-bon.png)였는데, 그건 모바일 시안 20:2494 의 로고

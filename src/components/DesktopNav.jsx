@@ -91,7 +91,7 @@ export default function DesktopNav() {
         <a
           href="#hero"
           onClick={(event) => scrollToSection(event, "#hero")}
-          aria-label="맨 위로"
+          aria-label="HEEBON — 맨 위로"
           className="flex items-center py-16"
         >
           <BrandMark />

@@ -51,6 +51,10 @@
   --color-skills-sub: #fffefeb3; /* MY SKILLS 부제 (rgba(255,254,254,0.7)) */
   --color-ring: #1f1f1f; /* 키워드 태그 외곽선 */
   --color-tag-crimson: #d4183d; /* 키워드 태그 채움(자주) */
+  /* 헤더 로고 전용 크림슨 — 위 크림슨을 밝힌 값이다. 로고 상자(#2A2A2A)
+     위에서 명암비 4.77 로 기준(4.5)을 넘긴다. 자세한 경위는 아래
+     .brand-mark-bg 주석 참조. 다른 곳에는 쓰지 않는다. */
+  --color-brand-mark: #ff5a78;
   --color-tag-lime: #efff58; /* 키워드 태그 채움(라임) — 요청으로 변경 */
   --color-muted: #353535;
   /* 어두운 띠로 쓰는 두 구간(연락 폼 · 이름 배너)은 따로 토큰을 둔다.
@@ -1225,26 +1229,45 @@ body {
   text-underline-offset: calc(4 * var(--u));
 }
 
-/* 왼쪽 로고("HEEBON" + 위아래 점선, src/components/DesktopNav.jsx BrandMark
-   참조) — 요청으로 준 이미지를 참고해 점을 실제 요소로 다시 만들었다(이미지
-   그대로면 점 하나하나를 따로 애니메이션할 수 없어서). */
+/* 왼쪽 로고("HEEBON" + 위아래 점선, src/components/BrandMark.jsx 참조) —
+   요청으로 준 이미지를 참고해 점을 실제 요소로 다시 만들었다(이미지 그대로면
+   점 하나하나를 따로 애니메이션할 수 없어서).
+
+   [색을 참고 이미지 값에서 바꾼 이유 — 2026-09-10]
+   원래는 이미지에서 스포이트로 딴 값을 그대로 썼다. 배경 #505050 에 글자
+   #D4183D(크림슨). 그런데 이 조합은 명암비가 1.53 밖에 안 돼 글자가 거의
+   읽히지 않는다 — 15px bold 는 WCAG 의 "큰 글씨"(14pt bold = 18.66px)에
+   못 미치므로 4.5 가 필요하다. Lighthouse 접근성 검사에 잡혔다
+   (docs/web-check-2026-09-10.md 5-1장).
+
+   데스크톱에는 원래 있던 문제인데, 모바일 헤더 로고를 이것으로 통일하면서
+   검사에 드러났다(그 전 모바일 로고는 글자가 없는 파비콘 이미지였다).
+
+   고르는 과정에서 잰 값 — 필요 4.5:
+     #D4183D 위 #505050 = 1.53   원래 조합
+     #FF5A78 위 #505050 = 2.68   글자만 밝혀서는 모자란다
+     #FFB3C1 위 #505050 = 4.79   통과하지만 크림슨이 아니라 연분홍이 된다
+     #FF5A78 위 #2A2A2A = 4.77   통과하면서 크림슨을 지킨다  <- 이걸 쓴다
+   글자를 한 단계 밝히고 배경을 한 단계 어둡게 해서, 어두운 상자에 크림슨
+   글자라는 인상은 그대로 두고 기준만 넘겼다. */
 .brand-mark-bg {
-  /* 참고 이미지(favicon 1.png) 배경색을 그대로 스포이트로 땄다 — #505050. */
-  background: #505050;
+  background: #2a2a2a;
 }
 
 .brand-mark-text {
   font-size: 15px;
   line-height: 1;
   letter-spacing: 0.04em;
-  color: var(--color-tag-crimson);
+  color: var(--color-brand-mark);
 }
 
+/* 점은 aria-hidden 인 장식이라 명암비 기준의 대상은 아니지만, 글자와 같은
+   색이어야 한 덩어리로 보인다. */
 .brand-dot {
   width: 3px;
   height: 3px;
   border-radius: 9999px;
-  background: var(--color-tag-crimson);
+  background: var(--color-brand-mark);
   opacity: 0;
   transform: scale(0);
 }
