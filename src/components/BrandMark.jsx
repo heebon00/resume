@@ -58,9 +58,11 @@ function BrandDots() {
  *
  * 좌우 여백은 요청으로 24 -> 14 로 줄였다. 글자 양옆이 허전해 보인다는
  * 것인데, 점선이 상자 폭에 맞춰 늘어나므로(justify-between) 여백을 줄이면
- * 점선도 함께 좁아져 표식이 글자에 붙어 보인다. 위아래 여백은 그대로다.
+ * 점선도 함께 좁아져 표식이 글자에 붙어 보인다.
+ * 위아래 여백은 "상하 사이즈를 아주 조금만" 이라는 요청으로 16 -> 13 으로
+ * 줄였다(1920 에서 표식 높이 60.6 -> 약 54.6).
  */
-export default function BrandMark({ className = "px-14 py-16" }) {
+export default function BrandMark({ className = "px-14 py-13" }) {
   const [ready, setReady] = useState(false);
   useEffect(() => onIntroDone(() => setReady(true)), []);
 
