@@ -114,7 +114,7 @@ export default function AboutMe() {
         aria-hidden="true"
         loading="lazy"
         style={{ transformOrigin: PIVOT_ORIGIN }}
-        className="absolute top-[calc(1581.5*var(--u))] left-898 h-[calc(110.9*var(--u))] w-[calc(111.53*var(--u))] will-change-transform"
+        className="about-arrow absolute top-[calc(1581.5*var(--u))] left-898 h-[calc(110.9*var(--u))] w-[calc(111.53*var(--u))] will-change-transform"
       />
 
       {/* 20:1011 제목 · 소개 · 정보표 */}
