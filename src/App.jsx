@@ -14,7 +14,7 @@ import MyDesign from "./sections/MyDesign";
 import ProjectsReveal from "./sections/ProjectsReveal";
 import Skills from "./sections/Skills";
 import MobilePage from "./sections/mobile/MobilePage";
-import { du } from "./lib/design";
+import { du, duSkills } from "./lib/design";
 import useScrollReveal from "./lib/useScrollReveal";
 
 // 연락 폼은 페이지 맨 아래에 있고 @emailjs/browser 와 reCAPTCHA 를 끌고 온다.
@@ -119,11 +119,15 @@ export default function App() {
               유지한다(위 WINDOW2_START 주석 참조). */}
           <div
             className="relative w-full overflow-hidden"
-            style={{ height: du(CANVAS_H - WINDOW2_START) }}
+            // MY SKILLS 카드가 늘어난 만큼(두 행 = 2번) 창도 길어진다. lib/design.js 참조.
+            style={{ height: duSkills(CANVAS_H - WINDOW2_START, 2) }}
           >
             <div
               className="absolute inset-x-0"
-              style={{ top: du(-WINDOW2_START), height: du(CANVAS_H) }}
+              style={{
+                top: du(-WINDOW2_START),
+                height: duSkills(CANVAS_H, 2),
+              }}
             >
               <Marquee />
               <MyDesign />

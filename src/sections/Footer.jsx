@@ -1,5 +1,5 @@
 import { FOOTER } from "../content/portfolio";
-import { box, du } from "../lib/design";
+import { box, du, duSkills } from "../lib/design";
 import footerLines from "../assets/icons/pattern-footer-lines.svg";
 
 /**
@@ -69,7 +69,11 @@ export default function Footer() {
       id="contact"
       className="absolute"
       data-reveal
-      style={box({ left: 76, top: 5827, width: 1976, height: PANEL_H })}
+      // top 은 MY SKILLS 카드가 늘어난 만큼(두 행 = 2번) 따라 내려간다.
+      style={{
+        ...box({ left: 76, width: 1976, height: PANEL_H }),
+        top: duSkills(5827, 2),
+      }}
     >
       {/* 20:1595 가로 막대 */}
       <div
