@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { makeScramblePool } from "../lib/scramble";
 import BrandMark from "./BrandMark";
@@ -84,6 +84,33 @@ async function scrambleIn(event) {
 }
 
 export default function DesktopNav() {
+  const headerRef = useRef(null);
+
+  // 바 높이를 :root 의 --gnb-h 로 알린다 — 고정 바에 가리면 안 되는 자리
+  // (MY PROJECTS 컷의 위 여백, index.css .pfr)가 이 값을 쓴다. 바 높이는 로고
+  // (BrandMark) 크기로 정해져서, 식으로 적어 두면 로고를 고칠 때마다 어긋난다.
+  useLayoutEffect(() => {
+    const header = headerRef.current;
+    if (!header) return undefined;
+    const root = document.documentElement;
+
+    const update = () => {
+      // 1280 미만에서는 바가 숨어 높이가 0 이다 — 값을 지워 CSS 기본값(0px)을 쓰게 한다.
+      const height = header.getBoundingClientRect().height;
+      if (height) root.style.setProperty("--gnb-h", `${height}px`);
+      else root.style.removeProperty("--gnb-h");
+    };
+
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(header);
+
+    return () => {
+      observer.disconnect();
+      root.style.removeProperty("--gnb-h");
+    };
+  }, []);
+
   const scrollToSection = useCallback((event, href) => {
     const section = document.getElementById(href.slice(1));
     // 대상이 없으면(모바일 트리만 있는 경우 등) 브라우저 기본 동작에 맡긴다.
@@ -106,7 +133,10 @@ export default function DesktopNav() {
   }, []);
 
   return (
-    <header className="fixed top-0 right-0 left-0 z-50 hidden bg-header xl:block">
+    <header
+      ref={headerRef}
+      className="fixed top-0 right-0 left-0 z-50 hidden bg-header xl:block"
+    >
       <div className="flex w-full items-center justify-between px-75">
         <a
           href="#hero"

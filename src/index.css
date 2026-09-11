@@ -542,7 +542,17 @@ body {
   /* 제목 윗줄 위치 — 요청으로 화면 여백을 줄였다(16vh → 9vh). 아래줄의
      bottom(.pfr-line--down)과 같은 값으로 두어야 위아래가 대칭이다. */
   --pfr-title-top: 9vh;
-  --pfr-title-size: min(14vh, calc(148 * var(--u)));
+  /* 컷 위 여백 — 고정 네비 바(--gnb-h, DesktopNav.jsx 가 실측해 넣는다)에 가리지
+     않게 바 높이 + 16 을 쓰되, 원래 값 7vh 보다 작아지지는 않는다.
+     7vh 는 바가 66 이던 때 값이라, 로고 상자가 생겨 바가 커진 뒤로 윗줄 제목이
+     14~22px 가려졌다(docs/11_17_50.md). */
+  --pfr-top: max(7vh, calc(var(--gnb-h, 0px) + 16 * var(--u)));
+  /* 제목 크기 — 위 여백이 7vh 보다 늘어난 만큼 제목 두 줄(한 줄 상자 = 크기 x 1.02,
+     두 줄 = x 2.04)이 나눠서 줄어든다. 컷 안 나머지(이미지)가 받는 높이는 그대로라
+     이미지 크기가 바뀌지 않는다(요청 — "이미지가 더 중요"). */
+  --pfr-title-size: calc(
+    min(14vh, calc(148 * var(--u))) - (var(--pfr-top) - 7vh) / 2.04
+  );
   --pfr-title-box: calc(var(--pfr-title-size) * 1.02); /* 행간 0.9 + 위아래 여백 0.06em */
   --pfr-desc-gap: calc(24 * var(--u)); /* 제목과 설명 사이 */
   --pfr-lead-x: calc(353.98 * var(--u)); /* 들머리 제목 x — 시안 MY projects 제목과 같은 자리 */
@@ -599,7 +609,7 @@ body {
   align-items: stretch;
   gap: calc(18 * var(--u));
   height: 100%;
-  padding: 7vh var(--pfr-gutter) 5vh;
+  padding: var(--pfr-top) var(--pfr-gutter) 5vh;
   overflow: hidden;
   background-color: var(--color-paper);
 }
@@ -664,8 +674,10 @@ body {
 
 .pfr-index {
   position: absolute;
-  /* 4vh 로 내렸더니 고정 GNB 바(높이 66) 뒤로 숨었다 — 8vh 가 바를 피하는 값이다. */
-  top: 8vh;
+  /* 4vh 로 내렸더니 고정 GNB 바(높이 66) 뒤로 숨었다 — 8vh 가 바를 피하는 값이었는데,
+     로고 상자로 바가 커진 뒤로는 8vh 도 반쯤 가려졌다. 윗줄 제목과 같은 위 여백
+     (--pfr-top, 바 높이 + 16)에 맞춘다. */
+  top: var(--pfr-top);
   right: var(--pfr-gutter);
   font-family: var(--font-condensed);
   font-size: var(--text-title-sm);
