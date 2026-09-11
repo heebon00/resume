@@ -13,17 +13,20 @@ import { DONUT_TRACK } from "../lib/donuts";
 const RADIUS = 27.52;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS; // 172.92
 
+// 도넛 최소 크기 — 가운데 퍼센트에 16px 바닥이 걸리면서 "95%"(약 36px)가
+// 안쪽 구멍(지름의 72%)보다 넓어져 링을 덮었다(1440 에서 도넛 47px · 구멍 34px,
+// 모바일 44px · 32px). 52px 이면 구멍이 37px 이라 숫자가 들어간다.
+const MIN_PX = 52;
+
 export default function SkillDonut({ percent, size = 64, fontSize = 18 }) {
   const offset = CIRCUMFERENCE * (1 - percent / 100);
+  const side = `max(${MIN_PX}px, calc(${size} * var(--u)))`;
 
   return (
     <span
       className="relative block shrink-0"
       data-reveal
-      style={{
-        width: `calc(${size} * var(--u))`,
-        height: `calc(${size} * var(--u))`,
-      }}
+      style={{ width: side, height: side }}
     >
       <img
         src={DONUT_TRACK}
