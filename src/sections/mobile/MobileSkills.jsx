@@ -53,7 +53,9 @@ export default function MobileSkills() {
               <p className="font-sans text-[max(16px,calc(16*var(--u)))] font-bold text-white">
                 {card.name}
               </p>
-              <p className="font-sans text-[max(16px,calc(16*var(--u)))] leading-[calc(17*var(--u))] text-card-text">
+              {/* 줄 높이는 글자 비례(1.35) — 글자만 12u -> 16px 바닥으로 커지고
+                  줄 높이 17u 는 그대로라 줄끼리 붙어 있었다. */}
+              <p className="font-sans text-[max(16px,calc(16*var(--u)))] leading-[1.35] text-card-text">
                 {card.description}
               </p>
             </div>
