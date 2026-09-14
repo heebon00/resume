@@ -65,8 +65,12 @@ export const HERO = {
   // 히어로 밑단 버튼(요청) — 스크롤 연출에 나오는 것과 같은 .pfr-swipe 버튼이다.
   // href 가 비면 ProjectCard 와 같은 규칙으로 링크 없이 모양만 나온다.
   buttons: [
-    // 이력서는 같은 저장소의 두 번째 페이지다(resume.html · vite.config.js 참조).
-    { label: "RESUME", href: "/resume.html" },
+    // 이력서는 구글 드라이브의 파일로 연결한다(요청). resume.html 페이지는
+    // 저장소에 그대로 남아 있지만 이 버튼에서는 더 이상 가지 않는다.
+    {
+      label: "RESUME",
+      href: "https://drive.google.com/file/d/1UZh75vXhXCAg7gHIwW2BVDHvzDErF7KJ/view?usp=drive_link",
+    },
     { label: "GITHUB", href: "https://github.com/heebon00" },
   ],
   script: "creative",
