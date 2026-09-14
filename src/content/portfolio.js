@@ -234,7 +234,8 @@ export const PROJECTS = {
       },
       titleLines: ["iKEA Website", "Redesign"],
       descriptionLines: [
-        "2026 _ TEAM PROJECT",
+        // 팀 기여도는 요청으로 프로젝트 유형 옆에 붙인다(줄을 늘리지 않는다).
+        "2026 _ TEAM PROJECT (팀 기여도 25%)",
         "작업 기간: 4주 (26.07.15~26.08.15)",
         "주요 기술:  Figma, HTML,  AI CLI, Tailwind CSS 등",
         "주 역할: 팀장, 기획, 디자인, 기술 구현, 기획서 발표",
@@ -242,7 +243,8 @@ export const PROJECTS = {
       descriptionGroups: [
         {
           label: "TYPE / TERM",
-          lines: ["2026 _ TEAM PROJECT", "작업 기간: 4주 (26.07.15~26.08.15)"],
+          // 팀 기여도는 요청으로 프로젝트 유형 옆에 붙인다(줄을 늘리지 않는다).
+          lines: ["2026 _ TEAM PROJECT (팀 기여도 25%)", "작업 기간: 4주 (26.07.15~26.08.15)"],
         },
         {
           label: "STACK / ROLE",
