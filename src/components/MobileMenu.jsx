@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { DESIGN } from "../content/portfolio";
 import { mobileHref } from "../lib/sectionIds";
 
 /**
@@ -20,7 +21,8 @@ const ITEMS = [
   { href: mobileHref("design"), label: "MY DESIGN" },
   { href: mobileHref("skills"), label: "MY SKILLS" },
   { href: mobileHref("contact"), label: "CONTACT" },
-];
+  // MY DESIGN 을 숨긴 동안에는 갈 곳이 없어 항목도 뺀다(content/portfolio.js 참조).
+].filter((item) => !(DESIGN.hidden && item.href === mobileHref("design")));
 
 export default function MobileMenu({ open, onClose, menuId }) {
   const firstItemRef = useRef(null);

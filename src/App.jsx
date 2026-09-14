@@ -13,6 +13,7 @@ import NameBanner from "./sections/NameBanner";
 import MyDesign from "./sections/MyDesign";
 import ProjectsReveal from "./sections/ProjectsReveal";
 import Skills from "./sections/Skills";
+import { DESIGN } from "./content/portfolio";
 import MobilePage from "./sections/mobile/MobilePage";
 import { du, duSkills } from "./lib/design";
 import useScrollReveal from "./lib/useScrollReveal";
@@ -42,6 +43,11 @@ const SPLIT_Y = 2560;
 // 남는 것을 막는다. 3616 은 카드가 있던 자리의 끝으로, 다음 섹션(Marquee,
 // 3726)까지 110 의 여백이 남는다 — 그리드가 있던 때와 같은 값이다.
 const WINDOW2_START = 3616;
+
+// MY DESIGN 을 숨기면(DESIGN.hidden) 그 자리만큼 MY SKILLS · 푸터를 끌어올린다.
+// MY DESIGN 상자 top(4183.23)에서 MY SKILLS top(4961)까지의 거리라, 올린 뒤
+// MY SKILLS 가 MY DESIGN 자리에 들어가고 마퀴와의 간격(123.84)도 그대로다.
+const DESIGN_GAP = DESIGN.hidden ? 4961 - 4183.23 : 0;
 
 /**
  * 원페이지 포트폴리오.
@@ -120,7 +126,9 @@ export default function App() {
           <div
             className="relative w-full overflow-hidden"
             // MY SKILLS 카드가 늘어난 만큼(두 행 = 2번) 창도 길어진다. lib/design.js 참조.
-            style={{ height: duSkills(CANVAS_H - WINDOW2_START, 2) }}
+            style={{
+              height: duSkills(CANVAS_H - WINDOW2_START - DESIGN_GAP, 2),
+            }}
           >
             <div
               className="absolute inset-x-0"
@@ -131,8 +139,11 @@ export default function App() {
             >
               <Marquee />
               <MyDesign />
-              <Skills />
-              <Footer />
+              {/* 두 섹션의 캔버스 좌표는 그대로 두고 묶음째 DESIGN_GAP 만큼 올린다. */}
+              <div className="absolute inset-x-0" style={{ top: du(-DESIGN_GAP) }}>
+                <Skills />
+                <Footer />
+              </div>
             </div>
           </div>
         </div>

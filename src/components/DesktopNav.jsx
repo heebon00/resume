@@ -1,5 +1,6 @@
 import { useCallback, useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
+import { DESIGN } from "../content/portfolio";
 import { makeScramblePool } from "../lib/scramble";
 import BrandMark from "./BrandMark";
 import ThemeToggle from "./ThemeToggle";
@@ -43,7 +44,8 @@ const ITEMS = [
   { href: "#projects", label: "Projects" },
   { href: "#design", label: "Design" },
   { href: "#contact", label: "Contact" },
-];
+  // MY DESIGN 을 숨긴 동안에는 갈 곳이 없어 항목도 뺀다(content/portfolio.js 참조).
+].filter((item) => !(DESIGN.hidden && item.href === "#design"));
 
 /**
  * ScrambleTextPlugin 은 마우스를 처음 올리는 순간에 받는다.

@@ -108,7 +108,8 @@ export default function MyDesign() {
   const lastIndex = CARDS.length - 1;
 
   // 빈 데이터 — 목록이 비면 섹션 자체를 렌더링하지 않는다(빈 껍데기 노출 금지).
-  if (!CARDS.length) return null;
+  // 숨김(DESIGN.hidden)도 같다. 빈 자리는 App.jsx 가 아래 섹션을 끌어올려 메운다.
+  if (DESIGN.hidden || !CARDS.length) return null;
 
   return (
     <section id="design" aria-label="MY DESIGN">

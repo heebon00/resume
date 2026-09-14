@@ -9,7 +9,8 @@ import { DESIGN } from "../../content/portfolio";
  */
 export default function MobileDesign() {
   // 빈 데이터 — 목록이 비면 섹션 자체를 렌더링하지 않는다(빈 껍데기 노출 금지).
-  if (!DESIGN.cards.length) return null;
+  // 숨김(DESIGN.hidden)도 같다. 모바일은 일반 흐름이라 빈 자리가 남지 않는다.
+  if (DESIGN.hidden || !DESIGN.cards.length) return null;
 
   return (
     <section
